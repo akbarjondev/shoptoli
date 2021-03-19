@@ -2,6 +2,8 @@ const model = require('./admin.model')
 
 const getAll = async (req, res) => {
 
+	res.send(await model.many())
+
 }
 
 const createOne = async (req, res) => {

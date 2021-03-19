@@ -16,7 +16,6 @@ const fetch = async (SQL, ...params) => {
 	try {
 		
 		const { rows } = await client.query(SQL, params)
-		console.log(rows)
 		return rows
 
 	} catch(e) {

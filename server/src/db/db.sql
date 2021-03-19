@@ -12,13 +12,15 @@ create table clients(
 	tg_last_name varchar(150),
 	tg_username varchar(150),
 	tg_phone varchar(20),
-	region_id int
+	region_id int,
+	language_id int default 1
 );
 
 
 create table regions(
 	region_id serial primary key,
-	region_name varchar(50)
+	region_name varchar(50),
+	language_id int default 1
 );
 
 create table admins(
@@ -30,7 +32,8 @@ create table admins(
 
 create table catagories(
 	catagory_id serial primary key,
-	catagory_name varchar(50)
+	catagory_name varchar(50),
+	language_id int default 1
 );
 
 create table products(
@@ -39,12 +42,13 @@ create table products(
 	product_desc text,
 	product_price int,
 	product_is_active boolean default true,
-	catagory_id int
+	catagory_id int,
+	language_id int default 1
 );
 
-create table cart(
+create table carts(
 	cart_id serial primary key,
-	cart_status int,
+	cart_status int default 0,
 	cart_created_at timestamp with time zone default current_timestamp,
 	client_id int
 );
@@ -76,4 +80,9 @@ create table comments(
 	comment_text text,
 	cart_id int,
 	admin_id int
+);
+
+create table languages(
+	language_id serial primary key,
+	language_code varchar(5)
 );
