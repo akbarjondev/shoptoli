@@ -15,3 +15,5 @@ router
 	.get(controller.getOne)
 	.put(controller.editOne)
 	.delete(controller.deleteOne)
+
+module.exports = router
