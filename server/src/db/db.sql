@@ -13,15 +13,24 @@ create table clients(
 	tg_username varchar(150),
 	tg_phone varchar(20),
 	region_id int,
-	language_id int default 1
+	language_id int default 0
 );
 
+-----------------------------------------------
 
 create table regions(
 	region_id serial primary key,
-	region_name varchar(50),
-	language_id int default 1
+	region_status int
 );
+
+create table regions_info(
+	region_info_id serial primary key,
+	region_info_name varchar(20),
+	language_id int,
+	region_id int
+);
+
+-----------------------------------------------
 
 create table admins(
 	admin_id serial primary key,
@@ -30,34 +39,51 @@ create table admins(
 	admin_joined_at timestamp with time zone default current_timestamp
 );
 
+-----------------------------------------------
+
 create table catagories(
 	catagory_id serial primary key,
-	catagory_name varchar(50),
-	language_id int default 1
+	catagory_status int
 );
+
+create table catagories_info(
+	catagory_info_id serial primary key,
+	catagory_info_name varchar(50),
+	language_id int,
+	catagory_id int
+);
+
+-----------------------------------------------
 
 create table products(
 	product_id serial primary key,
-	product_name varchar(50),
-	product_desc text,
 	product_price int,
-	product_is_active boolean default true,
-	catagory_id int,
-	language_id int default 1
+	product_status int,
+	catagory_id int
 );
 
-create table carts(
-	cart_id serial primary key,
-	cart_status int default 0,
-	cart_created_at timestamp with time zone default current_timestamp,
+create table products_info(
+	product_info_id serial primary key,
+	product_info_name varchar(50),
+	product_info_desc text,
+	language_id int,
+	product_id int
+);
+
+-----------------------------------------------
+
+create table orders(
+	order_id serial primary key,
+	order_status int default 0,
+	order_created_at timestamp with time zone default current_timestamp,
 	client_id int
 );
 
-create table cartitems(
-	cartitem_id serial primary key,
-	cartitem_created_at timestamp with time zone default current_timestamp,
-	cartitem_quantity int,
-	cart_id int,
+create table orderitems(
+	orderitem_id serial primary key,
+	orderitem_created_at timestamp with time zone default current_timestamp,
+	orderitem_quantity int,
+	order_id int,
 	product_id int
 );
 
@@ -66,7 +92,7 @@ create table locations(
 	location_created_at timestamp with time zone default current_timestamp,
 	location_latitude varchar(50),
 	location_longitude varchar(50),
-	cart_id int
+	order_id int
 );
 
 create table steps(
@@ -78,7 +104,7 @@ create table steps(
 create table comments(
 	comment_id serial primary key,
 	comment_text text,
-	cart_id int,
+	order_id int,
 	admin_id int
 );
 
