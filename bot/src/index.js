@@ -1,26 +1,19 @@
 require('dotenv').config()
 const TelegramBot = require('node-telegram-bot-api')
-const { logStart } = require('./helper')
+
+const helper = require('./helper')
+const start = require('./resources/start/start.controller')
+const message = require('./resources/message/message.controller')
+const callback = require('./resources/callback/callback.controller')
 
 const bot = new TelegramBot(process.env.token, { polling: true })
 
-logStart()
+global.bot = bot
 
-bot.onText(/\/start/, (msg) => {
+helper.logStart()
 
-	bot.sendMessage(msg.chat.id, 'working...')
-})
+bot.onText(/\/start/, start.firstStart)
 
-bot.on('message', msg => {
+bot.on('message', message.getAction)
 
-	console.log(msg)
-	// switch (msg.text) {
-	// 	case label_1:
-	// 		// statements_1
-	// 		break;
-	// 	default:
-	// 		// statements_def
-	// 		break;
-	// }
-
-})
+bot.on('callback_query', callback.getAction)
