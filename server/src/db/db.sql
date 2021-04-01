@@ -98,6 +98,7 @@ create table locations(
 create table steps(
 	step_id serial primary key,
 	step_name varchar(50),
+	step_last_action timestamp with time zone default current_timestamp,
 	tg_user_id int
 );
 
@@ -110,5 +111,6 @@ create table comments(
 
 create table languages(
 	language_id serial primary key,
-	language_code varchar(5)
+	language_code varchar(5),
+	language_status int default 1 -- 0 | 1
 );

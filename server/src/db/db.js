@@ -9,7 +9,7 @@ const pool = new Pool({
 	host: 'localhost'
 })
 
-const fetch = async (SQL, ...params) => {
+const fetch = async (SQL, params) => {
 	const client = await pool.connect()
 	console.log('connect db')
 	
