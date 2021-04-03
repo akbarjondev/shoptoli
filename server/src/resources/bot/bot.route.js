@@ -22,6 +22,10 @@ router
 	.route('/client/lang/:tg_user_id')
 	.get(controller.getClientLang)
 
+router
+	.route('/client/contact')
+	.put(controller.setClientContact)
+
 // ++++++++++++++++ STEP ++++++++++++++++++++++++
 
 // /bot/step

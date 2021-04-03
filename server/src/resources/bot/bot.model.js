@@ -284,10 +284,45 @@ const setRegion = async (arr) => {
 
 }
 
+const setContact = async (arr) => {
+
+	try {
+
+		const setContact = await fetch(`
+			update
+				clients
+			set
+				tg_phone = $1
+			where
+				tg_user_id = $2
+			returning
+				client_id
+			;
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'phone changed',
+			data: setContact
+		}
+
+	} catch(e) {
+		console.log(e)
+		
+		return {
+			status: 500,
+			message: e.message
+		}
+
+	}
+
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
 	editClient, // client
+	setContact, // client
 	addStep, // step
 	getStep, // step
 	editStep, // step

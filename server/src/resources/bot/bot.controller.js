@@ -35,6 +35,15 @@ const getClientLang = async (req, res) => {
 	res.send(getClientLang).end()
 }
 
+const setClientContact = async (req, res) => {
+
+	const { tg_user_id, phone_number } = req.body
+
+	const modelSetClientContact = await model.setContact([ phone_number, tg_user_id ])
+
+	res.send(modelSetClientContact).end()
+}
+
 //=========================== STEP ===========================//
 
 const getStep = async (req, res) => {
@@ -85,13 +94,14 @@ const setRegion = async (req, res) => {
 }
 
 module.exports = {
-	addClient,
-	getOneClient,
-	addStep,
-	editStep,
-	getStep,
-	editOneClient,
-	getClientLang,
-	getRegions,
-	setRegion,
+	addClient, // client
+	getOneClient, // client
+	editOneClient, // client
+	getClientLang, // language
+	setClientContact, // contact
+	addStep, // step
+	getStep, // step
+	editStep, // step
+	getRegions, // region
+	setRegion, // region
 }
