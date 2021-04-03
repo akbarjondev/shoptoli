@@ -72,5 +72,20 @@ module.exports = {
 			return null
 		}
 
-	},	
+	},
+
+	setPhone: async (chatId, phoneNumber) => {
+		const setRegion = await fetch(`${CONFIG.SERVER_HOST}/bot/client/contact`, {
+			method: 'put',
+			headers: {
+	      'Content-Type': 'application/json'
+	    },
+			body: JSON.stringify({
+				phone_number: phoneNumber,
+				tg_user_id: chatId
+			})
+		})
+
+		return await setRegion.json()
+	}
 }
