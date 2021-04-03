@@ -86,7 +86,7 @@ const getAction = async (cb) => {
 	if(dataArr[0] === 'region') {
 
 		// set user's region
-		const regionRes = await helper.setRegion(cb, dataArr[1])
+		const regionRes = await helper.setRegion(helper.getChatId(cb), dataArr[1])
 
 		if(regionRes.status === 200) {
 
@@ -96,7 +96,26 @@ const getAction = async (cb) => {
 			// answer for selecting region
 			bot.answerCallbackQuery(cb.id, text.selectRegion[userLang], false)
 
-			// bot.
+			// delete message with inline keyboard
+			bot.deleteMessage(
+				helper.getChatId(cb), 
+				helper.getMsgId(cb)
+			)
+
+			// ask user's phone number
+			bot.sendMessage(
+				helper.getChatId(cb), 
+				text.userPhonetext[userLang], 
+				{
+					parse_mode: 'html',
+					reply_markup: {
+		  			keyboard: [
+		  				[{ text: text.userPhoneBtn[userLang], request_contact: true }]
+		  			],
+		  			resize_keyboard: true
+		  		}
+				}
+			) // end of sendMessage
 
 		}
 
