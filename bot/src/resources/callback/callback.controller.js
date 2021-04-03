@@ -88,10 +88,16 @@ const getAction = async (cb) => {
 		// set user's region
 		const regionRes = await helper.setRegion(helper.getChatId(cb), dataArr[1])
 
-		if(regionRes.status === 200) {
+		// get user's step
+		const userStep = await step.getStep(cb)
+
+		if(regionRes.status === 200 && userStep.data[0].step_name === 'region') {
 
 			// get to know user's language
 			const userLang = await helper.getUserLang(helper.getChatId(cb))
+
+			// change step
+			step.editStep(cb, 'contact')
 
 			// answer for selecting region
 			bot.answerCallbackQuery(cb.id, text.selectRegion[userLang], false)

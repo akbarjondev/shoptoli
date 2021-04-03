@@ -2,6 +2,7 @@ const fetch = require('node-fetch')
 const CONFIG = require('./../../config/config')
 const helper = require('./../../helper')
 const text = require('./../../texts')
+const step = require('./../step/step.model')
 
 const recycleContact = async (msg) => {
 
@@ -11,10 +12,16 @@ const recycleContact = async (msg) => {
 	// if user's phone number is good then send main menu
 	const contact = helper.getContact(msg)
 
-	if(Boolean(contact)) {
+	// get user's step
+	const userStep = await step.getStep(msg)
+
+	if(Boolean(contact) && userStep.data[0].step_name === 'contact') {
 
 		// insert phone to the database
 		helper.setPhone(helper.getChatId(msg), contact.phone_number)
+
+		// change step
+		step.editStep(msg, 'menu')
 
 		// send main menu
 		bot.sendMessage(
