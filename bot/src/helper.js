@@ -49,7 +49,7 @@ module.exports = {
 		return res.data
 	},
 
-	setRegion: async (msg, regionId) => {
+	setRegion: async (chatId, regionId) => {
 		const setRegion = await fetch(`${CONFIG.SERVER_HOST}/bot/regions`, {
 			method: 'put',
 			headers: {
@@ -57,11 +57,20 @@ module.exports = {
 	    },
 			body: JSON.stringify({
 				region_id: regionId,
-				tg_user_id: helper.getChatId(msg)
+				tg_user_id: chatId
 			})
 		})
-		const res = await setRegion.json()
 
-		return res.data
-	}	
+		return await setRegion.json()
+	},
+
+	getContact: (msg) => {
+		
+		if(msg?.contact?.user_id === msg?.from?.id){
+			return msg?.contact
+		} else {
+			return null
+		}
+
+	},	
 }
