@@ -17,6 +17,24 @@ const getOneClient = async (req, res) => {
 
 }
 
+const editOneClient = async (req, res) => {
+
+	const { tg_user_id, language_id } = req.body
+
+	const dbEditCleint = await model.editClient([ tg_user_id, language_id ])
+
+	res.send(dbEditCleint).end()
+}
+
+const getClientLang = async (req, res) => {
+
+	const { tg_user_id } = req.params
+
+	const getClientLang = await model.knowLang([ tg_user_id ])
+
+	res.send(getClientLang).end()
+}
+
 //=========================== STEP ===========================//
 
 const getStep = async (req, res) => {
@@ -46,10 +64,34 @@ const editStep = async (req, res) => {
 	res.send(dbStepRes).end()
 }
 
+//=========================== REGIONS ===========================//
+
+const getRegions = async (req, res) => {
+
+	const { language } = req.params
+
+	const dbGetRegions = await model.getRegions([ language ])
+
+	res.send(dbGetRegions).end()
+}
+
+const setRegion = async (req, res) => {
+
+	const { region_id, tg_user_id } = req.body
+
+	const dbSetRegion = await model.setRegion([ region_id, tg_user_id ])
+
+	res.send(dbSetRegion).end()
+}
+
 module.exports = {
 	addClient,
 	getOneClient,
 	addStep,
 	editStep,
 	getStep,
+	editOneClient,
+	getClientLang,
+	getRegions,
+	setRegion,
 }

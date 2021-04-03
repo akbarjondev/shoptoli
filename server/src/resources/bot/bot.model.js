@@ -38,6 +38,72 @@ const getOneClient = async (arr) => {
 
 }
 
+const editClient = async (arr) => {
+
+	try {
+		
+		const setLangRes = await fetch(`
+			update 
+				clients
+			set
+				language_id = $2
+			where
+				tg_user_id = $1
+			returning
+				client_id,
+				language_id
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'client language edited',
+			data: setLangRes
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+
+}
+
+const knowLang = async (arr) => {
+
+	try {
+
+		const getLang = await fetch(`
+			select 
+				l.language_code as language
+			from 
+				clients as c
+			join
+				languages as l on l.language_code = c.language_id
+			where
+				c.tg_user_id = $1
+			;
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: getLang
+		}
+
+	} catch(e) {
+		console.log(e)
+		
+		return {
+			status: 500,
+			message: e.message
+		}
+
+	}
+
+}
+
 //=========================== STEP ===========================//
 
 
@@ -147,10 +213,85 @@ const editStep = async (arr) => {
 
 }
 
+//=========================== REGIONS ===========================//
+
+
+const getRegions = async (arr) => {
+
+	try {
+
+		const getRegions = await fetch(`
+			select
+				r.region_info_name as name,
+				r.region_id as id
+			from
+				regions_info as r
+			join
+				languages as l on l.language_id = r.language_id
+			where
+				l.language_code = $1;
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: getRegions
+		}
+
+	} catch(e) {
+		console.log(e)
+		
+		return {
+			status: 500,
+			message: e.message
+		}
+
+	}
+
+}
+
+const setRegion = async (arr) => {
+
+	try {
+
+		const setRegion = await fetch(`
+			update
+				clients
+			set
+				region_id = $1
+			where
+				tg_user_id = $2
+			returning
+				client_id
+			;
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'region changed',
+			data: setRegion
+		}
+
+	} catch(e) {
+		console.log(e)
+		
+		return {
+			status: 500,
+			message: e.message
+		}
+
+	}
+
+}
+
 module.exports = {
-	addClient,
-	addStep,
-	getOneClient,
-	editStep,
-	getStep,
+	addClient, // client
+	getOneClient, // client
+	editClient, // client
+	addStep, // step
+	getStep, // step
+	editStep, // step
+	knowLang, // language
+	getRegions, // region
+	setRegion, // region
 }
