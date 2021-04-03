@@ -9,18 +9,27 @@ const recycleContact = async (msg) => {
 	const userLang = await helper.getUserLang(helper.getChatId(msg))
 
 	// if user's phone number is good then send main menu
-	if(Boolean(helper.getContact(msg))) {
+	const contact = helper.getContact(msg)
+
+	if(Boolean(contact)) {
+
+		// insert phone to the database
+		helper.setPhone(helper.getChatId(msg), contact.phone_number)
 
 		// send main menu
 		bot.sendMessage(
-			helper.getChatId(cb), 
-			text.mainMenu[userLang], 
+			helper.getChatId(msg), 
+			text.mainMenu.text[userLang], 
 			{
 				parse_mode: 'html',
 				reply_markup: {
 	  			keyboard: [
-	  				[{ text: text.userPhoneBtn[userLang], request_contact: true }]
-	  			],
+						[{ text: text.mainMenu.keyboard.order[userLang] }],
+						[
+							{ text: text.mainMenu.keyboard.myOrders[userLang] }, 
+							{ text: text.mainMenu.keyboard.settings[userLang] }
+						]
+					],
 	  			resize_keyboard: true
 	  		}
 			}
