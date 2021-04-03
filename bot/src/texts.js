@@ -22,5 +22,25 @@ module.exports = {
 	fakeNumberText: {
 		uz: `Iltimos, shaxsiy raqamingizni yuboring 😊`,
 		ru: 'Пожалуйста, отправьте свой личный номер 😊'
+	},
+	mainMenu: {
+		text: {
+			uz: `Bulardan birini tanlang 👇`,
+			ru: `Выберите один из них 👇`
+		},
+		keyboard: {
+			order: {
+				uz: '🛒 Buyurtma qilish',
+				ru: '🛒 Заказать'
+			},
+			settings: {
+				uz: '⚙️ Sozlamalar',
+				ru: '⚙️ Настройки'
+			},
+			myOrders: {
+				uz: '🛍 Buyurtmalarim',
+				ru: '🛍 Мои заказы'
+			}
+		}
 	}
 }
