@@ -52,6 +52,12 @@ const firstStart = async (msg) => {
 				}
 			) // end of sendMessage
 
+			// delete /start message ;)
+			bot.deleteMessage(
+				helper.getChatId(msg),
+				helper.getMsgId(msg)
+			)
+
 		} // end of if()
 	}
 
