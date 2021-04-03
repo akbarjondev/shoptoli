@@ -13,7 +13,7 @@ create table clients(
 	tg_username varchar(150),
 	tg_phone varchar(20),
 	region_id int,
-	language_id int default 0
+	language_id varchar(2) default 'uz'
 );
 
 -----------------------------------------------

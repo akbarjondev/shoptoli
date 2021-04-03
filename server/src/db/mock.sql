@@ -22,3 +22,67 @@ values
 ('Teftel', 'Teftel info', 26000, true, 1),
 ('Cola', 'Coca-cola info', 12000, true, 2)
 ;
+
+-- insert languages
+insert into
+	languages(language_code, language_status)
+values ('uz', 1), ('ru', 1)
+;
+
+-- insert regions
+insert into
+	regions(region_status)
+values (1),(1),(1),(1),(1),(1),(1),(1),(1),(1),(1),(1)
+;
+
+-- insert regions info
+insert into
+	regions_info(region_info_name, language_id, region_id)
+values ('Bektemir', 1, 1),
+			 ('Бектемир', 2, 1),
+			 ('Chilonzor', 1, 2),
+			 ('Чилонзор', 2, 2),
+			 ('Yashnobod', 1, 3),
+			 ('Яшнобод', 2, 3),
+			 ('Mirobod', 1, 4),
+			 ('Миробод', 2, 4),
+			 ('Mirzo Ulug''bek', 1, 5),
+			 ('Мирзо Улуғбек', 2, 5),
+			 ('Sergeli', 1, 6),
+			 ('Сергели', 2, 6),
+			 ('Shayxontohur', 1, 7),
+			 ('Шайхонтоҳур', 2, 7),
+			 ('Olmazor', 1, 8),
+			 ('Олмазор', 2, 8),
+			 ('Uchtepa', 1, 9),
+			 ('Учтепа', 2, 9),
+			 ('Yakkasaroy', 1, 10),
+			 ('Яккасарой', 2, 10),
+			 ('Yunusobod', 1, 11),
+			 ('Юнусобод', 2, 11),
+			 ('Yangihayot', 1, 12),
+			 ('Янгиҳайот', 2, 12)
+;
+
+-- select lang client
+select 
+	l.language_code as language
+from 
+	clients as c
+join
+	languages as l on l.language_code = c.language_id
+where
+	c.tg_user_id = 288096386
+;
+
+-- select regions
+select
+	r.region_info_name as name,
+	r.region_id as id
+from
+	regions_info as r
+join
+	languages as l on l.language_id = r.language_id
+where
+	l.language_code = 'ru'
+;
