@@ -102,3 +102,14 @@ values ('Bugungi menyu', 1, 1),
 			 ('Fast Foodlar', 1, 3),
 			 ('Фаст-Фуд', 2, 3)
 ;
+
+select 
+	c.catagory_info_name as name,
+	c.catagory_id as id
+from
+	catagories_info as c
+join
+	languages as l on l.language_id = c.language_id
+where
+	l.language_code = 'uz'
+;
