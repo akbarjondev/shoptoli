@@ -2,11 +2,11 @@ const Pool = require('pg').Pool
 require('dotenv').config()
 
 const pool = new Pool({
-	user: 'postgres',
+	user: process.env.user,
 	password: process.env.db_secret,
-	database: 'shoptoli',
+	database: process.env.database,
 	port: 5432,
-	host: 'localhost'
+	host: process.env.host
 })
 
 const fetch = async (SQL, params) => {
