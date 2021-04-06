@@ -93,6 +93,15 @@ const setRegion = async (req, res) => {
 	res.send(dbSetRegion).end()
 }
 
+//=========================== INFOS ===========================//
+
+const getInfos = async (req, res) => {
+
+	const dbGetInfos = await model.getInfos()
+
+	res.send(dbGetInfos).end()
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -104,4 +113,5 @@ module.exports = {
 	editStep, // step
 	getRegions, // region
 	setRegion, // region
+	getInfos, // info general
 }

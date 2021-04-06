@@ -50,5 +50,9 @@ router
 	.route('/regions/:language')
 	.get(controller.getRegions)
 
+// ++++++++++++++++ INFOS +++++++++++++++++++++
+router
+	.route('/infos')
+	.get(controller.getInfos)
 
 module.exports = router

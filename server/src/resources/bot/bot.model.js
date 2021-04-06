@@ -318,6 +318,37 @@ const setContact = async (arr) => {
 
 }
 
+//=========================== INFOS ===========================//
+
+const getInfos = async (arr) => {
+
+	try {
+
+		const getInfos = await fetch(`
+			select
+				*
+			from
+				infos
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: getInfos
+		}
+
+	} catch(e) {
+		console.log(e)
+		
+		return {
+			status: 500,
+			message: e.message
+		}
+
+	}
+
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -329,4 +360,5 @@ module.exports = {
 	knowLang, // language
 	getRegions, // region
 	setRegion, // region
+	getInfos, // infos
 }
