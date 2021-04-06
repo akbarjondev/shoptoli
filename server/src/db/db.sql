@@ -114,3 +114,14 @@ create table languages(
 	language_code varchar(5),
 	language_status int default 1 -- 0 | 1
 );
+
+------------------------------------------
+create table infos(
+	info_id serial primary key,
+	info_company_name varchar(150) not null,
+	info_catalog_link text not null,
+	info_phone varchar(10),
+	info_address varchar(255),
+	info_email varchar(50),
+	info_created_at timestamptz default current_timestamp
+);

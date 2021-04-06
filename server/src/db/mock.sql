@@ -86,3 +86,19 @@ join
 where
 	l.language_code = 'ru'
 ;
+
+-- info general
+insert into infos(info_company_name, info_catalog_link) values('Ajwa', 'https://telegra.ph/Xayrli-tong-02-24');
+
+-- catagories
+insert into catagories(catagory_status) values(1), (1), (1);
+
+-- catagory info
+insert into catagories_info(catagory_info_name, language_id, catagory_id)
+values ('Bugungi menyu', 1, 1),
+			 ('Сегодняшнее меню', 2, 1),
+			 ('Ichimliklar', 1, 2),
+			 ('Напитки', 2, 2),
+			 ('Fast Foodlar', 1, 3),
+			 ('Фаст-Фуд', 2, 3)
+;
