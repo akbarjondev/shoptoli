@@ -102,6 +102,17 @@ const getInfos = async (req, res) => {
 	res.send(dbGetInfos).end()
 }
 
+//=========================== CATAGORIES ===========================//
+
+const getCatagories = async (req, res) => {
+
+	const { language } = req.params
+
+	const dbGetCatagories = await model.getCatagories([ language ])
+
+	res.send(dbGetCatagories).end()
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -114,4 +125,5 @@ module.exports = {
 	getRegions, // region
 	setRegion, // region
 	getInfos, // info general
+	getCatagories, // catagories
 }

@@ -349,6 +349,43 @@ const getInfos = async (arr) => {
 
 }
 
+//=========================== CATAGORIES ===========================//
+
+const getCatagories = async (arr) => {
+
+	try {
+
+		const getCatagories = await fetch(`
+			select 
+				c.catagory_info_name as name,
+				c.catagory_id as id
+			from
+				catagories_info as c
+			join
+				languages as l on l.language_id = c.language_id
+			where
+				l.language_code = $1
+			;
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: getCatagories
+		}
+
+	} catch(e) {
+		console.log(e)
+		
+		return {
+			status: 500,
+			message: e.message
+		}
+
+	}
+
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -361,4 +398,5 @@ module.exports = {
 	getRegions, // region
 	setRegion, // region
 	getInfos, // infos
+	getCatagories, // catagories
 }

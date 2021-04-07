@@ -1,28 +1,3 @@
--- insert clients
-insert into 
-	clients(client_name, tg_user_id, tg_first_name, tg_last_name, tg_username, tg_phone, region_id)
-values 
-('Ali', 123546, 'Ali', 'Akbar', 'akbarjondev', '998945562189', 1 ),
-('Salim', 456848, 'Salim', '', 'salimdev', '998948895426', 2 )
-;
-
--- insert catagories
-insert into 
-	catagories(catagory_name)
-values 
-('Asosiy taomlar'),
-('Ichimliklar')
-;
-
--- insert products
-insert into 
-	products(product_name, product_desc, product_price, product_is_active, catagory_id)
-values 
-('Sudak', 'Sudak info', 26000, true, 1),
-('Teftel', 'Teftel info', 26000, true, 1),
-('Cola', 'Coca-cola info', 12000, true, 2)
-;
-
 -- insert languages
 insert into
 	languages(language_code, language_status)
@@ -95,12 +70,12 @@ insert into catagories(catagory_status) values(1), (1), (1);
 
 -- catagory info
 insert into catagories_info(catagory_info_name, language_id, catagory_id)
-values ('Bugungi menyu', 1, 1),
-			 ('Сегодняшнее меню', 2, 1),
-			 ('Ichimliklar', 1, 2),
-			 ('Напитки', 2, 2),
-			 ('Fast Foodlar', 1, 3),
-			 ('Фаст-Фуд', 2, 3)
+values ('🍲Bugungi menyu', 1, 1),
+			 ('🍲Сегодняшнее меню', 2, 1),
+			 ('🥤Ichimliklar', 1, 2),
+			 ('🥤Напитки', 2, 2),
+			 ('🍔Fast Foodlar', 1, 3),
+			 ('🍔Фаст-Фуд', 2, 3)
 ;
 
 select 
@@ -112,4 +87,36 @@ join
 	languages as l on l.language_id = c.language_id
 where
 	l.language_code = 'uz'
+;
+
+--insert products
+insert into 
+	products(product_price, product_status, catagory_id)
+values 
+(26000, 1, 1),
+(26000, 1, 1),
+(12000, 1, 2),
+(8000, 1, 2),
+(8000, 1, 2),
+(18000, 1, 3),
+(10000, 1, 3)
+;
+
+--insert products_info
+insert into
+	products_info(product_info_name, product_info_desc, language_id, product_id)
+values('Sudak', 'Tarkibi boy mahsulotlarga ega', 1, 1),
+			('Судак', 'Состав имеет богатые продукты', 2, 1),
+			('Kotlet', 'Mol go''shti, tarkibi boy mahsulotlarga ega', 1, 2),
+			('Котлет', 'Говядина, имеет богатый состав продуктов', 2, 2),
+			('Coca-cola', 'Shakar, kofein )', 1, 3),
+			('Coca-cola', 'Сахар, kofein )', 2, 3),
+			('Dinay olcha', 'Shakar, olcha, suv', 1, 4),
+			('Динай олча', 'Сахар, olcha, suv', 2, 4),
+			('Meva sok', 'Shakar, faqat suv', 1, 5),
+			('Мева сок', 'Сахар, faqat suv', 2, 5),
+			('Gamburger', 'Non, salat, pomidor, kotlet, bodring', 1, 6),
+			('Гамбургер', 'Хлеб, салат, помидоры, котлеты, огурцы', 2, 6),
+			('Hot dog', 'Non, salat, pomidor, sosiska, bodring', 1, 7),
+			('Хот дог', 'Хлеб, салат, помидоры, колбаса, огурцы', 2, 7)
 ;

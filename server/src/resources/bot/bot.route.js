@@ -55,4 +55,10 @@ router
 	.route('/infos')
 	.get(controller.getInfos)
 
+// ++++++++++++++++ CATAGORIES +++++++++++++++++++++
+router
+	.route('/catagories/:language')
+	.get(controller.getCatagories)
+
+
 module.exports = router
