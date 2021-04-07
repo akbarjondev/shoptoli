@@ -25,8 +25,8 @@ module.exports = {
 	},
 	mainMenu: {
 		text: {
-			uz: `Bulardan birini tanlang 👇`,
-			ru: `Выберите один из них 👇`
+			uz: `Quyidagilardan birini tanlang 👇`,
+			ru: `Выберите один из следующих 👇`
 		},
 		keyboard: {
 			order: {

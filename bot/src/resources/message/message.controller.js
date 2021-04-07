@@ -19,7 +19,7 @@ const getAction = async (msg) => {
 			const link = response.data[0].info_catalog_link
 
 			// get catagories
-			const rawData = await fetch(`${CONFIG.SERVER_HOST}/bot/catagories`)
+			const rawData = await fetch(`${CONFIG.SERVER_HOST}/bot/catagories/${userLang}`)
 			const { data } = await rawData.json()
 
 			// generate inline buttons
@@ -30,7 +30,7 @@ const getAction = async (msg) => {
 
         buttonsRow.push({ text: data[i].name, callback_data: 'region:' + data[i].id })
         
-        if(buttonsRow.length === 3) {
+        if(buttonsRow.length === 1) {
           inlineKeyboard.push([...buttonsRow])
           buttonsRow.length = 0
         }
@@ -43,7 +43,7 @@ const getAction = async (msg) => {
 			bot.sendMessage(
 				helper.getChatId(msg), 
 				`
-					<b>${company.toUpperCase()}</b> <a href="${link}">ℹ️</a>\n\n<b>${text.sendCatalog[userLang]}</b>
+					<b>${company.toUpperCase()}</b>\n\n<a href="${link}">📖</a> <b>${text.sendCatalog[userLang]}</b>
 				`,
 				{
 					parse_mode: 'html',
@@ -51,6 +51,12 @@ const getAction = async (msg) => {
 						inline_keyboard: inlineKeyboard
 					}
 				}
+			)
+
+			// delete old message with inline keyboard
+			bot.deleteMessage(
+				helper.getChatId(msg), 
+				helper.getMsgId(msg)
 			)
 
 		} catch(e) {

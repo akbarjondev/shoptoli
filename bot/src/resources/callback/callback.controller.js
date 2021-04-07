@@ -87,7 +87,7 @@ const getAction = async (cb) => {
 
 		// set user's region
 		const regionRes = await helper.setRegion(helper.getChatId(cb), dataArr[1])
-
+		
 		// get user's step
 		const userStep = await step.getStep(cb)
 
