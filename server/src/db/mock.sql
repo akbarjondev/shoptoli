@@ -153,3 +153,6 @@ join
 where
 	l.language_code = 'uz' and p.product_id = 1
 ;
+
+insert into orders(client_id)
+values(1)

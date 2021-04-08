@@ -7,7 +7,7 @@ const step = require('./../step/step.model')
 const recycleContact = async (msg) => {
 
 	// get to know user's language
-	const userLang = await helper.getUserLang(helper.getChatId(msg))
+	const userLang = await helper.getUserObj(helper.getChatId(msg))
 
 	// if user's phone number is good then send main menu
 	const contact = helper.getContact(msg)

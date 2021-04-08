@@ -76,6 +76,7 @@ const knowLang = async (arr) => {
 
 		const getLang = await fetch(`
 			select 
+				c.client_id as id,
 				l.language_code as language
 			from 
 				clients as c

@@ -7,7 +7,7 @@ const step = require('./../step/step.model')
 const getAction = async (msg) => {
 
 	// get to know user's language
-	const userLang = await helper.getUserLang(helper.getChatId(msg))
+	const userLang = await helper.getUserObj(helper.getChatId(msg))
 
 	// user ask catalog
 	if(msg.text === text.mainMenu.keyboard.order[userLang]) {
