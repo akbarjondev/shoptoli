@@ -120,3 +120,36 @@ values('Sudak', 'Tarkibi boy mahsulotlarga ega', 1, 1),
 			('Hot dog', 'Non, salat, pomidor, sosiska, bodring', 1, 7),
 			('Хот дог', 'Хлеб, салат, помидоры, колбаса, огурцы', 2, 7)
 ;
+
+
+--select products based on language and catagory
+select
+	p.product_id as id,
+	p.product_price as price,
+	pi.product_info_name as name,
+	pi.product_info_desc as desc
+from
+	products as p
+join
+	products_info as pi on pi.product_id = p.product_id
+join
+	languages as l on l.language_id = pi.language_id
+where
+	l.language_code = 'uz' and p.catagory_id = 1
+;
+
+-- select one product based on ID and lang
+select
+	p.product_id as id,
+	p.product_price as price,
+	pi.product_info_name as name,
+	pi.product_info_desc as desc
+from
+	products as p
+join
+	products_info as pi on pi.product_id = p.product_id
+join
+	languages as l on l.language_id = pi.language_id
+where
+	l.language_code = 'uz' and p.product_id = 1
+;

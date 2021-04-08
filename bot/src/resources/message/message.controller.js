@@ -2,6 +2,7 @@ const fetch = require('node-fetch')
 const CONFIG = require('./../../config/config')
 const helper = require('./../../helper')
 const text = require('./../../texts')
+const step = require('./../step/step.model')
 
 const getAction = async (msg) => {
 
@@ -23,22 +24,7 @@ const getAction = async (msg) => {
 			const { data } = await rawData.json()
 
 			// generate inline buttons
-			let inlineKeyboard = []
-      let buttonsRow = []
-
-      for (let i = 0; i < data.length; i++) {
-
-        buttonsRow.push({ text: data[i].name, callback_data: 'region:' + data[i].id })
-        
-        if(buttonsRow.length === 1) {
-          inlineKeyboard.push([...buttonsRow])
-          buttonsRow.length = 0
-        }
-
-        if((data.length - 1) === i) {
-          inlineKeyboard.push([...buttonsRow])
-        }
-      }
+			let inlineKeyboard = helper.kbdGenerate(data, 'catagory', 1)
 
 			bot.sendMessage(
 				helper.getChatId(msg), 
@@ -58,6 +44,9 @@ const getAction = async (msg) => {
 				helper.getChatId(msg), 
 				helper.getMsgId(msg)
 			)
+
+			// edit step from start to catagories
+			step.editStep(msg, 'catagories')
 
 		} catch(e) {
 			console.log(e)

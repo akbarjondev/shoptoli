@@ -37,7 +37,8 @@ const recycleContact = async (msg) => {
 							{ text: text.mainMenu.keyboard.settings[userLang] }
 						]
 					],
-	  			resize_keyboard: true
+	  			resize_keyboard: true,
+	  			one_time_keyboard: true
 	  		}
 			}
 		) // end of sendMessage
