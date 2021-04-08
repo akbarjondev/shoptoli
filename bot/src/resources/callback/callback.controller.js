@@ -222,6 +222,9 @@ const getAction = async (cb) => {
 
 	if(dataArr[0] === 'product'){
 
+		// change step
+		step.editStep(cb, 'product')
+
 		// get product by ID
 		const getProduct = await fetch(`${CONFIG.SERVER_HOST}/bot/product/${dataArr[1]}/${userLang}`)
 		const { data, status } = await getProduct.json()

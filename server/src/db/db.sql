@@ -1,3 +1,8 @@
+-- know timezone
+show timezone;
+
+set timezone = 'Asia/Tashkent';
+
 create database shoptoli;
 
 create extension "pgcrypto";
@@ -124,4 +129,10 @@ create table infos(
 	info_address varchar(255),
 	info_email varchar(50),
 	info_created_at timestamptz default current_timestamp
+);
+
+create table api_history(
+	api_history_id serial primary key,
+	api_history_text text,
+	api_history_created_at timestamptz default current_timestamp
 );
