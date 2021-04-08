@@ -18,11 +18,15 @@ module.exports = {
 		return msg?.from?.language_code
 	},
 
-	getUserLang: async (chatId) => {
+	getUserObj: async (chatId, id = false) => {
 		const getUserLangRes = await fetch(`${CONFIG.SERVER_HOST}/bot/client/lang/${chatId}`)
 		const res = await getUserLangRes.json()
 
-		return res.data[0].language
+		if(id) {
+			return res.data[0].id
+		} else {
+			return res.data[0].language
+		}
 	},
 
 	getClientObj: (msg) => {
