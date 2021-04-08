@@ -87,5 +87,45 @@ module.exports = {
 		})
 
 		return await setRegion.json()
+	},
+
+	kbdGenerate: (data, name_in_cb_data, kdbInRow = 1, back = false) => {
+
+		// generate inline buttons
+		let inlineKeyboard = []
+    let buttonsRow = []
+
+    for (let i = 0; i < data.length; i++) {
+
+      buttonsRow.push({ text: data[i].name, callback_data: name_in_cb_data + ':' + data[i].id })
+      
+      if(buttonsRow.length === kdbInRow) {
+        inlineKeyboard.push([...buttonsRow])
+        buttonsRow.length = 0
+      }
+
+      if((data.length - 1) === i) {
+        inlineKeyboard.push([...buttonsRow])
+      }
+    }
+
+    if(typeof back === 'boolean' && back !== false) {
+      inlineKeyboard.push([{ text: '🔙', callback_data: 'back' + ':' + 'cat_id:' + data[0]?.cat_id }])
+    } else if(typeof back === 'string') {
+      inlineKeyboard.push([{ text: '🔙', callback_data: 'back' + ':' + back + ':' + data[0]?.cat_id }])
+    }
+
+    return inlineKeyboard
+	},
+
+	getCompanyInfo: async () => {
+		// get general info
+		const getGeneralInfo = await fetch(`${CONFIG.SERVER_HOST}/bot/infos`)
+		const response = await getGeneralInfo.json()
+
+		return {
+			name: response.data[0].info_company_name,
+			link: response.data[0].info_catalog_link
+		}
 	}
 }
