@@ -129,6 +129,7 @@ create table infos(
 	info_phone varchar(10),
 	info_address varchar(255),
 	info_email varchar(50),
+	info_delivery_price int default 0,
 	info_created_at timestamptz default current_timestamp
 );
 

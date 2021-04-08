@@ -97,7 +97,7 @@ module.exports = {
 
     for (let i = 0; i < data.length; i++) {
 
-      buttonsRow.push({ text: data[i].name, callback_data: name_in_cb_data + ':' + data[i].id })
+      buttonsRow.push({ text: data[i].name, callback_data: name_in_cb_data + ':' + data[i].id + ':pid:' + data[i].product_id })
       
       if(buttonsRow.length === kdbInRow) {
         inlineKeyboard.push([...buttonsRow])

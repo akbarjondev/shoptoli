@@ -19,6 +19,8 @@ const getAction = async (cb) => {
 	// get conpany general info
 	const info = await helper.getCompanyInfo()
 
+	console.log(dataArr)
+
 	// ================ BACK TO BACK ================ //
 
 	if(dataArr[0] === 'back') {
@@ -235,7 +237,7 @@ const getAction = async (cb) => {
 		const { data, status } = await getProduct.json()
 
 		// generate inline buttons
-		let inlineKeyboard = helper.kbdGenerate(INLINE_KDBS.product_quantity(data[0].cat_id), 'quantity', 3, 'ps')
+		let inlineKeyboard = helper.kbdGenerate(INLINE_KDBS.product_quantity(data[0].cat_id, data[0].id), 'quantity', 3, 'ps')
 
 		if(status === 200) {
 
@@ -264,7 +266,19 @@ const getAction = async (cb) => {
 
 		}
 
-	} // end of catagory select
+	} // end of product select
+
+	// ================ SELECT QUANTITY ================ //
+
+	if(dataArr[0] === 'quantity'){
+
+		const quantity = dataArr[1]
+		const product_id = dataArr[3]
+
+		// change step
+		step.editStep(cb, 'quantity')
+
+	} // end of product select
 
 } // end of getAction - callback function
 
