@@ -60,5 +60,14 @@ router
 	.route('/catagories/:language')
 	.get(controller.getCatagories)
 
+// ++++++++++++++++ PRODUCTS +++++++++++++++++++++
+router
+	.route('/products/:catagory_id/:language_id')
+	.get(controller.getProducts)
+
+// ++++++++++++++++ PRODUCT +++++++++++++++++++++
+router
+	.route('/product/:product_id/:language_id')
+	.get(controller.getProduct)
 
 module.exports = router

@@ -189,7 +189,8 @@ const editStep = async (arr) => {
 			update 
 				steps
 			set
-				step_name = $1
+				step_name = $1,
+				step_last_action = now()
 			where
 				tg_user_id = $2
 			;
@@ -386,6 +387,91 @@ const getCatagories = async (arr) => {
 
 }
 
+//=========================== PRODUCTS ===========================//
+
+const getProducts = async (arr) => {
+
+	try {
+
+		const getProducts = await fetch(`
+			select
+				p.product_id as id,
+				p.catagory_id as cat_id,
+				p.product_price as price,
+				pi.product_info_name as name,
+				pi.product_info_desc as desc
+			from
+				products as p
+			join
+				products_info as pi on pi.product_id = p.product_id
+			join
+				languages as l on l.language_id = pi.language_id
+			where
+				l.language_code = $2 and p.catagory_id = $1
+			;
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: getProducts
+		}
+
+	} catch(e) {
+		console.log(e)
+		
+		return {
+			status: 500,
+			message: e.message
+		}
+
+	}
+
+}
+
+
+//=========================== PRODUCT ===========================//
+
+const getProduct = async (arr) => {
+
+	try {
+
+		const getProduct = await fetch(`
+			select
+				p.product_id as id,
+				p.catagory_id as cat_id,
+				p.product_price as price,
+				pi.product_info_name as name,
+				pi.product_info_desc as desc
+			from
+				products as p
+			join
+				products_info as pi on pi.product_id = p.product_id
+			join
+				languages as l on l.language_id = pi.language_id
+			where
+				l.language_code = $2 and p.product_id = $1
+			;
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: getProduct
+		}
+
+	} catch(e) {
+		console.log(e)
+		
+		return {
+			status: 500,
+			message: e.message
+		}
+
+	}
+
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -399,4 +485,6 @@ module.exports = {
 	setRegion, // region
 	getInfos, // infos
 	getCatagories, // catagories
+	getProducts, // products
+	getProduct, // product
 }

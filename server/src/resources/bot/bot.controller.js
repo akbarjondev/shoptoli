@@ -113,6 +113,28 @@ const getCatagories = async (req, res) => {
 	res.send(dbGetCatagories).end()
 }
 
+//=========================== PRODUCTS ===========================//
+
+const getProducts = async  (req, res) => {
+
+	const { catagory_id, language_id } = req.params
+
+	const dbGetProducts = await model.getProducts([ catagory_id, language_id ])
+
+	res.send(dbGetProducts).end()
+}
+
+//=========================== PRODUCT ===========================//
+
+const getProduct = async  (req, res) => {
+
+	const { product_id, language_id } = req.params
+
+	const dbGetProduct = await model.getProduct([ product_id, language_id ])
+
+	res.send(dbGetProduct).end()
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -126,4 +148,6 @@ module.exports = {
 	setRegion, // region
 	getInfos, // info general
 	getCatagories, // catagories
+	getProducts, // products
+	getProduct, // product
 }
