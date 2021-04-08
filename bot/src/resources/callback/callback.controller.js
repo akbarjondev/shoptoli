@@ -4,10 +4,91 @@ const fetch = require('node-fetch')
 const text = require('./../../texts')
 const CONFIG = require('./../../config/config')
 const step = require('./../step/step.model')
+const INLINE_KDBS = require('./../../keyboards/inline_keyboards')
 
 const getAction = async (cb) => {
 
 	const dataArr = cb.data.split(':')
+
+	// get to know user's language
+	const userLang = await helper.getUserLang(helper.getChatId(cb))
+
+	// get user's step
+	const userStep = await step.getStep(cb)
+
+	// get conpany general info
+	const info = await helper.getCompanyInfo()
+
+	// ================ BACK TO BACK ================ //
+
+	if(dataArr[0] === 'back') {
+
+		if(dataArr[2] === 'undefined' || dataArr[1] === 'ct') {
+
+			// if user sits on products page, then he can back to catagories page
+			const { step_name } = userStep.data[0]
+
+			if(step_name === 'products') {
+
+				// get catagories
+				const rawData = await fetch(`${CONFIG.SERVER_HOST}/bot/catagories/${userLang}`)
+				const { data } = await rawData.json()
+
+				// generate inline buttons
+				let inlineKeyboard = helper.kbdGenerate(data, 'catagory', 1)
+
+				bot.editMessageText(
+					`
+						<b>${info.name.toUpperCase()}</b>\n\n<a href="${info.link}">📖</a> <b>${text.sendCatalog[userLang]}</b>
+					`,
+					{
+						chat_id: helper.getChatId(cb),
+						message_id: helper.getMsgId(cb),
+						parse_mode: 'html',
+						reply_markup: {
+							inline_keyboard: inlineKeyboard
+						}
+					}
+				)
+
+				// edit step from start to catagories
+				step.editStep(cb, 'catagories')
+			}
+		} else if(dataArr[1] === 'ps') {
+
+			const catagory_id = dataArr[2]
+
+			// change step
+			step.editStep(cb, 'products')
+
+			// get products based on catagory ID
+			const getProducts = await fetch(`${CONFIG.SERVER_HOST}/bot/products/${catagory_id}/${userLang}`)
+			const { data, status } = await getProducts.json()
+		
+			// generate inline buttons
+			let inlineKeyboard = helper.kbdGenerate(data, 'product', 3, 'ct')
+
+			if(status === 200) {
+
+				// edit message with select region text and buttons
+				bot.editMessageText(
+					`
+						<b>${info.name.toUpperCase()}</b>\n\n<a href="${info.link}">📖</a> <b>${text.sendCatalog[userLang]}</b>
+					`,
+					{
+					chat_id: helper.getChatId(cb), 
+					message_id: helper.getMsgId(cb),
+					reply_markup: {
+						inline_keyboard: inlineKeyboard
+					},
+					parse_mode: 'html'
+				})
+
+			}
+		}
+
+	} // user press back
+
 
 	// ================ CHANGE LANGUAGE ================ //
 
@@ -38,29 +119,11 @@ const getAction = async (cb) => {
 				// answer to the presed inline button
 				bot.answerCallbackQuery(cb.id, text.selectLang[dataArr[1]], false)
 
-				// get to know user's language
-				const userLang = await helper.getUserLang(helper.getChatId(cb))
-
 				// get all regions based on user language
 				const data = await helper.getRegions(userLang)
 
 				// generate inline buttons
-				let inlineKeyboard = []
-	      let buttonsRow = []
-
-	      for (let i = 0; i < data.length; i++) {
-
-	        buttonsRow.push({ text: data[i].name, callback_data: 'region:' + data[i].id })
-	        
-	        if(buttonsRow.length === 3) {
-	          inlineKeyboard.push([...buttonsRow])
-	          buttonsRow.length = 0
-	        }
-
-	        if((data.length - 1) === i) {
-	          inlineKeyboard.push([...buttonsRow])
-	        }
-	      }
+				let inlineKeyboard = helper.kbdGenerate(data, 'region', 3)
 
 	      // edit message with select region text and buttons
 				bot.editMessageText(
@@ -87,14 +150,8 @@ const getAction = async (cb) => {
 
 		// set user's region
 		const regionRes = await helper.setRegion(helper.getChatId(cb), dataArr[1])
-		
-		// get user's step
-		const userStep = await step.getStep(cb)
 
 		if(regionRes.status === 200 && userStep.data[0].step_name === 'region') {
-
-			// get to know user's language
-			const userLang = await helper.getUserLang(helper.getChatId(cb))
 
 			// change step
 			step.editStep(cb, 'contact')
@@ -126,6 +183,71 @@ const getAction = async (cb) => {
 		}
 
 	} // end of select region
+
+	// ================ SELECT CATAGORY ================ //
+
+	if(dataArr[0] === 'catagory'){
+
+		// change step
+		step.editStep(cb, 'products')
+
+		// get products based on catagory ID
+		const getProducts = await fetch(`${CONFIG.SERVER_HOST}/bot/products/${dataArr[1]}/${userLang}`)
+		const { data, status } = await getProducts.json()
+	
+		// generate inline buttons
+		let inlineKeyboard = helper.kbdGenerate(data, 'product', 3, 'ct')
+
+		if(status === 200) {
+
+			// edit message with select region text and buttons
+			bot.editMessageText(
+				`
+					<b>${info.name.toUpperCase()}</b>\n\n<a href="${info.link}">📖</a> <b>${text.sendCatalog[userLang]}</b>
+				`,
+				{
+				chat_id: helper.getChatId(cb), 
+				message_id: helper.getMsgId(cb),
+				reply_markup: {
+					inline_keyboard: inlineKeyboard
+				},
+				parse_mode: 'html'
+			})
+
+		}
+
+	} // end of catagory select
+
+	// ================ SELECT PRODUCT ================ //
+
+	if(dataArr[0] === 'product'){
+
+		// get product by ID
+		const getProduct = await fetch(`${CONFIG.SERVER_HOST}/bot/product/${dataArr[1]}/${userLang}`)
+		const { data, status } = await getProduct.json()
+
+		// generate inline buttons
+		let inlineKeyboard = helper.kbdGenerate(INLINE_KDBS.product_quantity(data[0].cat_id), 'quantity', 3, 'ps')
+
+		if(status === 200) {
+
+			// edit message with select quantity of product
+			bot.editMessageText(
+				`
+					<b>${data[0].name.toUpperCase()}</b>\n\n<b>Tarkibi:</b> ${data[0].desc}\n<b>Narxi:</b> ${data[0].price}
+				`,
+				{
+				chat_id: helper.getChatId(cb), 
+				message_id: helper.getMsgId(cb),
+				reply_markup: {
+					inline_keyboard: inlineKeyboard
+				},
+				parse_mode: 'html'
+			})
+
+		}
+
+	} // end of catagory select
 
 } // end of getAction - callback function
 
