@@ -70,14 +70,19 @@ const getAction = async (cb) => {
 
 			if(status === 200) {
 
-				// edit message with select region text and buttons
-				bot.editMessageText(
+				// delete message with inline keyboard
+				bot.deleteMessage(
+					helper.getChatId(cb), 
+					helper.getMsgId(cb)
+				)
+
+				// send message with products
+				bot.sendMessage(
+					helper.getChatId(cb),
 					`
 						<b>${info.name.toUpperCase()}</b>\n\n<a href="${info.link}">📖</a> <b>${text.sendCatalog[userLang]}</b>
 					`,
 					{
-					chat_id: helper.getChatId(cb), 
-					message_id: helper.getMsgId(cb),
 					reply_markup: {
 						inline_keyboard: inlineKeyboard
 					},
@@ -234,19 +239,28 @@ const getAction = async (cb) => {
 
 		if(status === 200) {
 
-			// edit message with select quantity of product
-			bot.editMessageText(
-				`
-					<b>${data[0].name.toUpperCase()}</b>\n\n<b>Tarkibi:</b> ${data[0].desc}\n<b>Narxi:</b> ${data[0].price}
-				`,
+			// delete message with inline keyboard
+			bot.deleteMessage(
+				helper.getChatId(cb), 
+				helper.getMsgId(cb)
+			)
+
+			const caption = `
+			 	<b>${data[0].name.toUpperCase()}</b>\n<b>${text.price[userLang]}:</b> <b>${data[0].price} ${text.currency[userLang]}</b>\n<b>${text.partof[userLang]}:</b> ${data[0].desc}\n\n${text.selectQuantity[userLang]}
+			`
+
+			// send message with select quantity of product
+			bot.sendPhoto(
+				helper.getChatId(cb), 
+				data[0].image,
 				{
-				chat_id: helper.getChatId(cb), 
-				message_id: helper.getMsgId(cb),
-				reply_markup: {
-					inline_keyboard: inlineKeyboard
-				},
-				parse_mode: 'html'
-			})
+					caption: caption,
+					parse_mode: 'html',
+					reply_markup: {
+		  			inline_keyboard: inlineKeyboard
+		  		}
+				}
+			) // end of sendPhoto
 
 		}
 

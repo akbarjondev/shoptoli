@@ -46,5 +46,21 @@ module.exports = {
 	sendCatalog: {
 		uz: 'Katalogdan tanlang 😊👇',
 		ru: 'Выберите из каталога 😊👇'
+	},
+	selectQuantity: {
+		uz: 'Miqdorni tanlang 😊👇',
+		ru: 'Выберите количество 😊👇'
+	},
+	price: {
+		uz: 'Narxi',
+		ru: 'Стоимость'
+	},
+	partof: {
+		uz: 'Tarkibi',
+		ru: 'В составе'
+	},
+	currency: {
+		uz: 'so\'m',
+		ru: 'сум'
 	}
 }

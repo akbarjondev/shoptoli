@@ -441,6 +441,7 @@ const getProduct = async (arr) => {
 				p.product_id as id,
 				p.catagory_id as cat_id,
 				p.product_price as price,
+				p.product_image as image,
 				pi.product_info_name as name,
 				pi.product_info_desc as desc
 			from

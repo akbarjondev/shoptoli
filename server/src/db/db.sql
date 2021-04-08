@@ -63,6 +63,7 @@ create table catagories_info(
 create table products(
 	product_id serial primary key,
 	product_price int,
+	product_image text,
 	product_status int,
 	catagory_id int
 );
