@@ -107,8 +107,6 @@ const knowLang = async (arr) => {
 
 //=========================== STEP ===========================//
 
-
-
 const addStep = async (arr) => {
 
 	try {
@@ -474,6 +472,41 @@ const getProduct = async (arr) => {
 
 }
 
+//=========================== ORDERS ===========================//
+
+const createOrder = async (arr) => {
+
+	try {
+		
+		const ADD_ORDER = `
+			insert into 
+				orders(client_id)
+			values ($1)
+			returning
+				order_id
+			;
+		`
+
+		const data = await fetch(ADD_ORDER, arr)
+
+		let msgData = data.length > 0 ? 'order added' : 'order exist'
+		
+		return {
+			status: 200,
+			message: msgData,
+			data: data
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -489,4 +522,5 @@ module.exports = {
 	getCatagories, // catagories
 	getProducts, // products
 	getProduct, // product
+	createOrder, // orders
 }

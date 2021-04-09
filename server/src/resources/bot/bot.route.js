@@ -70,4 +70,9 @@ router
 	.route('/product/:product_id/:language_id')
 	.get(controller.getProduct)
 
+// ++++++++++++++++ ORDERS +++++++++++++++++++++
+router
+	.route('/orders')
+	.post(controller.createOrder)
+
 module.exports = router

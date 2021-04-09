@@ -135,6 +135,17 @@ const getProduct = async  (req, res) => {
 	res.send(dbGetProduct).end()
 }
 
+//=========================== ORDERS ===========================//
+
+const createOrder = async  (req, res) => {
+
+	const { client_id } = req.body
+
+	const dbCreateOrder = await model.createOrder([ client_id ])
+
+	res.send(dbCreateOrder).end()
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -150,4 +161,5 @@ module.exports = {
 	getCatagories, // catagories
 	getProducts, // products
 	getProduct, // product
+	createOrder, // orders
 }

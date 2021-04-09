@@ -85,6 +85,33 @@ create table orders(
 	client_id int
 );
 
+-- trigger func for avoiding duplicate order status = cart
+create or replace function check_order_exist() returns trigger language plpgsql as $$
+
+	declare
+		order_is_exist int := (select order_id from orders where client_id = new.client_id and order_status = 0) 
+	;
+
+	begin
+		
+		if order_is_exist > 0 then
+			return null;
+		else
+			return new;
+		end if;
+
+	end;
+
+$$;
+
+-- trigger
+create trigger before_insert_order
+before insert
+on orders
+for each row
+execute procedure check_order_exist();
+
+
 create table orderitems(
 	orderitem_id serial primary key,
 	orderitem_created_at timestamp with time zone default current_timestamp,
