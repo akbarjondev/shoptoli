@@ -292,9 +292,31 @@ const getAction = async (cb) => {
 		const product_id = dataArr[3]
 
 		// change step
-		step.editStep(cb, 'quantity')
+		step.editStep(cb, 'cart')
 
-	} // end of product select
+		// get product by ID
+		const getClientOrder = await fetch(`${CONFIG.SERVER_HOST}/bot/orders/${helper.getChatId(cb)}`)
+		const { data: [ orderObj ] } = await getClientOrder.json()
+
+		// get order_id
+		const { order_id } = orderObj
+
+		// add product to the orderitems || cart
+		const orderItemRes = await fetch(`${CONFIG.SERVER_HOST}/bot/orderitems`, {
+			method: 'post',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify({
+				order_id: order_id,
+				orderitem_quantity: quantity,
+				product_id: product_id
+			})
+		})
+
+		console.log(await orderItemRes.json())
+
+	} // end of quantity select
 
 } // end of getAction - callback function
 
