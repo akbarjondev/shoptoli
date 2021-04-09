@@ -236,22 +236,17 @@ const getAction = async (cb) => {
 		const clientId = await helper.getUserObj(helper.getChatId(cb), true)
 
 		// create order || open cart
-		// const orderRes = await fetch(`${CONFIG.SERVER_HOST}/bot/orders`, {
-		// 	method: 'post',
-		// 	headers: {
-		// 		'Content-type': 'application/json'
-		// 	},
-		// 	body: JSON.stringify({
-		// 		client_id: clientId
-		// 	})
-		// })
+		const orderRes = await fetch(`${CONFIG.SERVER_HOST}/bot/orders`, {
+			method: 'post',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify({
+				client_id: clientId
+			})
+		})
 
-		/*
-		*	Shu yerda to'xtadi, mijoz bir mahsulotni tanlab kirganida unga order yo'q bo'lsa ochamiz
-		* bor bo'lsa ochmaymiz. Mahsulot sonini tanlasa o'sha orderga asosan orderitems ga mahsulot soni
-		* va IDsini yozamiz
-		*
-		**/
+		console.log(await orderRes.json())
 
 		// get product by ID
 		const getProduct = await fetch(`${CONFIG.SERVER_HOST}/bot/product/${dataArr[1]}/${userLang}`)
