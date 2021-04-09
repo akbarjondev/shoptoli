@@ -75,4 +75,13 @@ router
 	.route('/orders')
 	.post(controller.createOrder)
 
+router
+	.route('/orders/:tg_user_id')
+	.get(controller.getClientOrder)
+
+// ++++++++++++++++ ORDERITEMS +++++++++++++++++++++
+router
+	.route('/orderitems')
+	.post(controller.createOrderItem)
+
 module.exports = router

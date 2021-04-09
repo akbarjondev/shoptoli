@@ -490,10 +490,77 @@ const createOrder = async (arr) => {
 		const data = await fetch(ADD_ORDER, arr)
 
 		let msgData = data.length > 0 ? 'order added' : 'order exist'
-		
+
 		return {
 			status: 200,
 			message: msgData,
+			data: data
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+
+}
+
+const getClientOrder = async (arr) => {
+
+	try {
+		
+		const ADD_ORDER = `
+			select 
+				o.order_id
+			from
+				clients as c
+			join
+				orders as o on o.client_id = c.client_id
+			where
+				c.tg_user_id = $1
+			;
+		`
+
+		const data = await fetch(ADD_ORDER, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: data
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+
+}
+
+//=========================== ORDERITEMS ===========================//
+
+const createOrderItem = async (arr) => {
+
+	try {
+		
+		const ADD_ORDER_ITEM = `
+			insert into 
+				orderitems(orderitem_quantity, order_id, product_id)
+			values ($1, $2, $3)
+			returning
+				orderitem_id
+			;
+		`
+
+		const data = await fetch(ADD_ORDER_ITEM, arr)
+
+		return {
+			status: 200,
+			message: 'orderitem created',
 			data: data
 		}
 
@@ -523,4 +590,6 @@ module.exports = {
 	getProducts, // products
 	getProduct, // product
 	createOrder, // orders
+	getClientOrder, // orders
+	createOrderItem, // orderitem
 }

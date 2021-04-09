@@ -13,6 +13,7 @@ const run = (express) => {
 
 	// write API request history
 	app.use(async (req, res, next) => {
+
 		try {
 			let data = req.method === 'GET' ? `${req.url};;${req.method}` : `${req.url};;${req.method};;${JSON.stringify(req.body)}`
 			await fetch(`insert into api_history(api_history_text) values($1)`, [data])
