@@ -5,9 +5,6 @@ const text = require('./../../texts')
 
 const firstStart = async (msg) => {
 
-	// get to know user's language
-	const userLang = await helper.getUserObj(helper.getChatId(msg))
-
 	// know step
 	const getStepRes = await step.getStep(msg)
 	
@@ -65,25 +62,34 @@ const firstStart = async (msg) => {
 		} // end of if()
 	} else {
 
-		// send main menu
-		bot.sendMessage(
-			helper.getChatId(msg), 
-			text.mainMenu.text[userLang], 
-			{
-				parse_mode: 'html',
-				reply_markup: {
-	  			keyboard: [
-						[{ text: text.mainMenu.keyboard.order[userLang] }],
-						[
-							{ text: text.mainMenu.keyboard.myOrders[userLang] }, 
-							{ text: text.mainMenu.keyboard.settings[userLang] }
-						]
-					],
-	  			resize_keyboard: true,
-	  			one_time_keyboard: true
-	  		}
-			}
-		) // end of sendMessage
+		const step_name_ = getStepRes.data[0].step_name
+
+		if(step_name_ !== 'start' || step_name_ !== 'region' || step_name_ !== 'contact') {
+
+			// get to know user's language
+			const userLang = await helper.getUserObj(helper.getChatId(msg))
+
+			// send main menu
+			bot.sendMessage(
+				helper.getChatId(msg), 
+				text.mainMenu.text[userLang], 
+				{
+					parse_mode: 'html',
+					reply_markup: {
+		  			keyboard: [
+							[{ text: text.mainMenu.keyboard.order[userLang] }],
+							[
+								{ text: text.mainMenu.keyboard.myOrders[userLang] }, 
+								{ text: text.mainMenu.keyboard.settings[userLang] }
+							]
+						],
+		  			resize_keyboard: true,
+		  			one_time_keyboard: true
+		  		}
+				}
+			) // end of sendMessage
+		}
+
 	
 	}
 

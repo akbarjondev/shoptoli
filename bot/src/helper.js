@@ -19,6 +19,7 @@ module.exports = {
 	},
 
 	getUserObj: async (chatId, id = false) => {
+
 		const getUserLangRes = await fetch(`${CONFIG.SERVER_HOST}/bot/client/lang/${chatId}`)
 		const res = await getUserLangRes.json()
 

@@ -156,3 +156,16 @@ where
 
 insert into orders(client_id)
 values(1)
+
+-- select 
+select 
+	c.client_id,
+	o.order_id,
+	o.order_status
+from
+	clients as c
+join
+	orders as o on o.client_id = c.client_id
+where
+	c.tg_user_id = 288096386
+;
