@@ -14,11 +14,8 @@ const getAction = async (msg) => {
 
 		try {
 			// get general info
-			const getGeneralInfo = await fetch(`${CONFIG.SERVER_HOST}/bot/infos`)
-			const response = await getGeneralInfo.json()
-			const company = response.data[0].info_company_name
-			const link = response.data[0].info_catalog_link
-
+			const info = await helper.getCompanyInfo()
+			
 			// get catagories
 			const rawData = await fetch(`${CONFIG.SERVER_HOST}/bot/catagories/${userLang}`)
 			const { data } = await rawData.json()
@@ -29,7 +26,7 @@ const getAction = async (msg) => {
 			bot.sendMessage(
 				helper.getChatId(msg), 
 				`
-					<b>${company.toUpperCase()}</b>\n\n<a href="${link}">📖</a> <b>${text.sendCatalog[userLang]}</b>
+					<b>${info.name.toUpperCase()}</b>\n\n<a href="${info.link}">📖</a> <b>${text.sendCatalog[userLang]}</b>
 				`,
 				{
 					parse_mode: 'html',

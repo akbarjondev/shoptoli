@@ -24,9 +24,9 @@ module.exports = {
 		const res = await getUserLangRes.json()
 
 		if(id) {
-			return res.data[0].id
+			return res.data[0]?.id
 		} else {
-			return res.data[0].language
+			return res.data[0]?.language
 		}
 	},
 
@@ -126,11 +126,8 @@ module.exports = {
 	getCompanyInfo: async () => {
 		// get general info
 		const getGeneralInfo = await fetch(`${CONFIG.SERVER_HOST}/bot/infos`)
-		const response = await getGeneralInfo.json()
+		const { data: [ companyInfo ] } = await getGeneralInfo.json()
 
-		return {
-			name: response.data[0].info_company_name,
-			link: response.data[0].info_catalog_link
-		}
+		return companyInfo
 	}
 }

@@ -64,7 +64,7 @@ const firstStart = async (msg) => {
 
 		const step_name_ = getStepRes.data[0].step_name
 
-		if(step_name_ !== 'start' || step_name_ !== 'region' || step_name_ !== 'contact') {
+		if(step_name_ === 'catagories') {
 
 			// get to know user's language
 			const userLang = await helper.getUserObj(helper.getChatId(msg))
@@ -90,7 +90,6 @@ const firstStart = async (msg) => {
 			) // end of sendMessage
 		}
 
-	
 	}
 
 }

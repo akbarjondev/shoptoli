@@ -157,7 +157,7 @@ where
 insert into orders(client_id)
 values(1)
 
--- select 
+-- select client order
 select 
 	c.client_id,
 	o.order_id,
@@ -168,4 +168,21 @@ join
 	orders as o on o.client_id = c.client_id
 where
 	c.tg_user_id = 288096386
+;
+
+-- select orderitems for cart
+select 
+	oi.orderitem_quantity as quantity,
+	p.product_price as price,
+	pi.product_info_name as name
+from
+	orderitems as oi
+join
+	products_info as pi on pi.product_id = oi.product_id
+join
+	products as p on p.product_id = oi.product_id
+join 
+	languages as l on l.language_id = pi.language_id 
+where
+	oi.order_id = 36 and l.language_code = 'uz'
 ;
