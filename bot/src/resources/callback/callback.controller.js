@@ -19,8 +19,6 @@ const getAction = async (cb) => {
 	// get conpany general info
 	const info = await helper.getCompanyInfo()
 
-	console.log(dataArr)
-
 	// ================ BACK TO BACK ================ //
 
 	if(dataArr[0] === 'back') {
@@ -55,7 +53,63 @@ const getAction = async (cb) => {
 
 				// edit step from start to catagories
 				step.editStep(cb, 'catagories')
+			
+			} else if(step_name === 'cart') {
+
+				// ================ CLEAR BASKET ================ //
+
+				if(dataArr[3] === 'clear') {
+
+					const [ ,,,, orderId ] = dataArr
+
+					const cleanOrder = await fetch(`${CONFIG.SERVER_HOST}/bot/orders`,{
+						method: 'put',
+						headers: {
+							'Content-type': 'application/json'
+						},
+						body: JSON.stringify({
+							order_id: orderId
+						})
+					})
+
+					const { status } = await cleanOrder.json()
+
+					if(status === 200) {
+						// answer for clear basket
+						bot.answerCallbackQuery(cb.id, text.clearBasketModal[userLang], false)
+					}
+
+				} // end of clear select
+
+				// send catagories user clean his cart
+				// delete message with inline keyboard
+				bot.deleteMessage(
+					helper.getChatId(cb), 
+					helper.getMsgId(cb)
+				)
+
+				// get catagories
+				const rawData = await fetch(`${CONFIG.SERVER_HOST}/bot/catagories/${userLang}`)
+				const { data } = await rawData.json()
+
+				// generate inline buttons
+				let inlineKeyboard = helper.kbdGenerate(data, 'catagory', 1)
+
+				// send message with products
+				bot.sendMessage(
+					helper.getChatId(cb),
+					`
+						<b>${info.name.toUpperCase()}</b>\n\n<a href="${info.link}">📖</a> <b>${text.sendCatalog[userLang]}</b>
+					`,
+					{
+					reply_markup: {
+						inline_keyboard: inlineKeyboard
+					},
+					parse_mode: 'html'
+				})
+
 			}
+
 		} else if(dataArr[1] === 'ps') {
 
 			const catagory_id = dataArr[2]
@@ -245,8 +299,6 @@ const getAction = async (cb) => {
 				client_id: clientId
 			})
 		})
-
-		console.log(await orderRes.json())
 
 		// get product by ID
 		const getProduct = await fetch(`${CONFIG.SERVER_HOST}/bot/product/${dataArr[1]}/${userLang}`)
