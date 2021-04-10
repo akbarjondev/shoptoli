@@ -74,6 +74,7 @@ router
 router
 	.route('/orders')
 	.post(controller.createOrder)
+	.put(controller.cleanOrder)
 
 router
 	.route('/orders/:tg_user_id')
@@ -83,5 +84,9 @@ router
 router
 	.route('/orderitems')
 	.post(controller.createOrderItem)
+
+router
+	.route('/orderitems/:order_id/:language_id')
+	.get(controller.getClientOrderItems)
 
 module.exports = router

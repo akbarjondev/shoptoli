@@ -541,6 +541,41 @@ const getClientOrder = async (arr) => {
 
 }
 
+const cleanOrder = async (arr) => {
+
+	try {
+		
+		const ADD_ORDER = `
+			update
+				orders
+			set
+				order_status = 6
+			where
+				order_id = $1
+			returning
+				order_id,
+				order_status
+			;
+		`
+
+		const data = await fetch(ADD_ORDER, arr)
+
+		return {
+			status: 200,
+			message: 'cleaned',
+			data: data
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+
+}
+
 //=========================== ORDERITEMS ===========================//
 
 const createOrderItem = async (arr) => {
@@ -548,12 +583,7 @@ const createOrderItem = async (arr) => {
 	try {
 		
 		const ADD_ORDER_ITEM = `
-			insert into 
-				orderitems(orderitem_quantity, order_id, product_id)
-			values ($1, $2, $3)
-			returning
-				orderitem_id
-			;
+			select dont_duplicate_orderitems($1, $2, $3) as result;
 		`
 
 		const data = await fetch(ADD_ORDER_ITEM, arr)

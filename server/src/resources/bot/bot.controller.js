@@ -155,6 +155,15 @@ const getClientOrder = async  (req, res) => {
 	res.send(dbClientOrder).end()
 }
 
+const cleanOrder = async  (req, res) => {
+
+	const { order_id } = req.body
+
+	const dbCleanOrder = await model.cleanOrder([ order_id ])
+
+	res.send(dbCleanOrder).end()
+}
+
 //=========================== ORDERITEMS ===========================//
 
 const createOrderItem = async  (req, res) => {
