@@ -62,5 +62,45 @@ module.exports = {
 	currency: {
 		uz: 'so\'m',
 		ru: 'сум'
+	},
+	cart: {
+		inCart: {
+			uz: '🛒Savatchada:',
+			ru: '🛒В корзине:'
+		},
+		goods: {
+			uz: '🛍Mahsulotlar:',
+			ru: '🛍Продукты:'
+		},
+		deliveryText: {
+			uz: '🚚Yetkazib berish:',
+			ru: '🚚Доставка:'
+		},
+		sum: {
+			uz: '🧮Jami:',
+			ru: '🧮Всего:'
+		},
+		piece: {
+			uz: 'ta',
+			ru: 'штук'
+		},
+		buttons: {
+			agree: {
+				uz: '✅Buyurtma qilish',
+				ru: '✅Заказать'
+			},
+			back_home: {
+				uz: '➕Yana qo\'shish',
+				ru: '➕Добавить еще',
+			},
+			clear: {
+				uz: '🧹Tozalash',
+				ru: '🧹Очистить'
+			}
+		}
+	},
+	clearBasketModal: {
+		uz: 'Savatcha tozalandi :(',
+		ru: 'Корзина очищена :('
 	}
 }
