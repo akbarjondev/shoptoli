@@ -314,7 +314,44 @@ const getAction = async (cb) => {
 			})
 		})
 
-		console.log(await orderItemRes.json())
+		const { status, data: orderData } = await orderItemRes.json()
+
+		// if orderitem added
+		if(status === 200 && orderData.length > 0) {
+
+			// get client's all orderitems
+			const getClientOrderItems = await fetch(`${CONFIG.SERVER_HOST}/bot/orderitems/${order_id}/${userLang}`)
+			const { data: allOrders } = await getClientOrderItems.json()
+
+			// delivery will come from company general info table
+			const delivery = info.price
+
+			let countAllProduct = ''
+			let productsPrice = 0
+
+			allOrders.forEach(product => {
+				productsPrice += product.price * product.quantity
+				countAllProduct += product.quantity + ` ${text.cart.piece[userLang]} ` + product.name + `\n`
+			})
+
+			const cartText = `<b>${text.cart.inCart[userLang]}</b>\n\n${countAllProduct}\n<b>${text.cart.goods[userLang]}</b> ${productsPrice} ${text.currency[userLang]}\n<b>${text.cart.deliveryText[userLang]}</b> ${delivery} ${text.currency[userLang]}\n<b>${text.cart.sum[userLang]} ${productsPrice + delivery} ${text.currency[userLang]}</b>`
+
+			bot.editMessageMedia(
+				{
+					type: 'photo',
+					media: 'https://telegra.ph/file/24f653391eb73effe4f98.jpg',
+					caption: cartText,
+					parse_mode: 'html'
+				},
+				{
+					chat_id: helper.getChatId(cb),
+					message_id: helper.getMsgId(cb),
+					reply_markup: {
+						inline_keyboard: INLINE_KDBS.cart_keyboards(userLang, order_id)
+					}
+				}
+			)
+		}
 
 	} // end of quantity select
 
