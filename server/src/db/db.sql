@@ -120,6 +120,25 @@ create table orderitems(
 	product_id int
 );
 
+-- function for don't duplicate orderitems | returns 1 if created; returns 2 if updated
+create or replace function dont_duplicate_orderitems(_oiq int, _oi int, _pi int) returns int language plpgsql as $$
+
+	begin
+
+		if exists(
+			select oi.orderitem_id from orderitems as oi join orders as o on o.order_id = oi.order_id where o.order_status = 0 and oi.product_id = _pi and o.order_id = _oi
+		) then
+				update orderitems set orderitem_quantity = (orderitem_quantity + _oiq) from orders where order_status = 0 and product_id = _pi and orderitems.order_id = _oi;
+			return 2;
+		else
+				insert into	orderitems(orderitem_quantity, order_id, product_id) values(_oiq, _oi, _pi);
+			return 1;
+		end if;
+
+	end;
+
+$$;
+
 create table locations(
 	location_id serial primary key,
 	location_created_at timestamp with time zone default current_timestamp,

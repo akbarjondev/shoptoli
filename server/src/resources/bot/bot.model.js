@@ -326,7 +326,13 @@ const getInfos = async (arr) => {
 
 		const getInfos = await fetch(`
 			select
-				*
+				info_company_name as name,
+				info_catalog_link as link,
+				info_phone as phone,
+				info_address as address,
+				info_email as email,
+				info_created_at as joined_platform,
+				info_delivery_price as price
 			from
 				infos
 		`, arr)
@@ -511,7 +517,7 @@ const getClientOrder = async (arr) => {
 
 	try {
 		
-		const ADD_ORDER = `
+		const GET_ORDER = `
 			select 
 				o.order_id
 			from
@@ -519,11 +525,11 @@ const getClientOrder = async (arr) => {
 			join
 				orders as o on o.client_id = c.client_id
 			where
-				c.tg_user_id = $1
+				c.tg_user_id = $1 and o.order_status = 0
 			;
 		`
 
-		const data = await fetch(ADD_ORDER, arr)
+		const data = await fetch(GET_ORDER, arr)
 
 		return {
 			status: 200,
@@ -604,6 +610,49 @@ const createOrderItem = async (arr) => {
 
 }
 
+const getClientOrderItems = async (arr) => {
+
+	try {
+		
+		const GET_ORDER_ITEM = `
+			select 
+				oi.orderitem_quantity as quantity,
+				p.product_price as price,
+				pi.product_info_name as name
+			from
+				orderitems as oi
+			join
+				orders as o on o.order_id = oi.order_id
+			join
+				products_info as pi on pi.product_id = oi.product_id
+			join
+				products as p on p.product_id = oi.product_id
+			join 
+				languages as l on l.language_id = pi.language_id 
+			where
+				oi.order_id = $1 and l.language_code = $2 and o.order_status = 0
+			order by oi.orderitem_created_at asc
+			;
+		`
+
+		const data = await fetch(GET_ORDER_ITEM, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: data
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -621,5 +670,7 @@ module.exports = {
 	getProduct, // product
 	createOrder, // orders
 	getClientOrder, // orders
-	createOrderItem, // orderitem
+	cleanOrder, // orders
+	createOrderItem, // orderitems
+	getClientOrderItems, // orderitems
 }
