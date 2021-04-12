@@ -186,3 +186,22 @@ join
 where
 	oi.order_id = 36 and l.language_code = 'uz'
 ;
+
+--update order when location send
+update
+	orders
+set 
+	order_status = 1
+from
+	clients as c
+where
+	c.tg_user_id = 288096386 and order_status = 0
+returning
+	order_id
+;
+
+delete from clients where tg_user_id = 288096386;
+delete from steps where tg_user_id = 288096386;
+
+delete from clients where tg_user_id = 1631848090;
+delete from steps where tg_user_id = 1631848090;

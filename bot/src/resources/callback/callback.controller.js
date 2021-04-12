@@ -62,17 +62,18 @@ const getAction = async (cb) => {
 
 					const [ ,,,, orderId ] = dataArr
 
-					const cleanOrder = await fetch(`${CONFIG.SERVER_HOST}/bot/orders`,{
+					const editOrder = await fetch(`${CONFIG.SERVER_HOST}/bot/orders`,{
 						method: 'put',
 						headers: {
 							'Content-type': 'application/json'
 						},
 						body: JSON.stringify({
-							order_id: orderId
+							order_id: orderId,
+							edit_code: 6
 						})
 					})
 
-					const { status } = await cleanOrder.json()
+					const { status } = await editOrder.json()
 
 					if(status === 200) {
 						// answer for clear basket
@@ -181,14 +182,14 @@ const getAction = async (cb) => {
 				bot.answerCallbackQuery(cb.id, text.selectLang[dataArr[1]], false)
 
 				// get all regions based on user language
-				const data = await helper.getRegions(userLang)
+				const data = await helper.getRegions(dataArr[1])
 
 				// generate inline buttons
 				let inlineKeyboard = helper.kbdGenerate(data, 'region', 3)
 
 	      // edit message with select region text and buttons
 				bot.editMessageText(
-					text.askRegion[userLang],
+					text.askRegion[dataArr[1]],
 					{
 					chat_id: helper.getChatId(cb), 
 					message_id: helper.getMsgId(cb),
@@ -391,7 +392,7 @@ const getAction = async (cb) => {
 			bot.editMessageMedia(
 				{
 					type: 'photo',
-					media: 'https://telegra.ph/file/24f653391eb73effe4f98.jpg',
+					media: info.media,
 					caption: cartText,
 					parse_mode: 'html'
 				},
@@ -406,6 +407,36 @@ const getAction = async (cb) => {
 		}
 
 	} // end of quantity select
+
+	// ================ SELECT QUANTITY ================ //
+
+	if(dataArr[0] === 'agree'){
+
+		// change step
+		step.editStep(cb, 'location')
+
+		// delete message with inline keyboard
+		bot.deleteMessage(
+			helper.getChatId(cb), 
+			helper.getMsgId(cb)
+		)
+
+		// send message with products
+		bot.sendMessage(
+			helper.getChatId(cb),
+			text.location.text[userLang],
+			{
+			reply_markup: {
+				keyboard: [
+					[{ text: text.location.btn[userLang], request_location: true }],
+					[{ text: '🔙🏡' }]
+				],
+				resize_keyboard: true
+			},
+			parse_mode: 'html'
+		})
+
+	} // end of order || agree
 
 } // end of getAction - callback function
 

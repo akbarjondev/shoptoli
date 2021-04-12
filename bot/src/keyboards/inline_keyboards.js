@@ -20,7 +20,7 @@ module.exports = {
 	cart_keyboards: (userLang, orderId) => {
 
 		return [
-			[ { text: text.cart.buttons.agree[userLang], callback_data: 'agree' + orderId } ],
+			[ { text: text.cart.buttons.agree[userLang], callback_data: 'agree:' + orderId } ],
 			[ 
 				{ text: text.cart.buttons.back_home[userLang], callback_data: 'back:ct:undefined' }, 
 				{ text: text.cart.buttons.clear[userLang], callback_data: 'back:ct:undefined:clear:' + orderId } 

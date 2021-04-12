@@ -80,7 +80,7 @@ create table products_info(
 
 create table orders(
 	order_id serial primary key,
-	order_status int default 0,
+	order_status int default 0 not null,
 	order_created_at timestamp with time zone default current_timestamp,
 	client_id int
 );
@@ -98,6 +98,30 @@ create or replace function check_order_exist() returns trigger language plpgsql 
 			return null;
 		else
 			return new;
+		end if;
+
+	end;
+
+$$;
+
+-- make order status 1
+create or replace function make_order_pending(_user_id int, _long float, _lat float) returns int language plpgsql as $$
+
+	declare
+		_order_id int := (select o.order_id from orders as o join clients as c on c.client_id = o.client_id where c.tg_user_id = _user_id and o.order_status = 0)
+	;
+
+	begin
+		
+		if _order_id > 0 then
+				update orders set order_status = 1 where order_id = _order_id;
+				
+				insert into locations (location_latitude, location_longitude, order_id) values (_lat, _long, _order_id);
+				
+			return 1;
+		else
+
+			return 0;
 		end if;
 
 	end;
@@ -172,6 +196,7 @@ create table infos(
 	info_id serial primary key,
 	info_company_name varchar(150) not null,
 	info_catalog_link text not null,
+	info_media text not null,
 	info_phone varchar(10),
 	info_address varchar(255),
 	info_email varchar(50),

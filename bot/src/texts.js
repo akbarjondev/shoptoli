@@ -65,20 +65,20 @@ module.exports = {
 	},
 	cart: {
 		inCart: {
-			uz: '🛒Savatchada:',
-			ru: '🛒В корзине:'
+			uz: '🛒 Savatchada:',
+			ru: '🛒 В корзине:'
 		},
 		goods: {
-			uz: '🛍Mahsulotlar:',
-			ru: '🛍Продукты:'
+			uz: '🛍 Mahsulotlar:',
+			ru: '🛍 Продукты:'
 		},
 		deliveryText: {
-			uz: '🚚Yetkazib berish:',
-			ru: '🚚Доставка:'
+			uz: '🚚 Yetkazib berish:',
+			ru: '🚚 Доставка:'
 		},
 		sum: {
-			uz: '🧮Jami:',
-			ru: '🧮Всего:'
+			uz: '🧮 Jami:',
+			ru: '🧮 Всего:'
 		},
 		piece: {
 			uz: 'ta',
@@ -102,5 +102,19 @@ module.exports = {
 	clearBasketModal: {
 		uz: 'Savatcha tozalandi :(',
 		ru: 'Корзина очищена :('
+	},
+	location: {
+		text: {
+			uz: `<b>Yetkazib berishimiz</b> uchun 📍🗺 <b>geo-joylashuvingizni</b> yuboring.`,
+			ru: `Отправьте свое 📍🗺 <b>географическое местоположение</b> для <b>доставки.</b>`
+		},
+		btn: {
+			uz: '📍Joylashuvni yuborish',
+			ru: '📍Отправка местоположения'
+		}
+	},
+	orderBooked: {
+		uz: `✅<b>Buyurtmangiz qabul qilindi. Tez orada bog'lanamiz.</b>`,
+		ru: `✅<b>Ваш заказ принят. Мы скоро свяжемся.</b>`
 	}
 }
