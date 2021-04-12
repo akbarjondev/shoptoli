@@ -155,13 +155,13 @@ const getClientOrder = async  (req, res) => {
 	res.send(dbClientOrder).end()
 }
 
-const cleanOrder = async  (req, res) => {
+const editOrder = async  (req, res) => {
 
-	const { order_id } = req.body
+	const { order_id, edit_code } = req.body
 
-	const dbCleanOrder = await model.cleanOrder([ order_id ])
+	const dbEditOrder = await model.editOrder([ order_id, edit_code ])
 
-	res.send(dbCleanOrder).end()
+	res.send(dbEditOrder).end()
 }
 
 //=========================== ORDERITEMS ===========================//
@@ -184,6 +184,17 @@ const getClientOrderItems = async  (req, res) => {
 	res.send(dbGetAllOrderItems).end()
 }
 
+//=========================== ORDERITEMS ===========================//
+
+const bookOrder = async  (req, res) => {
+
+	const { tg_user_id, longitude, latitude } = req.body
+
+	const dbBookOrder = await model.bookOrder([ tg_user_id, longitude, latitude ])
+
+	res.send(dbBookOrder).end()
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -201,7 +212,8 @@ module.exports = {
 	getProduct, // product
 	createOrder, // orders
 	getClientOrder, // orders
-	cleanOrder, // orders
+	editOrder, // orders
 	createOrderItem, // orderitems
 	getClientOrderItems, // orderitems
+	bookOrder, // bookOrder
 }

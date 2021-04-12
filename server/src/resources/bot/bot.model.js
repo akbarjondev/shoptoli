@@ -332,7 +332,8 @@ const getInfos = async (arr) => {
 				info_address as address,
 				info_email as email,
 				info_created_at as joined_platform,
-				info_delivery_price as price
+				info_delivery_price as price,
+				info_media as media
 			from
 				infos
 		`, arr)
@@ -547,7 +548,7 @@ const getClientOrder = async (arr) => {
 
 }
 
-const cleanOrder = async (arr) => {
+const editOrder = async (arr) => {
 
 	try {
 		
@@ -555,7 +556,7 @@ const cleanOrder = async (arr) => {
 			update
 				orders
 			set
-				order_status = 6
+				order_status = $2
 			where
 				order_id = $1
 			returning
@@ -653,6 +654,35 @@ const getClientOrderItems = async (arr) => {
 
 }
 
+//=========================== BOOKORDER ===========================//
+
+const bookOrder = async (arr) => {
+
+	try {
+		
+		const BOOKORDER = `
+			select make_order_pending($1, $2, $3) as response;
+
+		`
+
+		const data = await fetch(BOOKORDER, arr)
+
+		return {
+			status: 200,
+			message: 'order booked',
+			data: data
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+
+}
+
 module.exports = {
 	addClient, // client
 	getOneClient, // client
@@ -670,7 +700,8 @@ module.exports = {
 	getProduct, // product
 	createOrder, // orders
 	getClientOrder, // orders
-	cleanOrder, // orders
+	editOrder, // orders
 	createOrderItem, // orderitems
 	getClientOrderItems, // orderitems
+	bookOrder, // bookorder
 }
