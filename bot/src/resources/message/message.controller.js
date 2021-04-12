@@ -51,6 +51,33 @@ const getAction = async (msg) => {
 
 	}
 
+	if(msg.text === '🔙🏡') {
+
+		// change step
+		step.editStep(msg, 'menu')
+
+		// send main menu
+		bot.sendMessage(
+			helper.getChatId(msg), 
+			text.mainMenu.text[userLang], 
+			{
+				parse_mode: 'html',
+				reply_markup: {
+	  			keyboard: [
+						[{ text: text.mainMenu.keyboard.order[userLang] }],
+						[
+							{ text: text.mainMenu.keyboard.myOrders[userLang] }, 
+							{ text: text.mainMenu.keyboard.settings[userLang] }
+						]
+					],
+	  			resize_keyboard: true,
+	  			one_time_keyboard: true
+	  		}
+			}
+		) // end of sendMessage
+
+	}
+
 
 }
 
