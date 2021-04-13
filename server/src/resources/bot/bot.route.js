@@ -80,6 +80,10 @@ router
 	.route('/orders/:tg_user_id')
 	.get(controller.getClientOrder)
 
+router
+	.route('/myorders/:tg_user_id/:language_id')
+	.get(controller.getMyOrders)
+
 // ++++++++++++++++ ORDERITEMS +++++++++++++++++++++
 router
 	.route('/orderitems')

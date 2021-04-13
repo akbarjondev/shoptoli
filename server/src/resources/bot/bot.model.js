@@ -558,7 +558,7 @@ const editOrder = async (arr) => {
 			set
 				order_status = $2
 			where
-				order_id = $1
+				order_id = $1 and order_status = 0 or order_status = 1 or order_status = 2
 			returning
 				order_id,
 				order_status
@@ -567,11 +567,23 @@ const editOrder = async (arr) => {
 
 		const data = await fetch(ADD_ORDER, arr)
 
-		return {
-			status: 200,
-			message: 'cleaned',
-			data: data
+		let response
+
+		if(data.length > 0) {
+			response = {
+				status: 200,
+				message: 'cleaned',
+				data: data
+			}
+		} else {
+			response = {
+				status: 210,
+				message: 'already cleaned',
+				data: data
+			}
 		}
+
+		return response
 
 	} catch(e) {
 		console.log(e)
@@ -654,6 +666,56 @@ const getClientOrderItems = async (arr) => {
 
 }
 
+const getMyOrders = async (arr) => {
+
+	try {
+		
+		const MY_ORDER = `
+			select
+				o.order_id as id,
+				o.order_id as name,
+				o.order_status as status,
+				to_char(o.order_created_at, 'dd-mm-yyyy') as created,
+				array_agg(pi.product_info_name) as product_name,
+				sum(p.product_price * oi.orderitem_quantity) as price
+			from
+				orders as o
+			join
+				clients as c on c.client_id = o.client_id
+			join
+				orderitems as oi on o.order_id = oi.order_id
+			join
+				products as p on p.product_id = oi.product_id
+			join
+				products_info as pi on pi.product_id = p.product_id
+			join
+				languages as l on l.language_id = pi.language_id
+			where
+				c.tg_user_id = $1 and l.language_code = $2 and o.order_status <> 0 and o.order_status <> 5
+			group by id
+			order by id desc
+			limit 5
+			;
+		`
+
+		const data = await fetch(MY_ORDER, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: data
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+
+}
+
 //=========================== BOOKORDER ===========================//
 
 const bookOrder = async (arr) => {
@@ -661,7 +723,7 @@ const bookOrder = async (arr) => {
 	try {
 		
 		const BOOKORDER = `
-			select make_order_pending($1, $2, $3) as response;
+			select make_order_pending($1, $2, $3) as order_id;
 
 		`
 
@@ -704,4 +766,5 @@ module.exports = {
 	createOrderItem, // orderitems
 	getClientOrderItems, // orderitems
 	bookOrder, // bookorder
+	getMyOrders, // orders
 }

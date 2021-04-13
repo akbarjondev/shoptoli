@@ -184,7 +184,16 @@ const getClientOrderItems = async  (req, res) => {
 	res.send(dbGetAllOrderItems).end()
 }
 
-//=========================== ORDERITEMS ===========================//
+const getMyOrders = async  (req, res) => {
+
+	const { tg_user_id, language_id } = req.params
+
+	const dbGetMyOrders = await model.getMyOrders([ tg_user_id, language_id ])
+
+	res.send(dbGetMyOrders).end()
+}
+
+//=========================== BOOK ORDER ===========================//
 
 const bookOrder = async  (req, res) => {
 
@@ -216,4 +225,5 @@ module.exports = {
 	createOrderItem, // orderitems
 	getClientOrderItems, // orderitems
 	bookOrder, // bookOrder
+	getMyOrders, // orders
 }
