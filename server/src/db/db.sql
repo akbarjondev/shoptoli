@@ -118,7 +118,7 @@ create or replace function make_order_pending(_user_id int, _long float, _lat fl
 				
 				insert into locations (location_latitude, location_longitude, order_id) values (_lat, _long, _order_id);
 				
-			return 1;
+			return _order_id;
 		else
 
 			return 0;

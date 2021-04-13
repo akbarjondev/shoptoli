@@ -57,7 +57,7 @@ module.exports = {
 	},
 	partof: {
 		uz: 'Tarkibi',
-		ru: 'В составе'
+		ru: 'Состав'
 	},
 	currency: {
 		uz: 'so\'m',
@@ -82,7 +82,7 @@ module.exports = {
 		},
 		piece: {
 			uz: 'ta',
-			ru: 'штук'
+			ru: 'шт.'
 		},
 		buttons: {
 			agree: {
@@ -110,11 +110,79 @@ module.exports = {
 		},
 		btn: {
 			uz: '📍Joylashuvni yuborish',
-			ru: '📍Отправка местоположения'
+			ru: '📍Отправить местоположение'
 		}
 	},
 	orderBooked: {
-		uz: `✅<b>Buyurtmangiz qabul qilindi. Tez orada bog'lanamiz.</b>`,
-		ru: `✅<b>Ваш заказ принят. Мы скоро свяжемся.</b>`
+		uz: `✅ <b>Buyurtmangiz qabul qilindi. Tez orada bog'lanamiz.</b>`,
+		ru: `✅ <b>Ваш заказ принят. Мы скоро свяжемся.</b>`
+	},
+	orderNumber: {
+		uz: '🆔 Buyurtma raqami: ',
+		ru: '🆔 Номер заказа: '
+	},
+	noOrders: {
+		uz: `Siz haligacha buyurtma bermadingiz 🤷‍♂️`,
+		ru: `Вы еще не заказали 🤷‍♂️`
+	},
+	orderStatus: {
+		waiting: {
+			uz: `🟡 Kutishda`,
+			ru: `🟡 В ожидании`
+		},
+		taken: {
+			uz: `🔵 Qabul qilindi`,
+			ru: `🔵 Принято`
+		},
+		delivery: {
+			uz: `🚚 Yetkazishda`,
+			ru: `🚚 Доставка`
+		},
+		done: {
+			uz: `✅ Yakunlandi`,
+			ru: `✅ Завершено`
+		},
+		cancelled: {
+			uz: `🔴 Bekor qilingan`,
+			ru: `🔴 Отменено`
+		},
+		script: {
+			cancelledOrder: {
+				uz: '😔 Buyurtmangiz bekor qilindi! <b>ID:</b> ',
+				ru: '😔 Ваш заказ отменен! <b>ID:</b> '
+			},
+			alreadyCancelledOrder: {
+				uz: '🧐 Imkoni yo\'q!',
+				ru: '🧐 Невозможно!'
+			},
+			mainText: {
+				uz: '<b>So\'ngi buyurtma tarixingiz:</b>',
+				ru: '<b>История ваших последних заказов:</b>'
+			},
+			cancelMainText: {
+				uz: '⚠️ Buyurtmani bekor qilish uchun <b>ID</b> ni yuboring!',
+				ru: '⚠️ Отправьте <b>ID</b>, чтобы отменить заказ!'
+			},
+			id: {
+				uz: '<b>ID:</b>',
+				ru: '<b>ID:</b>'
+			},
+			orderDate: {
+				uz: '<b>Sana:</b>',
+				ru: '<b>Дата:</b>'
+			},
+			price: {
+				uz: '<b>Summa:</b>',
+				ru: '<b>Сумма:</b>'
+			},
+			status: {
+				uz: '<b>Holat:</b>',
+				ru: '<b>Статус:</b>'
+			},
+			product: {
+				uz: '<b>Mahsulot:</b>',
+				ru: '<b>Продукт:</b>'
+			}
+		}
 	}
 }

@@ -205,3 +205,31 @@ delete from steps where tg_user_id = 288096386;
 
 delete from clients where tg_user_id = 1631848090;
 delete from steps where tg_user_id = 1631848090;
+
+
+-- select all my orders
+select
+	o.order_id as id,
+	o.order_status as status,
+	to_char(o.order_created_at, 'dd-mm-yyyy') as created,
+	array_agg(oi.orderitem_quantity) as quantity,
+	array_agg(pi.product_info_name) as name,
+	sum(p.product_price * oi.orderitem_quantity) as price
+from
+	orders as o
+join
+	clients as c on c.client_id = o.client_id
+join
+	orderitems as oi on o.order_id = oi.order_id
+join
+	products as p on p.product_id = oi.product_id
+join
+	products_info as pi on pi.product_id = p.product_id
+join
+	languages as l on l.language_id = pi.language_id
+where
+	c.tg_user_id = 288096386 and l.language_code = 'uz' and o.order_status <> 0 and o.order_status <> 5
+group by id
+order by id asc
+limit 10
+;

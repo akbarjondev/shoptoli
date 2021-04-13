@@ -29,7 +29,7 @@ const recycleLocation = async (msg) => {
 		})
 	})
 
-	const { data, status } = await bookOrder.json()
+	const { data: [order], status } = await bookOrder.json()
 
 	if(status === 200) {
 
@@ -48,7 +48,7 @@ const recycleLocation = async (msg) => {
 			// send main menu
 			bot.sendMessage(
 				helper.getChatId(msg), 
-				await text.orderBooked[userLang], 
+				await text.orderBooked[userLang] + `\n\n${await text.orderNumber[userLang]} ${await order.order_id}`, 
 				{
 					parse_mode: 'html',
 					reply_markup: {
