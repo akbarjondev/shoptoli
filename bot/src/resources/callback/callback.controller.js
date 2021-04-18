@@ -15,6 +15,7 @@ const getAction = async (cb) => {
 
 	// get user's step
 	const userStep = await step.getStep(cb)
+	const currentStep = userStep.data[0].step_name
 
 	// get conpany general info
 	const info = await helper.getCompanyInfo()
@@ -173,7 +174,48 @@ const getAction = async (cb) => {
 			// get changed language response
 			const response = await editClientLang.json()
 
-			if(response.status === 200) {
+			if(response.status === 200 && currentStep === 'change:language') {
+
+				// change step to settings
+				step.editStep(cb, 'settings')
+
+				// answer for selecting region
+				bot.answerCallbackQuery(cb.id, text.selectLang[dataArr[1]], false)
+
+				// get client info
+				const clientInfo = await fetch(`${CONFIG.SERVER_HOST}/bot/client/${helper.getChatId(cb)}`)
+				const { data: [ clientObj ], status } = await clientInfo.json()
+				const clientInfoText = `<b>${text.clientInfo.name[dataArr[1]]}:</b> ${clientObj?.name || clientObj?.tg_name}\n<b>${text.clientInfo.region[dataArr[1]]}:</b> ${clientObj?.region}\n<b>${text.clientInfo.languageText[dataArr[1]]}:</b> ${text.clientInfo.language[clientObj?.language]}\n\n${text.clientInfo.text[dataArr[1]]}`
+		
+				// delete message with inline keyboard
+				bot.deleteMessage(
+					helper.getChatId(cb), 
+					helper.getMsgId(cb)
+				)
+		
+				// send main menu
+				bot.sendMessage(
+					helper.getChatId(cb), 
+					text.mainMenu.text[dataArr[1]], 
+					{
+						parse_mode: 'html',
+						reply_markup: {
+			  			keyboard: [
+								[{ text: text.mainMenu.keyboard.order[dataArr[1]] }],
+								[
+									{ text: text.mainMenu.keyboard.myOrders[dataArr[1]] }, 
+									{ text: text.mainMenu.keyboard.settings[dataArr[1]] }
+								]
+							],
+			  			resize_keyboard: true,
+			  			one_time_keyboard: true
+			  		}
+					}
+				) // end of sendMessage
+
+			}
+
+			if(response.status === 200 && currentStep !== 'change:language') {
 
 				// edit step from start to region
 				step.editStep(cb, 'region')
@@ -212,6 +254,38 @@ const getAction = async (cb) => {
 
 		// set user's region
 		const regionRes = await helper.setRegion(helper.getChatId(cb), dataArr[1])
+
+		// works when user select region from settings menu
+		if(regionRes.status === 200 && currentStep === 'change:region') {
+			// change step to settings
+			step.editStep(cb, 'settings')
+
+			// answer for selecting region
+			bot.answerCallbackQuery(cb.id, text.selectRegion[userLang], false)
+
+			// get client info
+			const clientInfo = await fetch(`${CONFIG.SERVER_HOST}/bot/client/${helper.getChatId(cb)}`)
+			const { data: [ clientObj ], status } = await clientInfo.json()
+			const clientInfoText = `<b>${text.clientInfo.name[userLang]}:</b> ${clientObj?.name || clientObj?.tg_name}\n<b>${text.clientInfo.region[userLang]}:</b> ${clientObj?.region}\n<b>${text.clientInfo.languageText[userLang]}:</b> ${text.clientInfo.language[clientObj?.language]}\n\n${text.clientInfo.text[userLang]}`
+	
+			// edit message with select region text and buttons
+			bot.editMessageText(
+				clientInfoText,
+				{
+				chat_id: helper.getChatId(cb), 
+				message_id: helper.getMsgId(cb),
+				reply_markup: {
+					inline_keyboard: [
+						[
+							{ text: text.clientInfo.name[userLang], callback_data: 'change:name' },
+							{ text: text.clientInfo.region[userLang], callback_data: 'change:region' },
+							{ text: text.clientInfo.languageText[userLang], callback_data: 'change:language' }	
+						]
+					]
+				},
+				parse_mode: 'html'
+			})		
+		}
 
 		if(regionRes.status === 200 && userStep.data[0].step_name === 'region') {
 
@@ -437,6 +511,85 @@ const getAction = async (cb) => {
 		})
 
 	} // end of order || agree
+
+	// ================ USER SETTINGS ================ //
+
+	// user change
+	if(dataArr[0] === 'change') {
+
+		try {
+
+			// change name
+			if(dataArr[1] === 'name') {
+
+				// edit step: change his name
+				step.editStep(cb, 'change:name')
+
+				bot.editMessageText(
+					text.settings.textFullName[userLang],
+					{
+						chat_id: helper.getChatId(cb),
+						message_id: helper.getMsgId(cb),
+						parse_mode: 'html'
+					}
+				)
+
+			} // end of change name
+
+			// change region
+			if(dataArr[1] === 'region') {
+
+				// edit step: change his name
+				step.editStep(cb, 'change:region')
+
+				// get all regions based on user language
+				const data = await helper.getRegions(userLang)
+
+				// generate inline buttons
+				let inlineKeyboard = helper.kbdGenerate(data, 'region', 3)
+
+	      // edit message with select region text and buttons
+				bot.editMessageText(
+					text.askRegion[userLang],
+					{
+					chat_id: helper.getChatId(cb), 
+					message_id: helper.getMsgId(cb),
+					reply_markup: {
+						inline_keyboard: inlineKeyboard
+					}
+				})
+
+			} // end of change region
+
+			// change language
+			if(dataArr[1] === 'language') {
+
+				// edit step: change his name
+				step.editStep(cb, 'change:language')
+
+	      // edit message with select region text and buttons
+				bot.editMessageText(
+					text.settings.textLanguage[userLang],
+					{
+					chat_id: helper.getChatId(cb), 
+					message_id: helper.getMsgId(cb),
+					reply_markup: {
+						inline_keyboard: [
+							[
+								{ text: text.language[userLang].uz_text, callback_data: 'lang:uz' },
+								{ text: text.language[userLang].ru_text, callback_data: 'lang:ru' }
+							]
+						]
+					}
+				})
+
+			} // end of change language
+			
+		} catch(e) {
+			console.log(e)
+		}
+
+	}
 
 } // end of getAction - callback function
 

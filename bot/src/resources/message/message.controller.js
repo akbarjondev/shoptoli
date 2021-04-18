@@ -11,11 +11,13 @@ const getAction = async (msg) => {
 
 	// get user's step
 	const userStep = await step.getStep(msg)
+	const currentStep = userStep?.data[0]?.step_name
 
 	// user ask catalog
 	if(msg.text === text.mainMenu.keyboard.order[userLang]) {
 
 		try {
+
 			// get general info
 			const info = await helper.getCompanyInfo()
 			
@@ -138,7 +140,56 @@ const getAction = async (msg) => {
 
 	} // end of if - user wants his orders
 
-	// User wants delte his order
+  // user wants their settings, info
+	if(msg.text === text.mainMenu.keyboard.settings[userLang]) {
+
+		// change step to settings
+		step.editStep(msg, 'settings')
+
+		try {
+
+			// get client info
+			const clientInfo = await fetch(`${CONFIG.SERVER_HOST}/bot/client/${helper.getChatId(msg)}`)
+			const { data: [ clientObj ], status } = await clientInfo.json()
+
+			if(status === 200) {
+
+				// delete old message with inline keyboard
+				bot.deleteMessage(
+					helper.getChatId(msg), 
+					helper.getMsgId(msg)
+				)
+
+				const clientInfoText = `<b>${text.clientInfo.name[userLang]}:</b> ${clientObj?.name || clientObj?.tg_name}\n<b>${text.clientInfo.region[userLang]}:</b> ${clientObj?.region}\n<b>${text.clientInfo.languageText[userLang]}:</b> ${text.clientInfo.language[clientObj?.language]}\n\n${text.clientInfo.text[userLang]}`
+
+				// send data with inline keyboard
+				bot.sendMessage(
+					helper.getChatId(msg), 
+					clientInfoText, 
+					{
+						parse_mode: 'html',
+						reply_markup: {
+			  			inline_keyboard: [
+								[
+									{ text: text.clientInfo.name[userLang], callback_data: 'change:name' },
+									{ text: text.clientInfo.region[userLang], callback_data: 'change:region' },
+									{ text: text.clientInfo.languageText[userLang], callback_data: 'change:language' }	
+								]
+							]
+			  		}
+					}
+				) // end of sendMessage
+
+			}
+
+		} catch(e) {
+			console.log(e)
+		}
+
+	} // user press Setting button
+
+
+	// User wants delete his order
 	if(!isNaN(msg.text - 0) && userStep.data[0].step_name === 'myorders') {
 
 		const orderId = Number(msg.text)
@@ -195,6 +246,60 @@ const getAction = async (msg) => {
 		}
 
 	} // end of delete order
+
+	const stepArr = currentStep.split(':')
+	// user change his name
+	if(stepArr[0] === 'change') {
+
+		// change name
+		if(stepArr[1] === 'name') {
+
+			const editOrder = await fetch(`${CONFIG.SERVER_HOST}/bot/client/name`,{
+				method: 'put',
+				headers: {
+					'Content-type': 'application/json'
+				},
+				body: JSON.stringify({
+					tg_user_id: helper.getChatId(msg),
+					name: msg.text
+				})
+			})
+
+			const { status, data } = await editOrder.json()
+
+			if(status === 200) {
+
+				// change step to settings
+				step.editStep(msg, 'settings')
+
+				// get client info
+				const clientInfo = await fetch(`${CONFIG.SERVER_HOST}/bot/client/${helper.getChatId(msg)}`)
+				const { data: [ clientObj ], status } = await clientInfo.json()
+				const clientInfoText = `<b>${text.clientInfo.name[userLang]}:</b> ${clientObj?.name || clientObj?.tg_name}\n<b>${text.clientInfo.region[userLang]}:</b> ${clientObj?.region}\n<b>${text.clientInfo.languageText[userLang]}:</b> ${text.clientInfo.language[clientObj?.language]}\n\n${text.clientInfo.text[userLang]}`
+				
+				// send data with inline keyboard
+				bot.sendMessage(
+					helper.getChatId(msg), 
+					clientInfoText, 
+					{
+						parse_mode: 'html',
+						reply_markup: {
+			  			inline_keyboard: [
+								[
+									{ text: text.clientInfo.name[userLang], callback_data: 'change:name' },
+									{ text: text.clientInfo.region[userLang], callback_data: 'change:region' },
+									{ text: text.clientInfo.languageText[userLang], callback_data: 'change:language' }	
+								]
+							]
+			  		}
+					}
+				) // end of sendMessage
+
+			}
+
+		} // end of change name
+
+	}
 
 	// User pressed back keyboard
 	if(msg.text === '🔙🏡') {
