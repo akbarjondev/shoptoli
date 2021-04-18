@@ -36,6 +36,39 @@ const addClient = async (arr) => {
 
 const getOneClient = async (arr) => {
 
+	try {
+		
+		const getOneClient = await fetch(`
+			select
+				c.client_name as name,
+				c.tg_first_name as tg_name,
+				ri.region_info_name as region,
+				c.language_id as language
+			from
+				clients as c
+			join
+				regions_info as ri on ri.region_id = c.region_id
+			join
+				languages as l on l.language_code = c.language_id
+			where
+				tg_user_id = $1 and ri.language_id = l.language_id
+			;
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: getOneClient
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+
 }
 
 const editClient = async (arr) => {
@@ -58,6 +91,37 @@ const editClient = async (arr) => {
 			status: 200,
 			message: 'client language edited',
 			data: setLangRes
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+
+}
+
+const setName = async (arr) => {
+
+	try {
+		
+		const setNameRes = await fetch(`
+			update 
+				clients
+			set
+				client_name = $1
+			where
+				tg_user_id = $2
+			returning
+				client_id
+		`, arr)
+
+		return {
+			status: 200,
+			message: 'client name edited',
+			data: setNameRes
 		}
 
 	} catch(e) {
@@ -750,6 +814,7 @@ module.exports = {
 	getOneClient, // client
 	editClient, // client
 	setContact, // client
+	setName, // client name
 	addStep, // step
 	getStep, // step
 	editStep, // step

@@ -15,6 +15,10 @@ const getOneClient = async (req, res) => {
 
 	const { tg_user_id } = req.params
 
+	const dbGetOneCleint = await model.getOneClient([ tg_user_id ])
+
+	res.send(dbGetOneCleint).end()
+
 }
 
 const editOneClient = async (req, res) => {
@@ -42,6 +46,15 @@ const setClientContact = async (req, res) => {
 	const modelSetClientContact = await model.setContact([ phone_number, tg_user_id ])
 
 	res.send(modelSetClientContact).end()
+}
+
+const setClientName = async (req, res) => {
+
+	const { tg_user_id, name } = req.body
+
+	const modelSetClientName = await model.setName([ name, tg_user_id ])
+
+	res.send(modelSetClientName).end()
 }
 
 //=========================== STEP ===========================//
@@ -209,7 +222,8 @@ module.exports = {
 	getOneClient, // client
 	editOneClient, // client
 	getClientLang, // language
-	setClientContact, // contact
+	setClientContact, // client contact
+	setClientName, // client name
 	addStep, // step
 	getStep, // step
 	editStep, // step

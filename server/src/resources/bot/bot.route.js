@@ -25,6 +25,9 @@ router
 router
 	.route('/client/contact')
 	.put(controller.setClientContact)
+router
+	.route('/client/name')
+	.put(controller.setClientName)
 
 // ++++++++++++++++ STEP ++++++++++++++++++++++++
 
@@ -33,8 +36,6 @@ router
 	.route('/step')
 	.post(controller.addStep)
 	.put(controller.editStep)
-
-// ++++++++++++++++++++++++++++++++++++++++
 
 // /bot/step/:tg_user_id
 router
