@@ -233,3 +233,19 @@ group by id
 order by id asc
 limit 10
 ;
+
+-- select client data
+select
+	c.client_name,
+	c.tg_first_name,
+	ri.region_info_name,
+	c.language_id
+from
+	clients as c
+join
+	regions_info as ri on ri.region_id = c.region_id
+join
+	languages as l on l.language_code = c.language_id
+where
+	tg_user_id = 288096386 and ri.language_id = l.language_id
+;

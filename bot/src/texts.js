@@ -184,5 +184,48 @@ module.exports = {
 				ru: '<b>Продукт:</b>'
 			}
 		}
+	},
+	clientInfo: {
+		language: {
+			uz: '🇺🇿 UZ',
+			ru: '🇷🇺 RU',
+			en: '🇺🇸 EN'
+		},
+		name: {
+			uz: 'Ism',
+			ru: 'Имя'
+		},
+		region: {
+			uz: 'Hudud',
+			ru: 'Расположение'
+		},
+		languageText: {
+			uz: 'Muloqot tili',
+			ru: 'Язык'
+		},
+		text: {
+			uz: 'Tahrirlash uchun quyidagilardan birini tanlang👇',
+			ru: 'Выберите одно из следующих для редактирования👇'
+		}
+	},
+	settings: {
+		textFullName: {
+			uz: `<b>To'liq ism, sharifingizni yuboring:</b>`,
+			ru: `<b>Отправьте полное имя:</b>`
+		},
+		textLanguage: {
+			uz: `Interfeys tilini tanlang👇`,
+			ru: `Выберите язык интерфейса👇`
+		}
+	},
+	language: {
+		uz: {
+			uz_text: '🇺🇿 Uzb',
+			ru_text: '🇷🇺 Rus'
+		},
+		ru: {
+			uz_text: '🇺🇿 Узб',
+			ru_text: '🇷🇺 Рус'
+		}
 	}
 }
