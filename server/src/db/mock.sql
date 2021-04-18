@@ -249,3 +249,36 @@ join
 where
 	tg_user_id = 288096386 and ri.language_id = l.language_id
 ;
+
+-- update order
+update
+	orders
+set
+	order_status = 6
+where
+	exists(
+		select 
+			c.client_id
+		from
+			orders as o
+		join
+			clients as c on c.client_id = o.client_id
+		where
+			order_id = 59 and c.tg_user_id = 1288096386
+	) and order_status = 0 or order_status = 1 or order_status = 2
+	returning
+		order_id,
+		order_status
+;
+
+
+select exists(
+	select 
+		c.client_id
+	from
+		orders as o
+	join
+		clients as c on c.client_id = o.client_id
+	where
+		order_id = 59 and c.tg_user_id = 1288096386
+);

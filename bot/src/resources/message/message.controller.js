@@ -102,7 +102,7 @@ const getAction = async (msg) => {
 
 				bot.sendMessage(
 					helper.getChatId(msg), 
-					msgText + text.orderStatus.script.cancelMainText[userLang],
+					msgText,
 					{
 						parse_mode: 'html',
 					}
@@ -132,7 +132,7 @@ const getAction = async (msg) => {
 
 
 			// edit step from start to catagories
-			step.editStep(msg, 'myorders')
+			// step.editStep(msg, 'myorders')
 
 		} catch(e) {
 			console.log(e)
