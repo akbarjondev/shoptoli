@@ -622,7 +622,7 @@ const editOrder = async (arr) => {
 			set
 				order_status = $2
 			where
-				order_id = $1 and order_status = 0 or order_status = 1 or order_status = 2
+				order_id = $1 and order_status = 0 or order_id = $1 and order_status = 1
 			returning
 				order_id,
 				order_status
