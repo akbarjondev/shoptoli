@@ -5,15 +5,17 @@ const router = Router()
 
 // /admin/orders
 router
-	.route('/carts')
-	.get(controller.getAll)
-	.post(controller.createOne)
-
-// /admin/order/:id
-router
-	.route('/cart/:id')
-	.get(controller.getOne)
+	.route('/orders')
 	.put(controller.editOne)
-	.delete(controller.deleteOne)
+
+// fetch all orders by pagination and language
+router
+	.route('/orders/:language/:page_size/:page_number')
+	.get(controller.getAll)
+
+// /admin/orders/:id
+router
+	.route('/orders/:id')
+	.get(controller.getOne)
 
 module.exports = router
