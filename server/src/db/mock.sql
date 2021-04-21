@@ -200,7 +200,7 @@ returning
 	order_id
 ;
 
-delete from clients where tg_user_id = 288096386;
+delete from clients where tg_user_id = 288096386; --1179811412 -- 723676878
 delete from steps where tg_user_id = 288096386;
 
 delete from clients where tg_user_id = 1631848090;
