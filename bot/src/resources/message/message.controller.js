@@ -196,16 +196,16 @@ const getAction = async (msg) => {
 
 		try {
 			
-			const editOrder = await fetch(`${CONFIG.SERVER_HOST}/bot/orders`,{
-				method: 'put',
-				headers: {
-					'Content-type': 'application/json'
-				},
-				body: JSON.stringify({
-					order_id: orderId,
-					edit_code: 6
-				})
-			})
+			// const editOrder = await fetch(`${CONFIG.SERVER_HOST}/bot/orders`,{
+			// 	method: 'put',
+			// 	headers: {
+			// 		'Content-type': 'application/json'
+			// 	},
+			// 	body: JSON.stringify({
+			// 		order_id: orderId,
+			// 		edit_code: 6
+			// 	})
+			// })
 
 			const { status, data: [ orderObj ] } = await editOrder.json()
 

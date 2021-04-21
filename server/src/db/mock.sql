@@ -282,3 +282,55 @@ select exists(
 	where
 		order_id = 59 and c.tg_user_id = 1288096386
 );
+
+-- ADMIN
+-- select all my orders
+select
+	o.order_id as id,
+	o.client_id as client_id,
+	c.client_name as client_name,
+	c.language_id as language,
+	o.order_status as status,
+	o.order_created_at as created,
+	array_agg(oi.orderitem_quantity) as quantity,
+	array_agg(pi.product_info_name) as name,
+	sum(p.product_price * oi.orderitem_quantity) as price,
+	loc.location_latitude as latitude, 
+	loc.location_longitude as longitude 
+from
+	orders as o
+join
+	clients as c on c.client_id = o.client_id
+join
+	orderitems as oi on o.order_id = oi.order_id
+join
+	products as p on p.product_id = oi.product_id
+join
+	products_info as pi on pi.product_id = p.product_id
+join
+	languages as l on l.language_id = pi.language_id
+join
+	locations as loc on loc.order_id = o.order_id
+where
+	l.language_code = 'uz'
+group by id
+order by id, c.client_name desc
+limit 10
+;
+
+CREATE OR REPLACE FUNCTION udf_GetRowsByPageNumberAndSize(
+ PageNumber INTEGER = NULL,
+ PageSize INTEGER = NULL
+ )
+ RETURNS SETOF public.customer AS
+ $BODY$
+ BEGIN
+  RETURN QUERY
+   SELECT *
+   FROM public.customer
+   ORDER BY customerid
+   LIMIT PageSize
+   OFFSET ((PageNumber-1) * PageSize);
+END;
+$BODY$
+LANGUAGE plpgsql;

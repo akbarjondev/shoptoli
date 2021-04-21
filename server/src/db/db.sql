@@ -85,6 +85,51 @@ create table orders(
 	client_id int
 );
 
+-- select all orders with pagination
+create or replace function fetch_orders_pagination(lang varchar = 'uz', page_number int = 1, page_size int = 7) 
+	returns table(id int, client_id int, fullname varchar, first_name varchar, language varchar, status int, created timestamp with time zone, quantity int [], name varchar [], price bigint, latitude varchar, longitude varchar) language plpgsql as $$
+
+	begin
+
+		return query 
+			select
+				o.order_id as id,
+				o.client_id as client_id,
+				c.client_name as fullname,
+				c.tg_first_name as first_name,
+				c.language_id as language,
+				o.order_status as status,
+				loc.location_created_at as created,
+				array_agg(oi.orderitem_quantity) as quantity,
+				array_agg(pi.product_info_name) as name,
+				sum(p.product_price * oi.orderitem_quantity) as price,
+				loc.location_latitude as latitude, 
+				loc.location_longitude as longitude
+			from
+				orders as o
+			join
+				clients as c on c.client_id = o.client_id
+			join
+				orderitems as oi on o.order_id = oi.order_id
+			join
+				products as p on p.product_id = oi.product_id
+			join
+				products_info as pi on pi.product_id = p.product_id
+			join
+				languages as l on l.language_id = pi.language_id
+			join
+				locations as loc on loc.order_id = o.order_id
+			where
+				l.language_code = lang
+			group by id, fullname, first_name, language, latitude, longitude, created
+			order by id desc
+			limit page_size
+			offset ((page_number - 1) * page_size);
+
+	end;
+
+$$;
+
 -- trigger func for avoiding duplicate order status = cart
 create or replace function check_order_exist() returns trigger language plpgsql as $$
 
