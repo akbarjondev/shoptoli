@@ -63,7 +63,7 @@ where
 ;
 
 -- info general
-insert into infos(info_company_name, info_catalog_link) values('Ajwa', 'https://telegra.ph/Xayrli-tong-02-24');
+insert into infos(info_company_name, info_catalog_link, info_media) values('Ajwa', 'https://telegra.ph/Xayrli-tong-02-24', 'https://telegra.ph/file/24f653391eb73effe4f98.jpg');
 
 -- catagories
 insert into catagories(catagory_status) values(1), (1), (1);
@@ -91,15 +91,15 @@ where
 
 --insert products
 insert into 
-	products(product_price, product_status, catagory_id)
+	products(product_price, product_status, catagory_id, product_image)
 values 
-(26000, 1, 1),
-(26000, 1, 1),
-(12000, 1, 2),
-(8000, 1, 2),
-(8000, 1, 2),
-(18000, 1, 3),
-(10000, 1, 3)
+(26000, 1, 1, 'https://telegra.ph/file/0d12283b355829bf7efd6.jpg'),
+(26000, 1, 1, 'https://telegra.ph/file/d7363c18024670956c9d6.jpg'),
+(12000, 1, 2, 'https://gomart.uz/469-medium_default/dinay-vishnya-1l.jpg'),
+(8000, 1, 2, 'https://onlinerasta.uz/wp-content/uploads/2020/08/ip9ipklcm.jpg'),
+(8000, 1, 2, 'https://res.cloudinary.com/picked/image/upload/v1603884777/cms/coca-cola-1603884776.png'),
+(18000, 1, 3, 'https://static.fanpage.it/wp-content/uploads/sites/22/2020/03/iStock-1152247466-638x425.jpg'),
+(10000, 1, 3, 'https://s3.amazonaws.com/cdn.tastesofchicago.com/images/uploads/category_956_8833.jpg')
 ;
 
 --insert products_info
