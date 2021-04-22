@@ -1,8 +1,11 @@
 const { Router } = require('express')
 const controller = require('./admin.controller')
 const { verify } = require('./../../libs/jwt/jwt')
+const cors = require('cors')
 
 const router = Router()
+
+router.use(cors())
 
 router.use((req, res, next) => {
 	const { token } = req.headers
