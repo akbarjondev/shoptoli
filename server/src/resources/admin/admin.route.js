@@ -16,6 +16,7 @@ router.use((req, res, next) => {
 		try {
 			const decoded = verify(token)
 
+			next()
 		} catch(e) {
 			console.log(e)
 
@@ -25,13 +26,16 @@ router.use((req, res, next) => {
 			}).status(401)
 		}
 
-		next()
 	} else {
-		// next()
+		next()
 	}
 
-
 })
+
+// /admin/login
+router
+	.route('/login')
+	.post(controller.login)
 
 // /admin/orders
 router

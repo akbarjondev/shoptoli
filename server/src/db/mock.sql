@@ -334,3 +334,7 @@ CREATE OR REPLACE FUNCTION udf_GetRowsByPageNumberAndSize(
 END;
 $BODY$
 LANGUAGE plpgsql;
+
+-- admin
+insert into admins(admin_username, admin_password) 
+	values('muhammad', crypt('muhammad1', gen_salt('bf')));

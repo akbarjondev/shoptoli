@@ -1,3 +1,4 @@
+const { sign } = require('./../../libs/jwt/jwt')
 const model = require('./admin.model')
 
 const getAll = async (req, res) => {
@@ -63,10 +64,50 @@ const deleteOne = async (req, res) => {
 	
 }
 
+const login = async (req, res) => {
+	
+	const { username, password } = req.body
+
+	try {
+		
+		const loginRes = await model.login([ username, password ])
+
+		if(loginRes.length > 0) {
+			
+			const token = sign(loginRes[0]) // 
+
+			res.send({
+				status: 200,
+				message: 'sign in',
+				data: loginRes,
+				token 
+			})
+
+		} else {
+
+			res.send({
+				status: 401,
+				message: 'username or password incorrect'
+			})
+
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
 module.exports = {
 	getAll,
 	createOne,
 	getOne,
 	editOne,
-	deleteOne
+	deleteOne,
+	login
 }

@@ -31,7 +31,25 @@ const editOrder = async (arr) => {
 
 }
 
+// login
+const login = async (arr) => {
+
+	const SELECT_USER = `
+		select
+			admin_id,
+			admin_username
+		from
+			admins
+		where
+			admin_username = $1 and admin_password = crypt($2, admin_password);
+	`
+
+	return await fetch(SELECT_USER, arr)
+
+}
+
 module.exports = {
 	many,
 	editOrder,
+	login,
 }
