@@ -87,7 +87,7 @@ create table orders(
 
 -- select all orders with pagination
 create or replace function fetch_orders_pagination(lang varchar = 'uz', page_number int = 1, page_size int = 7) 
-	returns table(id int, client_id int, fullname varchar, first_name varchar, language varchar, status int, created timestamp with time zone, quantity int [], name varchar [], price bigint, latitude varchar, longitude varchar) language plpgsql as $$
+	returns table(id int, client_id int, fullname varchar, first_name varchar, phone varchar, language varchar, status int, created timestamp with time zone, quantity int [], name varchar [], price bigint, latitude varchar, longitude varchar) language plpgsql as $$
 
 	begin
 
@@ -97,6 +97,7 @@ create or replace function fetch_orders_pagination(lang varchar = 'uz', page_num
 				o.client_id as client_id,
 				c.client_name as fullname,
 				c.tg_first_name as first_name,
+				c.tg_phone as phone,
 				c.language_id as language,
 				o.order_status as status,
 				loc.location_created_at as created,
@@ -121,7 +122,7 @@ create or replace function fetch_orders_pagination(lang varchar = 'uz', page_num
 				locations as loc on loc.order_id = o.order_id
 			where
 				l.language_code = lang
-			group by id, fullname, first_name, language, latitude, longitude, created
+			group by id, fullname, first_name, language, latitude, longitude, created, phone
 			order by id desc
 			limit page_size
 			offset ((page_number - 1) * page_size);

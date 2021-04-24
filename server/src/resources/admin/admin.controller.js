@@ -9,11 +9,18 @@ const getAll = async (req, res) => {
 		
 		const allOrders = await model.many([ language, page_number, page_size ])
 
-		res.send({
-			status: 200,
-			message: 'fetch all',
-			data: allOrders
-		})
+		if(allOrders.length > 0) {
+			res.send({
+				status: 200,
+				message: 'fetch all',
+				data: allOrders
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
 
 	} catch(e) {
 		console.log(e)
@@ -88,7 +95,7 @@ const login = async (req, res) => {
 			res.send({
 				status: 401,
 				message: 'username or password incorrect'
-			})
+			}).status(401)
 
 		}
 

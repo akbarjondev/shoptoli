@@ -338,3 +338,12 @@ LANGUAGE plpgsql;
 -- admin
 insert into admins(admin_username, admin_password) 
 	values('muhammad', crypt('muhammad1', gen_salt('bf')));
+
+insert into admins(admin_username, admin_password) 
+	values('ilhomjon', crypt('ilhomjon1', gen_salt('bf')));
+
+insert into admins(admin_username, admin_password) 
+	values('akbarjon', crypt('akbarjon1', gen_salt('bf')));
+
+insert into admins(admin_username, admin_password) 
+	values('shuhratbek', crypt('shuhratbek1', gen_salt('bf')));

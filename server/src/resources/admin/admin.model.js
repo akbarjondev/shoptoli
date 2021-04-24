@@ -36,8 +36,8 @@ const login = async (arr) => {
 
 	const SELECT_USER = `
 		select
-			admin_id,
-			admin_username
+			admin_id as id,
+			admin_username as username
 		from
 			admins
 		where
