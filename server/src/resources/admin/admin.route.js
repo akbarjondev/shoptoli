@@ -5,10 +5,12 @@ const cors = require('cors')
 
 const router = Router()
 
-router.use(cors({ 
-	origin: 'http://localhost',
-	optionsSuccessStatus: 200
-}))
+router.use(cors())
+
+// { 
+// 	origin: 'http://localhost',
+// 	optionsSuccessStatus: 200
+// }
 
 router.use((req, res, next) => {
 	const { token } = req.headers
