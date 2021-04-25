@@ -5,7 +5,10 @@ const cors = require('cors')
 
 const router = Router()
 
-router.use(cors())
+router.use(cors({ 
+	origin: 'http://localhost',
+	optionsSuccessStatus: 200
+}))
 
 router.use((req, res, next) => {
 	const { token } = req.headers
@@ -46,6 +49,11 @@ router
 router
 	.route('/orders/:language/:page_size/:page_number')
 	.get(controller.getAll)
+
+// get one Client's all orders
+router
+	.route('/orders/:language/:client_id')
+	.get(controller.getClientOrders)
 
 // /admin/orders/:id
 router
