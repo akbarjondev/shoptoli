@@ -1,4 +1,5 @@
 const model = require('./bot.model')
+const { ee } = require('./../../libs/ee/ee')
 
 //=========================== CLIENT ===========================//
 
@@ -213,6 +214,11 @@ const bookOrder = async  (req, res) => {
 	const { tg_user_id, longitude, latitude } = req.body
 
 	const dbBookOrder = await model.bookOrder([ tg_user_id, longitude, latitude ])
+
+	// send order id to the next 
+	// req.client_order_res = dbBookOrder
+
+	ee.emit('new_order', dbBookOrder)
 
 	res.send(dbBookOrder).end()
 }

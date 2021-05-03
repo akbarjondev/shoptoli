@@ -3,11 +3,17 @@ const parser = require('body-parser')
 const adminRouter = require('./resources/admin/admin.route')
 const botRouter = require('./resources/bot/bot.route')
 
+const http = require('http')
+const { Server } = require('socket.io')
+const { ee } = require('./libs/ee/ee')
+
 const { fetch } = require('./db/db')
 
 const run = (express) => {
 	
 	const app = express()
+	const server = http.createServer(app)
+	const io = new Server(server)
 	
 	app.use(parser.json())
 
@@ -30,7 +36,14 @@ const run = (express) => {
 	app.use('/admin', adminRouter)
 	app.use('/bot', botRouter)
 
-	return app
+	// socket.io and EventEmitter
+	ee.on('select_new_order', (obj) => {
+
+		io.emit('client_order', obj)
+
+	})
+
+	return server
 }
 
 module.exports.run = run
