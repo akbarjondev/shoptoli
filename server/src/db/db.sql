@@ -255,3 +255,107 @@ create table api_history(
 	api_history_text text,
 	api_history_created_at timestamptz default current_timestamp
 );
+
+-- INSERT DATA
+-- insert languages
+insert into
+	languages(language_code, language_status)
+values ('uz', 1), ('ru', 1)
+;
+
+-- insert regions
+insert into
+	regions(region_status)
+values (1),(1),(1),(1),(1),(1),(1),(1),(1),(1),(1),(1)
+;
+
+-- insert regions info
+insert into
+	regions_info(region_info_name, language_id, region_id)
+values ('Bektemir', 1, 1),
+			 ('Бектемир', 2, 1),
+			 ('Chilonzor', 1, 2),
+			 ('Чилонзор', 2, 2),
+			 ('Yashnobod', 1, 3),
+			 ('Яшнобод', 2, 3),
+			 ('Mirobod', 1, 4),
+			 ('Миробод', 2, 4),
+			 ('Mirzo Ulug''bek', 1, 5),
+			 ('Мирзо Улуғбек', 2, 5),
+			 ('Sergeli', 1, 6),
+			 ('Сергели', 2, 6),
+			 ('Shayxontohur', 1, 7),
+			 ('Шайхонтоҳур', 2, 7),
+			 ('Olmazor', 1, 8),
+			 ('Олмазор', 2, 8),
+			 ('Uchtepa', 1, 9),
+			 ('Учтепа', 2, 9),
+			 ('Yakkasaroy', 1, 10),
+			 ('Яккасарой', 2, 10),
+			 ('Yunusobod', 1, 11),
+			 ('Юнусобод', 2, 11),
+			 ('Yangihayot', 1, 12),
+			 ('Янгиҳайот', 2, 12)
+;
+
+-- info general
+insert into infos(info_company_name, info_catalog_link, info_media, info_delivery_price) 
+values('Ajwa', 'https://telegra.ph/Xayrli-tong-02-24', 'https://telegra.ph/file/24f653391eb73effe4f98.jpg', 12000);
+
+-- catagories
+insert into catagories(catagory_status) values(1), (1), (1);
+
+-- catagory info
+insert into catagories_info(catagory_info_name, language_id, catagory_id)
+values ('🍲Bugungi menyu', 1, 1),
+			 ('🍲Сегодняшнее меню', 2, 1),
+			 ('🥤Ichimliklar', 1, 2),
+			 ('🥤Напитки', 2, 2),
+			 ('🍔Fast Foodlar', 1, 3),
+			 ('🍔Фаст-Фуд', 2, 3)
+;
+
+--insert products
+insert into 
+	products(product_price, product_status, catagory_id, product_image)
+values 
+(26000, 1, 1, 'https://telegra.ph/file/0d12283b355829bf7efd6.jpg'),
+(26000, 1, 1, 'https://telegra.ph/file/d7363c18024670956c9d6.jpg'),
+(12000, 1, 2, 'https://gomart.uz/469-medium_default/dinay-vishnya-1l.jpg'),
+(8000, 1, 2, 'https://onlinerasta.uz/wp-content/uploads/2020/08/ip9ipklcm.jpg'),
+(8000, 1, 2, 'https://res.cloudinary.com/picked/image/upload/v1603884777/cms/coca-cola-1603884776.png'),
+(18000, 1, 3, 'https://static.fanpage.it/wp-content/uploads/sites/22/2020/03/iStock-1152247466-638x425.jpg'),
+(10000, 1, 3, 'https://s3.amazonaws.com/cdn.tastesofchicago.com/images/uploads/category_956_8833.jpg')
+;
+
+--insert products_info
+insert into
+	products_info(product_info_name, product_info_desc, language_id, product_id)
+values('Sudak', 'Tarkibi boy mahsulotlarga ega', 1, 1),
+			('Судак', 'Состав имеет богатые продукты', 2, 1),
+			('Kotlet', 'Mol go''shti, tarkibi boy mahsulotlarga ega', 1, 2),
+			('Котлет', 'Говядина, имеет богатый состав продуктов', 2, 2),
+			('Coca-cola', 'Shakar, kofein )', 1, 3),
+			('Coca-cola', 'Сахар, kofein )', 2, 3),
+			('Dinay olcha', 'Shakar, olcha, suv', 1, 4),
+			('Динай олча', 'Сахар, olcha, suv', 2, 4),
+			('Meva sok', 'Shakar, faqat suv', 1, 5),
+			('Мева сок', 'Сахар, faqat suv', 2, 5),
+			('Gamburger', 'Non, salat, pomidor, kotlet, bodring', 1, 6),
+			('Гамбургер', 'Хлеб, салат, помидоры, котлеты, огурцы', 2, 6),
+			('Hot dog', 'Non, salat, pomidor, sosiska, bodring', 1, 7),
+			('Хот дог', 'Хлеб, салат, помидоры, колбаса, огурцы', 2, 7)
+;
+
+-- insert admins
+insert into admins(admin_username, admin_password) 
+	values('muhammad', crypt('muhammad1', gen_salt('bf')));
+
+insert into admins(admin_username, admin_password) 
+	values('ilhomjon', crypt('ilhomjon1', gen_salt('bf')));
+
+insert into admins(admin_username, admin_password) 
+	values('akbarjon', crypt('akbarjon1', gen_salt('bf')));
+
+insert into admins(admin_username, admin_password) 
+	values('shuhratbek', crypt('shuhratbek1', gen_salt('bf')));

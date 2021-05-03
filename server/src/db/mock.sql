@@ -63,7 +63,8 @@ where
 ;
 
 -- info general
-insert into infos(info_company_name, info_catalog_link, info_media) values('Ajwa', 'https://telegra.ph/Xayrli-tong-02-24', 'https://telegra.ph/file/24f653391eb73effe4f98.jpg');
+insert into infos(info_company_name, info_catalog_link, info_media, info_delivery_price) 
+values('Ajwa', 'https://telegra.ph/Xayrli-tong-02-24', 'https://telegra.ph/file/24f653391eb73effe4f98.jpg', 12000);
 
 -- catagories
 insert into catagories(catagory_status) values(1), (1), (1);
@@ -382,4 +383,39 @@ where
 	l.language_code = 'uz' and c.client_id = 37
 group by id, fullname, first_name, language, latitude, longitude, created, phone
 order by id desc
+;
+
+-- select by order_id
+select
+	o.order_id as id,
+	o.client_id as client_id,
+	c.client_name as fullname,
+	c.tg_first_name as first_name,
+	c.tg_phone as phone,
+	c.language_id as language,
+	o.order_status as status,
+	loc.location_created_at as created,
+	array_agg(oi.orderitem_quantity) as quantity,
+	array_agg(pi.product_info_name) as name,
+	sum(p.product_price * oi.orderitem_quantity) as price,
+	loc.location_latitude as latitude, 
+	loc.location_longitude as longitude
+from
+	orders as o
+join
+	clients as c on c.client_id = o.client_id
+join
+	orderitems as oi on o.order_id = oi.order_id
+join
+	products as p on p.product_id = oi.product_id
+join
+	products_info as pi on pi.product_id = p.product_id
+join
+	languages as l on l.language_id = pi.language_id
+join
+	locations as loc on loc.order_id = o.order_id
+where
+	l.language_code = 'uz' and o.order_id = 99
+group by id, fullname, first_name, language, latitude, longitude, created, phone
+-- order by id
 ;
