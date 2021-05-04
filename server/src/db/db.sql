@@ -5,6 +5,9 @@ set timezone = 'Asia/Tashkent';
 
 create database shoptoli;
 
+-- database ning encodini utf8 ga olib o'tadi
+update pg_database set encoding = pg_char_to_encoding('UTF8') where datname = 'shoptoli';
+
 create extension "pgcrypto";
 
 create table clients(
