@@ -1,5 +1,5 @@
 {
-  "name": "shoptoli server",
+  "name": "shoptoliserver",
   "version": "2.0.0",
   "description": "shoptoli online shopping delivery telegram bot",
   "main": "index.js",
