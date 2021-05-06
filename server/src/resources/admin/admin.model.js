@@ -138,9 +138,21 @@ const login = async (arr) => {
 
 }
 
+// getAllClients
+const getAllClients = async (arr) => {
+
+	const ALL_CLIENTS = `
+		
+	`
+
+	return await fetch(ALL_CLIENTS, arr)
+
+}
+
 module.exports = {
 	many,
 	editOrder,
 	login,
 	getClientOrders,
+	getAllClients,
 }

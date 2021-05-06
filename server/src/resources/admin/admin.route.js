@@ -62,4 +62,9 @@ router
 	.route('/orders/:id')
 	.get(controller.getOne)
 
+// get all clients with count orders
+router
+	.route('/clients')
+	.get(controller.getAllClients)
+
 module.exports = router

@@ -142,6 +142,36 @@ const login = async (req, res) => {
 
 }
 
+const getAllClients = async (req, res) => {
+
+	try {
+		
+		const allClients = await model.getAllClients()
+
+		if(allClients.length > 0) {
+			res.send({
+				status: 200,
+				message: 'fetch all',
+				data: allClients
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
 
 
 module.exports = {
@@ -152,4 +182,5 @@ module.exports = {
 	deleteOne,
 	login,
 	getClientOrders,
+	getAllClients,
 }
