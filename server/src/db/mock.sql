@@ -207,6 +207,19 @@ delete from steps where tg_user_id = 288096386;
 delete from clients where tg_user_id = 1631848090;
 delete from steps where tg_user_id = 1631848090;
 
+insert into 
+	clients(client_name, client_status_badge, tg_user_id, tg_first_name, tg_last_name, tg_username, tg_phone, region_id, language_id)
+values ('', 0, 1179811412, 'Oybek', '', '', '998977061939', 9, 'uz'),
+	('', 0, 60921952, 'Sherzod', 'Sharopov', 'Sherzod_Sharopov', '+998999898877', 2, 'uz'),
+	('Akbarjon Tojiyev', 0, 1631848090, 'Kelajak Yoshlari', '', 'kygrant', '998334818152', 5, 'ru')
+;
+
+insert into 
+	steps(step_name, tg_user_id)
+values ('catagories', 1179811412),
+			 ('location', 60921952),
+			 ('product', 1631848090)
+;
 
 -- select all my orders
 select

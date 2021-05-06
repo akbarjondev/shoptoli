@@ -250,6 +250,7 @@ create table infos(
 	info_address varchar(255),
 	info_email varchar(50),
 	info_delivery_price int default 0,
+	info_free_delivery_limit int default 0,
 	info_created_at timestamptz default current_timestamp
 );
 
@@ -302,8 +303,8 @@ values ('Bektemir', 1, 1),
 ;
 
 -- info general
-insert into infos(info_company_name, info_catalog_link, info_media, info_delivery_price) 
-values('Ajwa', 'https://telegra.ph/Xayrli-tong-02-24', 'https://telegra.ph/file/24f653391eb73effe4f98.jpg', 12000);
+insert into infos(info_company_name, info_catalog_link, info_media, info_delivery_price, info_free_delivery_limit) 
+values('Ajwa', 'https://telegra.ph/Xayrli-tong-02-24', 'https://telegra.ph/file/24f653391eb73effe4f98.jpg', 12000, 5);
 
 -- catagories
 insert into catagories(catagory_status) values(1), (1), (1);

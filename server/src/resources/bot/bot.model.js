@@ -397,7 +397,8 @@ const getInfos = async (arr) => {
 				info_email as email,
 				info_created_at as joined_platform,
 				info_delivery_price as price,
-				info_media as media
+				info_media as media,
+				info_free_delivery_limit as free_delivery_limit
 			from
 				infos
 		`, arr)

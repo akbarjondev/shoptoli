@@ -451,15 +451,23 @@ const getAction = async (cb) => {
 			const { data: allOrders } = await getClientOrderItems.json()
 
 			// delivery will come from company general info table
-			const delivery = info.price
+			let delivery = info.price
+			let delivery_limit = info.free_delivery_limit
 
 			let countAllProduct = ''
 			let productsPrice = 0
+			let allProductCount = 0
 
 			allOrders.forEach(product => {
+				allProductCount += product.quantity
 				productsPrice += product.price * product.quantity
 				countAllProduct += product.quantity + ` ${text.cart.piece[userLang]} ` + product.name + `\n`
 			})
+
+			console.log(allProductCount)
+			console.log(delivery_limit)
+
+			delivery = allProductCount >= delivery_limit ? 0 : delivery
 
 			const cartText = `<b>${text.cart.inCart[userLang]}</b>\n\n${countAllProduct}\n<b>${text.cart.goods[userLang]}</b> ${productsPrice} ${text.currency[userLang]}\n<b>${text.cart.deliveryText[userLang]}</b> ${delivery} ${text.currency[userLang]}\n<b>${text.cart.sum[userLang]} ${productsPrice + delivery} ${text.currency[userLang]}</b>`
 
