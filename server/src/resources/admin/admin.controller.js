@@ -166,8 +166,10 @@ const login = async (req, res) => {
 const getAllClients = async (req, res) => {
 
 	try {
+
+		const { language } = req.params
 		
-		const allClients = await model.getAllClients()
+		const allClients = await model.getAllClients([ language ])
 
 		if(allClients.length > 0) {
 			res.send({
