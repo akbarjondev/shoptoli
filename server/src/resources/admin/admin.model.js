@@ -210,6 +210,8 @@ const getAllClients = async (arr) => {
 			l.language_code = $1
 		group by o.client_id, fullname, first_name, language, phone
 		order by o.client_id desc
+		limit $2
+		offset (($3 - 1) * $2);
 		;
 	`
 

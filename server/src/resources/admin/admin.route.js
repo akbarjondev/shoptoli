@@ -64,7 +64,7 @@ router
 
 // get all clients with count orders
 router
-	.route('/clients/:language')
+	.route('/clients/:language/:page_size/:page_number')
 	.get(controller.getAllClients)
 
 module.exports = router

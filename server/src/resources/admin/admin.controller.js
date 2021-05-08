@@ -167,9 +167,9 @@ const getAllClients = async (req, res) => {
 
 	try {
 
-		const { language } = req.params
+		const { language, page_size, page_number } = req.params
 		
-		const allClients = await model.getAllClients([ language ])
+		const allClients = await model.getAllClients([ language, page_size, page_number ])
 
 		if(allClients.length > 0) {
 			res.send({
