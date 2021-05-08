@@ -51,7 +51,8 @@ create table admins(
 
 create table catagories(
 	catagory_id serial primary key,
-	catagory_status int
+	catagory_status int,
+	catagory_keyword varchar(30) default 'notsale'
 );
 
 create table catagories_info(
@@ -307,7 +308,7 @@ insert into infos(info_company_name, info_catalog_link, info_media, info_deliver
 values('Ajwa', 'https://telegra.ph/Xayrli-tong-02-24', 'https://telegra.ph/file/24f653391eb73effe4f98.jpg', 12000, 5);
 
 -- catagories
-insert into catagories(catagory_status) values(1), (1), (1);
+insert into catagories(catagory_status, catagory_keyword) values(1, 'sale'), (1, 'notsale'), (1, 'notsale');
 
 -- catagory info
 insert into catagories_info(catagory_info_name, language_id, catagory_id)

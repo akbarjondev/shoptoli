@@ -459,13 +459,13 @@ const getAction = async (cb) => {
 			let allProductCount = 0
 
 			allOrders.forEach(product => {
-				allProductCount += product.quantity
+				if(product.keyword === 'sale') {
+					allProductCount += product.quantity
+				}
+
 				productsPrice += product.price * product.quantity
 				countAllProduct += product.quantity + ` ${text.cart.piece[userLang]} ` + product.name + `\n`
 			})
-
-			console.log(allProductCount)
-			console.log(delivery_limit)
 
 			delivery = allProductCount >= delivery_limit ? 0 : delivery
 

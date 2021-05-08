@@ -696,7 +696,8 @@ const getClientOrderItems = async (arr) => {
 			select 
 				oi.orderitem_quantity as quantity,
 				p.product_price as price,
-				pi.product_info_name as name
+				pi.product_info_name as name,
+				cat.catagory_keyword as keyword
 			from
 				orderitems as oi
 			join
@@ -705,6 +706,8 @@ const getClientOrderItems = async (arr) => {
 				products_info as pi on pi.product_id = oi.product_id
 			join
 				products as p on p.product_id = oi.product_id
+			join
+				catagories as cat on p.catagory_id = cat.catagory_id
 			join 
 				languages as l on l.language_id = pi.language_id 
 			where
