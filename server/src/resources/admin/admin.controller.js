@@ -70,6 +70,27 @@ const createOne = async (req, res) => {
 }
 
 const getOne = async (req, res) => {
+
+	const { order_id, language } = req.params
+
+	try {
+		
+		const getOneOrder = await model.getOneOrder([ language, order_id ])
+
+		res.send({
+			status: 200,
+			message: 'ok',
+			data: getOneOrder
+		})
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}	
 	
 }
 

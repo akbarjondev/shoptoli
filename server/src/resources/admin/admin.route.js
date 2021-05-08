@@ -59,7 +59,7 @@ router
 
 // /admin/orders/:id
 router
-	.route('/orders/:id')
+	.route('/order/:language/:order_id')
 	.get(controller.getOne)
 
 // get all clients with count orders
