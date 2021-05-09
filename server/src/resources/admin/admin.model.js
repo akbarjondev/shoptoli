@@ -114,8 +114,7 @@ const getOneOrder = async (arr) => {
 			c.language_id as language,
 			o.order_status as status,
 			loc.location_created_at as created,
-			array_agg(oi.orderitem_quantity) as quantity,
-			array_agg(pi.product_info_name) as name,
+			array_agg(pi.product_info_name || ' ' || oi.orderitem_quantity || ' ' || p.product_price || ' ' || cat.catagory_keyword) as client_orders,
 			sum(p.product_price * oi.orderitem_quantity) as price,
 			loc.location_latitude as latitude, 
 			loc.location_longitude as longitude
@@ -130,13 +129,18 @@ const getOneOrder = async (arr) => {
 		join
 			products_info as pi on pi.product_id = p.product_id
 		join
+			catagories as cat on cat.catagory_id = p.catagory_id
+		join
 			languages as l on l.language_id = pi.language_id
 		join
 			locations as loc on loc.order_id = o.order_id
 		where
 			l.language_code = $1 and o.order_id = $2
 		group by id, fullname, first_name, language, latitude, longitude, created, phone
+		-- order by id
 		;
+
+
 	`
 
 	return await fetch(GET_ORDER, arr)
@@ -219,6 +223,18 @@ const getAllClients = async (arr) => {
 
 }
 
+//========= CATAGORY =========//
+
+const getCatagories = async (arr) => {
+
+	const ALL_CATS = `
+		
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
 module.exports = {
 	many,
 	editOrder,
@@ -226,4 +242,5 @@ module.exports = {
 	getClientOrders,
 	getAllClients,
 	getOneOrder,
+	getCatagories
 }

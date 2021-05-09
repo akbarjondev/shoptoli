@@ -195,6 +195,129 @@ const getAllClients = async (req, res) => {
 
 }
 
+//========= CATAGORY =========//
+
+const getCatagories = async (req, res) => {
+
+	try {
+
+		const catagories = await model.getCatagories()
+
+		if(catagories.length > 0) {
+			res.send({
+				status: 200,
+				message: 'fetch all',
+				data: catagories
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+const setCatagories = async (req, res) => {
+
+	try {
+
+		// const 
+
+		const catagories = await model.setCatagories()
+
+		if(catagories.length > 0) {
+			res.send({
+				status: 200,
+				message: 'fetch all',
+				data: catagories
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+const deleteCatagories = async (req, res) => {
+
+	try {
+
+		const catagories = await model.deleteCatagories()
+
+		if(catagories.length > 0) {
+			res.send({
+				status: 200,
+				message: 'fetch all',
+				data: catagories
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+const createCatagories = async (req, res) => {
+
+	try {
+
+		const catagories = await model.createCatagories()
+
+		if(catagories.length > 0) {
+			res.send({
+				status: 200,
+				message: 'fetch all',
+				data: catagories
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
 
 
 module.exports = {
@@ -204,6 +327,10 @@ module.exports = {
 	editOne,
 	deleteOne,
 	login,
-	getClientOrders,
-	getAllClients,
+	getClientOrders, // clients
+	getAllClients, // clients
+	getCatagories, // catagory
+	setCatagories, // catagory
+	deleteCatagories, // catagory
+	createCatagories, // catagory
 }

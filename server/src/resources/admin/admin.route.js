@@ -67,4 +67,11 @@ router
 	.route('/clients/:language/:page_size/:page_number')
 	.get(controller.getAllClients)
 
+router
+	.route('/catagory')
+	.get(controller.getCatagories)
+	.put(controller.setCatagories)
+	.delete(controller.deleteCatagories)
+	.post(controller.createCatagories)
+
 module.exports = router

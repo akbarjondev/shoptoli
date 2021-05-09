@@ -434,9 +434,11 @@ const getCatagories = async (arr) => {
 			from
 				catagories_info as c
 			join
+				catagories as cat on cat.catagory_id = c.catagory_id
+			join
 				languages as l on l.language_id = c.language_id
 			where
-				l.language_code = $1
+				l.language_code = $1 and cat.catagory_status = 1
 			;
 		`, arr)
 

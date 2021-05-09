@@ -408,8 +408,7 @@ select
 	c.language_id as language,
 	o.order_status as status,
 	loc.location_created_at as created,
-	array_agg(oi.orderitem_quantity) as quantity,
-	array_agg(pi.product_info_name) as name,
+	array_agg(oi.orderitem_quantity || ' ' || pi.product_info_name || ' ' || p.product_price || ' ' || cat.catagory_keyword) as client_orders,
 	sum(p.product_price * oi.orderitem_quantity) as price,
 	loc.location_latitude as latitude, 
 	loc.location_longitude as longitude
@@ -424,6 +423,8 @@ join
 join
 	products_info as pi on pi.product_id = p.product_id
 join
+	catagories as cat on cat.catagory_id = p.catagory_id
+join
 	languages as l on l.language_id = pi.language_id
 join
 	locations as loc on loc.order_id = o.order_id
@@ -431,6 +432,27 @@ where
 	l.language_code = 'uz' and o.order_id = 99
 group by id, fullname, first_name, language, latitude, longitude, created, phone
 -- order by id
+;
+
+
+-- sub select 
+
+select
+	oi.orderitem_quantity as quantity,
+	pi.product_info_name as name,
+	p.product_price * oi.orderitem_quantity as price
+from
+	orders as o
+join
+	orderitems as oi on o.order_id = oi.order_id
+join
+	products as p on p.product_id = oi.product_id
+join
+	products_info as pi on pi.product_id = p.product_id
+join
+	languages as l on l.language_id = pi.language_id
+where
+	l.language_code = 'uz' and o.order_id = 99
 ;
 
 
@@ -462,3 +484,6 @@ where
 group by o.client_id, fullname, first_name, language, phone
 order by o.client_id desc
 ;
+
+-- select all catagories
+select
