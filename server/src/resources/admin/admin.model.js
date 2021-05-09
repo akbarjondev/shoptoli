@@ -116,6 +116,12 @@ const getOneOrder = async (arr) => {
 			loc.location_created_at as created,
 			array_agg(pi.product_info_name || ' ' || oi.orderitem_quantity || ' ' || p.product_price || ' ' || cat.catagory_keyword) as client_orders,
 			sum(p.product_price * oi.orderitem_quantity) as price,
+			(
+				select info_delivery_price from infos limit 1
+			) as delivery,
+			(
+				select info_free_delivery_limit from infos limit 1
+			) as free_delivery_limit,
 			loc.location_latitude as latitude, 
 			loc.location_longitude as longitude
 		from
