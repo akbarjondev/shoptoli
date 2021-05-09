@@ -114,7 +114,7 @@ const getOneOrder = async (arr) => {
 			c.language_id as language,
 			o.order_status as status,
 			loc.location_created_at as created,
-			array_agg(pi.product_info_name || ' ' || oi.orderitem_quantity || ' ' || p.product_price || ' ' || cat.catagory_keyword) as client_orders,
+			array_agg(pi.product_info_name || ';' || oi.orderitem_quantity || ';' || p.product_price || ';' || cat.catagory_keyword) as client_orders,
 			sum(p.product_price * oi.orderitem_quantity) as price,
 			(
 				select info_delivery_price from infos limit 1
