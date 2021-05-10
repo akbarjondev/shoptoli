@@ -518,3 +518,14 @@ where
 returning
 	*
 ;
+
+
+update catagories_info
+set 
+	catagory_info_name = $3, 
+	language_id = $4
+where
+	catagory_id = $5
+returning
+	*
+;
