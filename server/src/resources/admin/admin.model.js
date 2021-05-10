@@ -17,6 +17,7 @@ ee.on('new_order', async ({ data: [ order ] }) => {
 			o.order_status as status,
 			loc.location_created_at as created,
 			array_agg(oi.orderitem_quantity) as quantity,
+			sum(oi.orderitem_quantity) as sum_quantity,
 			array_agg(pi.product_info_name) as name,
 			sum(p.product_price * oi.orderitem_quantity) as price,
 			loc.location_latitude as latitude, 
@@ -72,6 +73,7 @@ const getClientOrders = async (arr) => {
 			o.order_status as status,
 			loc.location_created_at as created,
 			array_agg(oi.orderitem_quantity) as quantity,
+			sum(oi.orderitem_quantity) as sum_quantity,
 			array_agg(pi.product_info_name) as name,
 			sum(p.product_price * oi.orderitem_quantity) as price,
 			loc.location_latitude as latitude, 
@@ -432,6 +434,24 @@ const deleteProducts = async (arr) => {
 
 }
 
+//========= PRODUCT INFO =========//
+
+// create
+const createProdcutsInfo = async (arr) => {
+
+	const ALL_CATS = `
+		insert into products (product_info_name, product_info_desc, language_id, product_id)
+		values($1, $2, $3, $4)
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+
 
 module.exports = {
 	many,
@@ -452,4 +472,5 @@ module.exports = {
 	getProducts,
 	setProducts,
 	deleteProducts,
+	createProdcutsInfo,
 }

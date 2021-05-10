@@ -590,6 +590,74 @@ const deleteProducts = async (req, res) => {
 
 }
 
+// ======= PRODUCTS INFO  ======= //
+
+// create
+const createProdcutsInfo = async (req, res) => {
+
+	try {
+
+		const { product_info_name, product_info_desc, language_id, product_id } = req.body
+
+		const data = await model.createProdcutsInfo([ product_info_name, product_info_desc, language_id, product_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'product created',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// read
+const getProdcutsInfo = async (req, res) => {
+
+	try {
+
+		const { product_id } = req.query
+
+		const data = await model.getProdcutsInfo([ product_info_name, product_info_desc, language_id, product_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'product created',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
 
 module.exports = {
 	getAll,
@@ -612,4 +680,6 @@ module.exports = {
 	getProducts, // prodcuts
 	setProducts, // prodcuts
 	deleteProducts, // prodcuts
+	createProdcutsInfo, // info
+	getProdcutsInfo, // info
 }

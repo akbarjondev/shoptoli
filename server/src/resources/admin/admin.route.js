@@ -94,9 +94,9 @@ router
 // productsinfo
 router
 	.route('/productsinfo')
-	// .get(controller.getProdcutsInfo)
+	.get(controller.getProdcutsInfo)
 	// .put(controller.setProdcutsInfo)
 	// .delete(controller.deleteProdcutsInfo)
-	// .post(controller.createProdcutsInfo)
+	.post(controller.createProdcutsInfo)
 
 module.exports = router
