@@ -487,3 +487,34 @@ order by o.client_id desc
 
 -- select all catagories
 select
+	c.catagory_id,
+	c.catagory_status,
+	c.catagory_keyword,
+	ci.catagory_info_name,
+	ci.language_id
+from
+	catagories as c
+join
+	catagories_info as ci on c.catagory_id = ci.catagory_id
+;
+
+-- update
+update catagories
+set 
+	catagory_status = 0, 
+	catagory_keyword = sale1
+where
+	catagory_id = 1
+returning
+	*
+;
+
+update catagories_info
+set 
+	catagory_info_name = '🍲Сегодняшнее меню', 
+	language_id = 2
+where
+	catagory_info_id = 2
+returning
+	*
+;

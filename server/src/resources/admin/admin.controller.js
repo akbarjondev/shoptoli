@@ -231,14 +231,14 @@ const setCatagories = async (req, res) => {
 
 	try {
 
-		// const 
+		const { catagory_status, catagory_keyword, catagory_info_name, language_id } = req.body
 
-		const catagories = await model.setCatagories()
+		const catagories = await model.setCatagories([ catagory_status, catagory_keyword, catagory_info_name, language_id, catagory_id ])
 
 		if(catagories.length > 0) {
 			res.send({
 				status: 200,
-				message: 'fetch all',
+				message: 'catagory edited',
 				data: catagories
 			})
 		} else {

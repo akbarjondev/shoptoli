@@ -114,7 +114,12 @@ const getOneOrder = async (arr) => {
 			c.language_id as language,
 			o.order_status as status,
 			loc.location_created_at as created,
-			array_agg(pi.product_info_name || ';' || oi.orderitem_quantity || ';' || p.product_price || ';' || cat.catagory_keyword) as client_orders,
+			array_agg(
+
+				jsonb_build_object(
+					'name', pi.product_info_name, 'quantity', oi.orderitem_quantity, 'price', p.product_price, 'keyword', cat.catagory_keyword
+					)
+			) as orders,
 			sum(p.product_price * oi.orderitem_quantity) as price,
 			(
 				select info_delivery_price from infos limit 1
@@ -234,7 +239,45 @@ const getAllClients = async (arr) => {
 const getCatagories = async (arr) => {
 
 	const ALL_CATS = `
-		
+		select
+			c.catagory_id,
+			c.catagory_status,
+			c.catagory_keyword,
+			ci.catagory_info_name,
+			ci.language_id
+		from
+			catagories as c
+		join
+			catagories_info as ci on c.catagory_id = ci.catagory_id
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+const setCatagories = async (arr) => {
+
+	const ALL_CATS = `
+		update catagories
+		set 
+			catagory_status = $1, 
+			catagory_keyword = $2
+		where
+			catagory_id = $5
+		returning
+			*
+		;
+
+		update catagories_info
+		set 
+			catagory_info_name = $3, 
+			language_id = $4
+		where
+			catagory_id = $5
+		returning
+			*
+		;
 	`
 
 	return await fetch(ALL_CATS, arr)
@@ -248,5 +291,6 @@ module.exports = {
 	getClientOrders,
 	getAllClients,
 	getOneOrder,
-	getCatagories
+	getCatagories,
+	setCatagories,
 }
