@@ -75,4 +75,28 @@ router
 	.delete(controller.deleteCatagories)
 	.post(controller.createCatagories)
 
+// catagoriesinfo
+router
+	.route('/catagoriesinfo')
+	.get(controller.getCatagoriesInfo)
+	.put(controller.setCatagoriesInfo)
+	.delete(controller.deleteCatagoriesInfo)
+	.post(controller.createCatagoriesInfo)
+
+// products
+router
+	.route('/products')
+	.get(controller.getProducts)
+	.put(controller.setProducts)
+	.delete(controller.deleteProducts)
+	.post(controller.createProducts)
+
+// productsinfo
+router
+	.route('/productsinfo')
+	// .get(controller.getProdcutsInfo)
+	// .put(controller.setProdcutsInfo)
+	// .delete(controller.deleteProdcutsInfo)
+	// .post(controller.createProdcutsInfo)
+
 module.exports = router

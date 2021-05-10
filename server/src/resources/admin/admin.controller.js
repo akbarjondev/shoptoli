@@ -197,6 +197,38 @@ const getAllClients = async (req, res) => {
 
 //========= CATAGORY =========//
 
+const createCatagories = async (req, res) => {
+
+	try {
+
+		const { catagory_status, catagory_keyword } = req.body
+
+		const catagories = await model.createCatagories([ catagory_status, catagory_keyword ])
+
+		if(catagories.length > 0) {
+			res.send({
+				status: 200,
+				message: 'ok',
+				data: catagories
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
 const getCatagories = async (req, res) => {
 
 	try {

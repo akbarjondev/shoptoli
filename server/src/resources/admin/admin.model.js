@@ -236,6 +236,41 @@ const getAllClients = async (arr) => {
 
 //========= CATAGORY =========//
 
+// create
+const createCatagories = async (arr) => {
+
+	const ALL_CATS = `
+		insert into catagories (catagory_status, catagory_keyword)
+		values($1, $2)
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// update
+const setCatagories = async (arr) => {
+
+	const ALL_CATS = `
+		update catagories
+		set 
+			catagory_status = $1, 
+			catagory_keyword = $2
+		where
+			catagory_id = $3
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// read
 const getCatagories = async (arr) => {
 
 	const ALL_CATS = `
