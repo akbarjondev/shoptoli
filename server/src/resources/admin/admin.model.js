@@ -291,25 +291,27 @@ const getCatagories = async (arr) => {
 
 }
 
-const setCatagories = async (arr) => {
+// delete
+const deleteCatagories = async (arr) => {
 
 	const ALL_CATS = `
-		update catagories
-		set 
-			catagory_status = $1, 
-			catagory_keyword = $2
-		where
-			catagory_id = $5
-		returning
-			*
-		;
+		delete from catagories
+		where catagory_id = $1
+		returning *
+	`
 
-		update catagories_info
-		set 
-			catagory_info_name = $3, 
-			language_id = $4
-		where
-			catagory_id = $5
+	return await fetch(ALL_CATS, arr)
+
+}
+
+//========= CATAGORY INFO =========//
+
+// create
+const createCatagoriesInfo = async (arr) => {
+
+	const ALL_CATS = `
+		insert into catagories_info (catagory_info_name, language_id, catagory_id)
+		values($1, $2, $3)
 		returning
 			*
 		;
@@ -318,6 +320,118 @@ const setCatagories = async (arr) => {
 	return await fetch(ALL_CATS, arr)
 
 }
+
+// fetch
+const getCatagoriesInfo = async (arr) => {
+
+	const ALL_CATS = `
+		select * from catagories_info where catagory_id = $1;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// update
+const setCatagoriesInfo = async (arr) => {
+
+	const ALL_CATS = `
+		update catagories_info
+		set 
+			catagory_info_name = $1, 
+			language_id = $2
+		where
+			catagory_info_id = $3
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// delete
+const deleteCatagoriesInfo = async (arr) => {
+
+	const ALL_CATS = `
+		delete from catagories_info
+		where
+			catagory_info_id = $1
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+//========= PRODUCT =========//
+
+// create
+const createProducts = async (arr) => {
+
+	const ALL_CATS = `
+		insert into products (product_price, product_image, product_status, catagory_id)
+		values($1, $2, $3, $4)
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// get
+const getProducts = async (arr) => {
+
+	const ALL_CATS = `
+		select * from products where product_id = $1;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// update
+const setProducts = async (arr) => {
+
+	const ALL_CATS = `
+		update products
+		set 
+			product_price = $1, 
+			product_image = $2, 
+			product_status = $3, 
+			catagory_id = $4
+		where
+			product_id = $5
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// delete
+const deleteProducts = async (arr) => {
+
+	const ALL_CATS = `
+		delete from products
+		where
+			product_id = $1
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
 
 module.exports = {
 	many,
@@ -328,4 +442,14 @@ module.exports = {
 	getOneOrder,
 	getCatagories,
 	setCatagories,
+	createCatagories,
+	deleteCatagories,
+	createCatagoriesInfo,
+	getCatagoriesInfo,
+	setCatagoriesInfo,
+	deleteCatagoriesInfo,
+	createProducts,
+	getProducts,
+	setProducts,
+	deleteProducts,
 }

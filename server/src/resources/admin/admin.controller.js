@@ -263,9 +263,9 @@ const setCatagories = async (req, res) => {
 
 	try {
 
-		const { catagory_status, catagory_keyword, catagory_info_name, language_id } = req.body
+		const { catagory_status, catagory_keyword, catagory_id } = req.body
 
-		const catagories = await model.setCatagories([ catagory_status, catagory_keyword, catagory_info_name, language_id, catagory_id ])
+		const catagories = await model.setCatagories([ catagory_status, catagory_keyword, catagory_id ])
 
 		if(catagories.length > 0) {
 			res.send({
@@ -295,12 +295,14 @@ const deleteCatagories = async (req, res) => {
 
 	try {
 
-		const catagories = await model.deleteCatagories()
+		const { catagory_id } = req.body
+
+		const catagories = await model.deleteCatagories([ catagory_id ])
 
 		if(catagories.length > 0) {
 			res.send({
 				status: 200,
-				message: 'fetch all',
+				message: 'delete catagory',
 				data: catagories
 			})
 		} else {
@@ -321,17 +323,254 @@ const deleteCatagories = async (req, res) => {
 
 }
 
-const createCatagories = async (req, res) => {
+// ======= CATAGORIES INFO  ======= //
+
+const createCatagoriesInfo = async (req, res) => {
 
 	try {
 
-		const catagories = await model.createCatagories()
+		const { catagory_info_name, language_id, catagory_id } = req.body
+
+		const catagories = await model.createCatagoriesInfo([ catagory_info_name, language_id, catagory_id ])
 
 		if(catagories.length > 0) {
 			res.send({
 				status: 200,
-				message: 'fetch all',
+				message: 'catagory info created',
 				data: catagories
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+const getCatagoriesInfo = async (req, res) => {
+
+	try {
+
+		const { catagory_id } = req.query
+
+		console.log(req.query)
+
+		const catagories = await model.getCatagoriesInfo([ catagory_id ])
+
+		if(catagories.length > 0) {
+			res.send({
+				status: 200,
+				message: 'get all catagories info',
+				data: catagories
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// update
+const setCatagoriesInfo = async (req, res) => {
+
+	try {
+
+		const { catagory_info_name, language_id, catagory_info_id } = req.body
+
+		const catagories = await model.setCatagoriesInfo([ catagory_info_name, language_id, catagory_info_id ])
+
+		if(catagories.length > 0) {
+			res.send({
+				status: 200,
+				message: 'update catagories info',
+				data: catagories
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// delete
+const deleteCatagoriesInfo = async (req, res) => {
+
+	try {
+
+		const { catagory_info_id } = req.body
+
+		const catagories = await model.deleteCatagoriesInfo([ catagory_info_id ])
+
+		if(catagories.length > 0) {
+			res.send({
+				status: 200,
+				message: 'delete catagories info',
+				data: catagories
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// ======= PRODUCTS  ======= //
+
+const createProducts = async (req, res) => {
+
+	try {
+
+		const { product_price, product_image, product_status, catagory_id } = req.body
+
+		const data = await model.createProducts([ product_price, product_image, product_status, catagory_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'product created',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// get
+const getProducts = async (req, res) => {
+
+	try {
+
+		const { product_id } = req.query
+
+		const data = await model.getProducts([ product_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'ok',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// update
+const setProducts = async (req, res) => {
+
+	try {
+
+		const { product_price, product_image, product_status, catagory_id, product_id } = req.body
+
+		const data = await model.setProducts([ product_price, product_image, product_status, catagory_id, product_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'ok',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// delete
+const deleteProducts = async (req, res) => {
+
+	try {
+
+		const { product_id } = req.body
+
+		const data = await model.deleteProducts([ product_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'ok',
+				data: data
 			})
 		} else {
 			res.send({
@@ -365,4 +604,12 @@ module.exports = {
 	setCatagories, // catagory
 	deleteCatagories, // catagory
 	createCatagories, // catagory
+	createCatagoriesInfo, // info
+	getCatagoriesInfo, // info
+	setCatagoriesInfo, // info
+	deleteCatagoriesInfo, // info
+	createProducts, // prodcuts
+	getProducts, // prodcuts
+	setProducts, // prodcuts
+	deleteProducts, // prodcuts
 }
