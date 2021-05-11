@@ -95,8 +95,19 @@ router
 router
 	.route('/productsinfo')
 	.get(controller.getProdcutsInfo)
-	// .put(controller.setProdcutsInfo)
-	// .delete(controller.deleteProdcutsInfo)
+	.put(controller.setProdcutsInfo)
+	.delete(controller.deleteProdcutsInfo)
 	.post(controller.createProdcutsInfo)
+
+// admin
+router
+	.route('/admins')
+	.post(controller.createAdmin)
+	.delete(controller.deleteAdmin)
+
+// search
+router
+	.route('/search')
+	.get(controller.search)
 
 module.exports = router

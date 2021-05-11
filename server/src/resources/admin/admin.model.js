@@ -440,7 +440,7 @@ const deleteProducts = async (arr) => {
 const createProdcutsInfo = async (arr) => {
 
 	const ALL_CATS = `
-		insert into products (product_info_name, product_info_desc, language_id, product_id)
+		insert into products_info (product_info_name, product_info_desc, language_id, product_id)
 		values($1, $2, $3, $4)
 		returning
 			*
@@ -451,6 +451,114 @@ const createProdcutsInfo = async (arr) => {
 
 }
 
+// get
+const getProdcutsInfo = async (arr) => {
+
+	const ALL_CATS = `
+		select * from products_info where product_info_id = $1;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// update
+const setProdcutsInfo = async (arr) => {
+
+	const ALL_CATS = `
+		update products_info
+		set 
+			product_info_name = $1, 
+			product_info_desc = $2, 
+			language_id = $3, 
+			product_id = $4
+		where
+			product_info_id = $5
+		returning
+			*
+		;
+
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// delete
+const deleteProdcutsInfo = async (arr) => {
+
+	const ALL_CATS = `
+		delete from products_info
+		where
+			product_info_id = $1
+		returning
+			*
+		;
+
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+//=========== ADMIN ===========//
+
+// create
+const createAdmin = async (arr) => {
+
+	const ALL_CATS = `
+		insert into admins (admin_username, admin_password)
+		values($1, crypt($2, gen_salt('bf')))
+		returning
+			admin_id,
+			admin_username,
+			admin_joined_at
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// delete
+const deleteAdmin = async (arr) => {
+
+	const ALL_CATS = `
+		delete from admins
+		where admin_id = $1
+		returning
+			admin_id,
+			admin_username
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+//============ SEARCH =============//
+
+// fetch
+const search = async (arr) => {
+
+	const ALL_CATS = `
+		select
+			client_id,
+			client_status_badge,
+			client_name,
+			tg_first_name,
+			tg_phone,
+			language_id
+		from
+			clients
+		where 
+			tg_phone like '%' || $1 || '%'
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
 
 
 module.exports = {
@@ -473,4 +581,10 @@ module.exports = {
 	setProducts,
 	deleteProducts,
 	createProdcutsInfo,
+	getProdcutsInfo,
+	setProdcutsInfo,
+	deleteProdcutsInfo,
+	createAdmin,
+	deleteAdmin,
+	search
 }

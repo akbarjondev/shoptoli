@@ -503,7 +503,7 @@ const getProducts = async (req, res) => {
 		if(data.length > 0) {
 			res.send({
 				status: 200,
-				message: 'ok',
+				message: 'fetch',
 				data: data
 			})
 		} else {
@@ -536,7 +536,7 @@ const setProducts = async (req, res) => {
 		if(data.length > 0) {
 			res.send({
 				status: 200,
-				message: 'ok',
+				message: 'update product',
 				data: data
 			})
 		} else {
@@ -569,7 +569,7 @@ const deleteProducts = async (req, res) => {
 		if(data.length > 0) {
 			res.send({
 				status: 200,
-				message: 'ok',
+				message: 'delete product',
 				data: data
 			})
 		} else {
@@ -604,7 +604,7 @@ const createProdcutsInfo = async (req, res) => {
 		if(data.length > 0) {
 			res.send({
 				status: 200,
-				message: 'product created',
+				message: 'product info created',
 				data: data
 			})
 		} else {
@@ -630,19 +630,188 @@ const getProdcutsInfo = async (req, res) => {
 
 	try {
 
-		const { product_id } = req.query
+		const { product_info_id } = req.query
 
-		const data = await model.getProdcutsInfo([ product_info_name, product_info_desc, language_id, product_id ])
+		const data = await model.getProdcutsInfo([ product_info_id ])
 
 		if(data.length > 0) {
 			res.send({
 				status: 200,
-				message: 'product created',
+				message: 'ok',
 				data: data
 			})
 		} else {
 			res.send({
 				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// update
+const setProdcutsInfo = async (req, res) => {
+
+	try {
+
+		const { product_info_name, product_info_desc, language_id, product_id, product_info_id } = req.body
+
+		const data = await model.setProdcutsInfo([ product_info_name, product_info_desc, language_id, product_id, product_info_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'update product info',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// delete
+const deleteProdcutsInfo = async (req, res) => {
+
+	try {
+
+		const { product_info_id } = req.body
+
+		const data = await model.deleteProdcutsInfo([ product_info_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'delete product info',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+//============= ADMINS ===============//
+
+// create
+const createAdmin = async (req, res) => {
+
+	try {
+
+		const { admin_username, admin_password } = req.body
+
+		const data = await model.createAdmin([ admin_username, admin_password ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'creat admin',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// delete
+const deleteAdmin = async (req, res) => {
+
+	try {
+
+		const { admin_id } = req.body
+
+		const data = await model.deleteAdmin([ admin_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'delete admin',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+//============== SEARCH ================//
+
+// fetch
+const search = async (req, res) => {
+
+	try {
+
+		const { q } = req.query
+
+		const data = await model.search([ q ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'ok',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 204,
 				message: 'no data',
 			})
 		}
@@ -682,4 +851,9 @@ module.exports = {
 	deleteProducts, // prodcuts
 	createProdcutsInfo, // info
 	getProdcutsInfo, // info
+	setProdcutsInfo, // info
+	deleteProdcutsInfo, // info
+	createAdmin, // admin
+	deleteAdmin, //admin
+	search, // search
 }

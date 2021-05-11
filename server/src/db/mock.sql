@@ -529,3 +529,16 @@ where
 returning
 	*
 ;
+
+
+select
+	client_id,
+	client_status_badge,
+	client_name,
+	tg_first_name,
+	tg_phone,
+	language_id
+from
+	clients
+where tg_phone like '%21%'
+;
