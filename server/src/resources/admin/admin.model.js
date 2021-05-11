@@ -560,6 +560,111 @@ const search = async (arr) => {
 
 }
 
+//============ STATS =============//
+
+// fetch day
+const getStatsByDay = async (arr) => {
+
+	const ALL_CATS = `
+		select
+			extract(year from loc.location_created_at) as created_year,
+			extract(month from loc.location_created_at) as created_month,
+			extract(week from loc.location_created_at) as created_week,
+			extract(day from loc.location_created_at) as created_day,
+			extract(hour from loc.location_created_at) as created_hour,
+			sum(oi.orderitem_quantity) as sum_quantity
+		from
+			orders as o
+		join
+			orderitems as oi on o.order_id = oi.order_id
+		join
+			products as p on p.product_id = oi.product_id
+		join
+			products_info as pi on pi.product_id = p.product_id
+		join
+			languages as l on l.language_id = pi.language_id
+		join
+			locations as loc on loc.order_id = o.order_id
+		where
+			l.language_code = 'uz' and 
+			extract(year from loc.location_created_at) = $1 and 
+			extract(month from loc.location_created_at) = $2 and 
+			extract(day from loc.location_created_at) = $3
+		group by created_year, created_month, created_week, created_day, created_hour
+		order by created_year desc, created_month desc, created_day desc, created_hour desc
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// fetch month
+const getStatsByMonth = async (arr) => {
+
+	const ALL_CATS = `
+		select
+			extract(year from loc.location_created_at) as created_year,
+			extract(month from loc.location_created_at) as created_month,
+			extract(day from loc.location_created_at) as created_day,
+			sum(oi.orderitem_quantity) as sum_quantity
+		from
+			orders as o
+		join
+			orderitems as oi on o.order_id = oi.order_id
+		join
+			products as p on p.product_id = oi.product_id
+		join
+			products_info as pi on pi.product_id = p.product_id
+		join
+			languages as l on l.language_id = pi.language_id
+		join
+			locations as loc on loc.order_id = o.order_id
+		where
+			l.language_code = 'uz' and 
+			extract(year from loc.location_created_at) = $1 and 
+			extract(month from loc.location_created_at) = $2
+		group by created_year, created_month, created_day
+		order by created_year desc, created_month desc, created_day desc
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// fetch year
+const getStatsByYear = async (arr) => {
+
+	const ALL_CATS = `
+		select
+			extract(year from loc.location_created_at) as created_year,
+			extract(month from loc.location_created_at) as created_month,
+			sum(oi.orderitem_quantity) as sum_quantity
+		from
+			orders as o
+		join
+			orderitems as oi on o.order_id = oi.order_id
+		join
+			products as p on p.product_id = oi.product_id
+		join
+			products_info as pi on pi.product_id = p.product_id
+		join
+			languages as l on l.language_id = pi.language_id
+		join
+			locations as loc on loc.order_id = o.order_id
+		where
+			l.language_code = 'uz' and 
+			extract(year from loc.location_created_at) = $1 
+		group by created_year, created_month
+		order by created_year desc, created_month desc
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
 
 module.exports = {
 	many,
@@ -586,5 +691,8 @@ module.exports = {
 	deleteProdcutsInfo,
 	createAdmin,
 	deleteAdmin,
-	search
+	search,
+	getStatsByDay,
+	getStatsByMonth,
+	getStatsByYear
 }

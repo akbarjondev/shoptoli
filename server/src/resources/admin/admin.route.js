@@ -110,4 +110,9 @@ router
 	.route('/search')
 	.get(controller.search)
 
+// stats
+router
+	.route('/stats')
+	.get(controller.getStats)
+
 module.exports = router

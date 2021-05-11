@@ -827,6 +827,51 @@ const search = async (req, res) => {
 
 }
 
+//============== STATS ================//
+
+// fetch
+const getStats = async (req, res) => {
+
+	try {
+
+		const date = new Date()
+
+		const { year = date.getFullYear(), month = (date.getMonth() + 1), day = date.getUTCDate(), status = 1 } = req.query
+
+		let dataArray
+
+		if(status == 1) {
+			dataArray = await model.getStatsByDay([ year, month, day ])
+		} else if (status == 2) {
+			dataArray = await model.getStatsByMonth([ year, month ])
+		} else if (status == 3) {
+			dataArray = await model.getStatsByYear([ year ])
+		}
+
+		if(dataArray.length > 0) {
+			res.send({
+				status: 200,
+				message: 'ok',
+				data: dataArray
+			})
+		} else {
+			res.send({
+				status: 204,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
 
 module.exports = {
 	getAll,
@@ -856,4 +901,5 @@ module.exports = {
 	createAdmin, // admin
 	deleteAdmin, //admin
 	search, // search
+	getStats, // stats
 }

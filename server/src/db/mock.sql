@@ -542,3 +542,94 @@ from
 	clients
 where tg_phone like '%21%'
 ;
+
+
+--fetch all orders
+select
+	-- o.order_id as id,
+	-- o.client_id as client_id,
+	-- c.client_name as fullname,
+	-- c.tg_first_name as first_name,
+	-- c.tg_phone as phone,
+	-- c.language_id as language,
+	-- o.order_status as status,
+	extract(year from loc.location_created_at) as created_year,
+	extract(month from loc.location_created_at) as created_month,
+	extract(week from loc.location_created_at) as created_week,
+	extract(day from loc.location_created_at) as created_day,
+	-- array_agg(oi.orderitem_quantity) as quantity,
+	sum(oi.orderitem_quantity) as sum_quantity
+	-- array_agg(pi.product_info_name) as name,
+	-- sum(p.product_price * oi.orderitem_quantity) as price,
+	-- loc.location_latitude as latitude, 
+	-- loc.location_longitude as longitude
+from
+	orders as o
+join
+	clients as c on c.client_id = o.client_id
+join
+	orderitems as oi on o.order_id = oi.order_id
+join
+	products as p on p.product_id = oi.product_id
+join
+	products_info as pi on pi.product_id = p.product_id
+join
+	languages as l on l.language_id = pi.language_id
+join
+	locations as loc on loc.order_id = o.order_id
+where
+	l.language_code = 'uz'
+group by created_year, created_month, created_week, created_day
+-- group by id, fullname, first_name, language, latitude, longitude, created, phone
+order by created_year desc, created_month desc, created_day desc
+;
+
+-- test
+select 
+oi.orderitem_quantity as id
+from
+orders as o
+join
+clients as c on c.client_id = o.client_id
+join
+orderitems as oi on o.order_id = oi.order_id
+join
+products as p on p.product_id = oi.product_id
+join
+products_info as pi on pi.product_id = p.product_id
+join
+languages as l on l.language_id = pi.language_id
+join
+locations as loc on loc.order_id = o.order_id
+where 
+extract(day from o.order_created_at) = 8 and l.language_code = 'uz';
+
+
+-- day uchun kerak
+select
+	extract(year from loc.location_created_at) as created_year,
+	extract(month from loc.location_created_at) as created_month,
+	extract(week from loc.location_created_at) as created_week,
+	extract(day from loc.location_created_at) as created_day,
+	extract(hour from loc.location_created_at) as created_hour,
+	sum(oi.orderitem_quantity) as sum_quantity
+from
+	orders as o
+join
+	orderitems as oi on o.order_id = oi.order_id
+join
+	products as p on p.product_id = oi.product_id
+join
+	products_info as pi on pi.product_id = p.product_id
+join
+	languages as l on l.language_id = pi.language_id
+join
+	locations as loc on loc.order_id = o.order_id
+where
+	l.language_code = 'uz' and 
+	extract(year from loc.location_created_at) = '2021' and 
+	extract(month from loc.location_created_at) = '4' and 
+	extract(day from loc.location_created_at) = '18'
+group by created_year, created_month, created_week, created_day, created_hour
+order by created_year desc, created_month desc, created_day desc, created_hour desc
+;
