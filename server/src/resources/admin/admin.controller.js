@@ -846,8 +846,39 @@ const getStats = async (req, res) => {
 			dataArray = await model.getStatsByMonth([ year, month ])
 		} else if (status == 3) {
 			dataArray = await model.getStatsByYear([ year ])
-		}
+		} else if (status == 4) {
+			dataArray = await model.getStatsByWeek()
 
+			// Umarjon's code
+			let d = new Date();
+			let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			let week = []
+
+			for (let i = 0; i <= 6; i++) {
+			  let date = new Date()
+			  date.setDate(date.getDate() - i)
+
+			  week.push( {
+			    created_day: date.getDate(), 
+			    created_week: days[date.getDay()],
+			    sum_quantity: 0
+			  })   
+
+			}
+
+			week.map(obj=>{
+			  dataArray.map(e=>{
+			    if (obj.created_day == e.created_day ) {
+			      obj.sum_quantity = e.sum_quantity-0 
+			    } 
+			  })
+			})
+
+			dataArray = week.reverse()
+			
+		} // end of Umarjon's code
+
+		// send response	
 		if(dataArray.length > 0) {
 			res.send({
 				status: 200,
@@ -857,6 +888,107 @@ const getStats = async (req, res) => {
 		} else {
 			res.send({
 				status: 204,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+//============= COMMENTS ===============//
+
+// create
+const createComments = async (req, res) => {
+
+	try {
+
+		const { comment_text, order_id, admin_id } = req.body
+
+		const data = await model.createComments([ comment_text, order_id, admin_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'creat comment',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// get
+const getComments = async (req, res) => {
+
+	try {
+
+		const { order_id } = req.query
+
+		const data = await model.getComments([ order_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'creat comment',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// set
+const setComments = async (req, res) => {
+
+	try {
+
+		const { comment_text, admin_id, order_id } = req.body
+
+		const data = await model.setComments([ comment_text, admin_id, order_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'update comment',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
 				message: 'no data',
 			})
 		}
@@ -902,4 +1034,7 @@ module.exports = {
 	deleteAdmin, //admin
 	search, // search
 	getStats, // stats
+	createComments, // comments
+	setComments, // comments
+	getComments, // comments
 }

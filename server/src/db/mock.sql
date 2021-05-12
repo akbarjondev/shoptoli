@@ -377,7 +377,10 @@ select
 	array_agg(pi.product_info_name) as name,
 	sum(p.product_price * oi.orderitem_quantity) as price,
 	loc.location_latitude as latitude, 
-	loc.location_longitude as longitude
+	loc.location_longitude as longitude,
+	com.comment_text as comment,
+	com.comment_created_at as comment_time,
+	admin.admin_username as commenter
 from
 	orders as o
 join
@@ -392,9 +395,13 @@ join
 	languages as l on l.language_id = pi.language_id
 join
 	locations as loc on loc.order_id = o.order_id
+join
+	comments as com on com.order_id = o.order_id
+join
+	admins as admin on admin.admin_id = com.admin_id
 where
-	l.language_code = 'uz' and c.client_id = 37
-group by id, fullname, first_name, language, latitude, longitude, created, phone
+	l.language_code = 'uz'
+group by id, fullname, first_name, language, latitude, longitude, created, phone, comment, comment_time, commenter
 order by id desc
 ;
 
@@ -632,4 +639,44 @@ where
 	extract(day from loc.location_created_at) = '18'
 group by created_year, created_month, created_week, created_day, created_hour
 order by created_year desc, created_month desc, created_day desc, created_hour desc
+;
+
+
+-- select all orders
+select
+	o.order_id as id,
+	o.client_id as client_id,
+	c.client_name as fullname,
+	c.tg_first_name as first_name,
+	c.tg_phone as phone,
+	c.language_id as language,
+	o.order_status as status,
+	loc.location_created_at as created,
+	array_agg(oi.orderitem_quantity) as quantity,
+	sum(oi.orderitem_quantity) as sum_quantity,
+	array_agg(pi.product_info_name) as name,
+	sum(p.product_price * oi.orderitem_quantity) as price,
+	loc.location_latitude as latitude, 
+	loc.location_longitude as longitude,
+	com.comment_text as comment,
+	com.comment_created_at as comment_time,
+	admin.admin_username as commenter
+from
+	orders as o
+join
+	clients as c on c.client_id = o.client_id
+join
+	orderitems as oi on o.order_id = oi.order_id
+join
+	products as p on p.product_id = oi.product_id
+join
+	products_info as pi on pi.product_id = p.product_id
+join
+	languages as l on l.language_id = pi.language_id
+join
+	locations as loc on loc.order_id = o.order_id
+where
+	l.language_code = lang
+group by id, fullname, first_name, language, latitude, longitude, created, phone
+order by id desc
 ;

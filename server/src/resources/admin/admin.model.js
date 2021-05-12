@@ -665,6 +665,97 @@ const getStatsByYear = async (arr) => {
 
 }
 
+// fetch week
+const getStatsByWeek = async (arr) => {
+
+	const ALL_CATS = `
+		select
+			to_char(loc.location_created_at, 'Day') as created_week,
+			extract(day from loc.location_created_at) as created_day,
+			sum(oi.orderitem_quantity) as sum_quantity
+		from
+			orders as o
+		join
+			orderitems as oi on o.order_id = oi.order_id
+		join
+			products as p on p.product_id = oi.product_id
+		join
+			products_info as pi on pi.product_id = p.product_id
+		join
+			languages as l on l.language_id = pi.language_id
+		join
+			locations as loc on loc.order_id = o.order_id
+		where
+			l.language_code = 'uz' and 
+			to_char(loc.location_created_at ,'yyyy-mm-dd') = any(SELECT to_char(generate_series, 'yyyy-mm-dd') FROM generate_series(CURRENT_TIMESTAMP, (select date_trunc('day', NOW() - interval '6 days')), '-24 hours'))
+		group by created_week, created_day
+		order by created_week desc, created_day desc
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+//========= COMMENTS =========//
+
+// create
+const createComments = async (arr) => {
+
+	const ALL_CATS = `
+		insert into comments (comment_text, order_id, admin_id)
+		values($1, $2, $3)
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// update
+const setComments = async (arr) => {
+
+	const ALL_CATS = `
+		update 
+			comments 
+		set
+			comment_text = $1, 
+			admin_id = $2,
+			comment_created_at = now()
+		where
+			order_id = $3
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// get
+const getComments = async (arr) => {
+
+	const ALL_CATS = `
+		select
+			com.comment_text,
+			com.comment_created_at,
+			ad.admin_username
+		from
+			comments as com
+		join
+			admins as ad on ad.admin_id = com.admin_id
+		where
+			com.order_id = $1
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
 
 module.exports = {
 	many,
@@ -694,5 +785,9 @@ module.exports = {
 	search,
 	getStatsByDay,
 	getStatsByMonth,
-	getStatsByYear
+	getStatsByYear,
+	getStatsByWeek,
+	createComments,
+	setComments,
+	getComments
 }

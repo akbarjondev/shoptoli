@@ -232,6 +232,7 @@ create table steps(
 create table comments(
 	comment_id serial primary key,
 	comment_text text,
+	comment_created_at timestamptz default current_timestamp,
 	order_id int,
 	admin_id int
 );

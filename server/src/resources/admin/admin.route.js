@@ -115,4 +115,12 @@ router
 	.route('/stats')
 	.get(controller.getStats)
 
+// comments
+router
+	.route('/comments')
+	.get(controller.getComments)
+	.put(controller.setComments)
+	.post(controller.createComments)
+
+
 module.exports = router
