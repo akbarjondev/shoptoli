@@ -1104,6 +1104,41 @@ const setInfos = async (req, res) => {
 
 }
 
+// ============ BADGE ============== //
+
+// set
+const setBadge = async (req, res) => {
+
+	try {
+
+		const { client_id, badge } = req.body
+
+		const data = await model.setBadge([ client_id, badge ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'set comment',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
 module.exports = {
 	getAll,
 	createOne,
@@ -1139,4 +1174,5 @@ module.exports = {
 	createInfos, // infos
 	getInfos, // infos
 	setInfos, // infos
+	setBadge, // infos
 }

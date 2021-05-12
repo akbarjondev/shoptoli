@@ -129,5 +129,10 @@ router
 	.put(controller.setInfos)
 	.post(controller.createInfos)
 
+// badge
+router
+	.route('/badge')
+	.put(controller.setBadge)
+
 
 module.exports = router

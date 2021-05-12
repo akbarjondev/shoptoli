@@ -70,6 +70,7 @@ const getClientOrders = async (arr) => {
 			c.tg_first_name as first_name,
 			c.tg_phone as phone,
 			c.language_id as language,
+			c.client_status_badge as badge,
 			o.order_status as status,
 			loc.location_created_at as created,
 			array_agg(oi.orderitem_quantity) as quantity,
@@ -94,7 +95,7 @@ const getClientOrders = async (arr) => {
 			locations as loc on loc.order_id = o.order_id
 		where
 			l.language_code = $1 and c.client_id = $2
-		group by id, fullname, first_name, language, latitude, longitude, created, phone
+		group by id, fullname, first_name, language, latitude, longitude, created, phone, badge
 		order by id desc
 		;
 	`
@@ -114,6 +115,7 @@ const getOneOrder = async (arr) => {
 			c.tg_first_name as first_name,
 			c.tg_phone as phone,
 			c.language_id as language,
+			c.client_status_badge as badge,
 			o.order_status as status,
 			loc.location_created_at as created,
 			array_agg(
@@ -149,7 +151,7 @@ const getOneOrder = async (arr) => {
 			locations as loc on loc.order_id = o.order_id
 		where
 			l.language_code = $1 and o.order_id = $2
-		group by id, fullname, first_name, language, latitude, longitude, created, phone
+		group by id, fullname, first_name, language, latitude, longitude, created, phone, badge
 		-- order by id
 		;
 
@@ -810,7 +812,26 @@ const setInfos = async (arr) => {
 
 }
 
+// ======== BADGE ========= //
 
+// update
+const setBadge = async (arr) => {
+
+	const ALL_CATS = `
+		update 
+			clients 
+		set
+			client_status_badge = $2
+		where
+			client_id = $1
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
 
 module.exports = {
 	many,
@@ -847,5 +868,6 @@ module.exports = {
 	getComments,
 	createInfos,
 	getInfos,
-	setInfos
+	setInfos,
+	setBadge
 }
