@@ -122,5 +122,12 @@ router
 	.put(controller.setComments)
 	.post(controller.createComments)
 
+// infos
+router
+	.route('/infos')
+	.get(controller.getInfos)
+	.put(controller.setInfos)
+	.post(controller.createInfos)
+
 
 module.exports = router

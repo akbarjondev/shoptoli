@@ -1005,6 +1005,105 @@ const setComments = async (req, res) => {
 }
 
 
+//============= INFOS ===============//
+
+// create
+const createInfos = async (req, res) => {
+
+	try {
+
+		const { info_company_name, info_catalog_link, info_media, info_phone, info_address, info_email, info_delivery_price, info_free_delivery_limit } = req.body
+
+		const data = await model.createInfos([ info_company_name, info_catalog_link, info_media, info_phone, info_address, info_email, info_delivery_price, info_free_delivery_limit ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'creat comment',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// get
+const getInfos = async (req, res) => {
+
+	try {
+
+		const data = await model.getInfos()
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'get comment',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// set
+const setInfos = async (req, res) => {
+
+	try {
+
+		const { info_company_name, info_catalog_link, info_media, info_phone, info_address, info_email, info_delivery_price, info_free_delivery_limit, info_id } = req.body
+
+		const data = await model.setInfos([ info_company_name, info_catalog_link, info_media, info_phone, info_address, info_email, info_delivery_price, info_free_delivery_limit, info_id ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'set comment',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
 module.exports = {
 	getAll,
 	createOne,
@@ -1037,4 +1136,7 @@ module.exports = {
 	createComments, // comments
 	setComments, // comments
 	getComments, // comments
+	createInfos, // infos
+	getInfos, // infos
+	setInfos, // infos
 }

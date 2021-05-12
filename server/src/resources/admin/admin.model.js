@@ -756,6 +756,61 @@ const getComments = async (arr) => {
 
 }
 
+//========= INFOS =========//
+
+// create
+const createInfos = async (arr) => {
+
+	const ALL_CATS = `
+		insert into infos (info_company_name, info_catalog_link, info_media, info_phone, info_address, info_email, info_delivery_price, info_free_delivery_limit)
+		values($1, $2, $3, $4, $5, $6, $7, $8)
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// get
+const getInfos = async (arr) => {
+
+	const ALL_CATS = `
+		select * from infos limit 1;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// update
+const setInfos = async (arr) => {
+
+	const ALL_CATS = `
+		update 
+			infos 
+		set
+			info_company_name = $1, 
+			info_catalog_link = $2, 
+			info_media = $3, 
+			info_phone = $4, 
+			info_address = $5, 
+			info_email = $6, 
+			info_delivery_price = $7, 
+			info_free_delivery_limit = $8
+		where
+			info_id = $9
+		returning
+			*
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+
 
 module.exports = {
 	many,
@@ -789,5 +844,8 @@ module.exports = {
 	getStatsByWeek,
 	createComments,
 	setComments,
-	getComments
+	getComments,
+	createInfos,
+	getInfos,
+	setInfos
 }

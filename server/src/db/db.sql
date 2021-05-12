@@ -249,7 +249,7 @@ create table infos(
 	info_company_name varchar(150) not null,
 	info_catalog_link text not null,
 	info_media text not null,
-	info_phone varchar(10),
+	info_phone varchar(20),
 	info_address varchar(255),
 	info_email varchar(50),
 	info_delivery_price int default 0,
