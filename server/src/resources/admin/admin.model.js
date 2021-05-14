@@ -392,7 +392,21 @@ const createProducts = async (arr) => {
 const getProducts = async (arr) => {
 
 	const ALL_CATS = `
-		select * from products where product_id = $1;
+		select 
+			p.product_id,
+			p.product_price,
+			p.product_image,
+			p.product_status,
+			p.catagory_id,
+			pi.product_info_id,
+			pi.product_info_name,
+			pi.product_info_desc,
+			pi.language_id
+		from 
+			products as p
+		join
+			products_info as pi on pi.product_id = p.product_id
+		;
 	`
 
 	return await fetch(ALL_CATS, arr)
@@ -515,6 +529,23 @@ const createAdmin = async (arr) => {
 			admin_id,
 			admin_username,
 			admin_joined_at
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
+// fetch
+const getAdmins = async (arr) => {
+
+	const ALL_CATS = `
+		select
+			admin_id,
+			admin_username,
+			admin_joined_at
+		from
+			admins
 		;
 	`
 
@@ -857,6 +888,7 @@ module.exports = {
 	setProdcutsInfo,
 	deleteProdcutsInfo,
 	createAdmin,
+	getAdmins,
 	deleteAdmin,
 	search,
 	getStatsByDay,

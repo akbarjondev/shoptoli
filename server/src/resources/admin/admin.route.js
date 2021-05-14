@@ -103,6 +103,7 @@ router
 router
 	.route('/admins')
 	.post(controller.createAdmin)
+	.get(controller.getAdmins)
 	.delete(controller.deleteAdmin)
 
 // search

@@ -496,9 +496,7 @@ const getProducts = async (req, res) => {
 
 	try {
 
-		const { product_id } = req.query
-
-		const data = await model.getProducts([ product_id ])
+		const data = await model.getProducts()
 
 		if(data.length > 0) {
 			res.send({
@@ -739,6 +737,37 @@ const createAdmin = async (req, res) => {
 			res.send({
 				status: 200,
 				message: 'creat admin',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
+// get
+const getAdmins = async (req, res) => {
+
+	try {
+
+		const data = await model.getAdmins()
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'fetch admins',
 				data: data
 			})
 		} else {
@@ -1166,6 +1195,7 @@ module.exports = {
 	deleteProdcutsInfo, // info
 	createAdmin, // admin
 	deleteAdmin, //admin
+	getAdmins, // admin
 	search, // search
 	getStats, // stats
 	createComments, // comments
