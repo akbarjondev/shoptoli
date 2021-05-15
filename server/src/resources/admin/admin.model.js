@@ -205,7 +205,7 @@ const getAllClients = async (arr) => {
 	const ALL_CLIENTS = `
 		select
 			o.client_id as client_id,
-			count(o.order_id) as id,
+			count(o.order_id)::integer as all_orders,
 			c.client_name as fullname,
 			c.tg_first_name as first_name,
 			c.tg_phone as phone,
@@ -228,7 +228,7 @@ const getAllClients = async (arr) => {
 		where
 			l.language_code = $1
 		group by o.client_id, fullname, first_name, language, phone
-		order by o.client_id desc
+		order by all_orders desc
 		limit $2
 		offset (($3 - 1) * $2);
 		;
