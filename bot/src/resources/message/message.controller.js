@@ -302,7 +302,7 @@ const getAction = async (msg) => {
 	}
 
 	// User pressed back keyboard
-	if(msg.text === '🔙🏡') {
+	if(msg.text === '🔙🏡' || msg.text === '/menu') {
 
 		// change step
 		step.editStep(msg, 'menu')
