@@ -210,11 +210,16 @@ const getAllClients = async (arr) => {
 			c.tg_first_name as first_name,
 			c.tg_phone as phone,
 			c.language_id as language,
+			ri.region_info_name as region,
 			array_agg(o.order_status) as status
 		from
 			orders as o
 		join
 			clients as c on c.client_id = o.client_id
+		join
+			regions as r on c.region_id = r.region_id
+		join
+			regions_info as ri on r.region_id = ri.region_id
 		join
 			orderitems as oi on o.order_id = oi.order_id
 		join
@@ -226,8 +231,8 @@ const getAllClients = async (arr) => {
 		join
 			locations as loc on loc.order_id = o.order_id
 		where
-			l.language_code = $1
-		group by o.client_id, fullname, first_name, language, phone
+			l.language_code = $1 and o.order_status = 4 and ri.language_id = l.language_id
+		group by o.client_id, fullname, first_name, language, phone, region
 		order by all_orders desc
 		limit $2
 		offset (($3 - 1) * $2);
