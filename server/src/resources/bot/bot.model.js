@@ -483,7 +483,7 @@ const getProducts = async (arr) => {
 			join
 				languages as l on l.language_id = pi.language_id
 			where
-				l.language_code = $2 and p.catagory_id = $1
+				l.language_code = $2 and p.catagory_id = $1 and p.product_status = 1
 			;
 		`, arr)
 
