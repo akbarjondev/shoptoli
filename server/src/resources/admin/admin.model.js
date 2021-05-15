@@ -282,6 +282,7 @@ const getCatagories = async (arr) => {
 			c.catagory_id,
 			c.catagory_status,
 			c.catagory_keyword,
+			ci.catagory_info_id,
 			ci.catagory_info_name,
 			ci.language_id
 		from
