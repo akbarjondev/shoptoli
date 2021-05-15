@@ -295,6 +295,29 @@ const getCatagories = async (arr) => {
 
 }
 
+// read
+const getOneCatagory = async (arr) => {
+
+	const ALL_CATS = `
+		select
+			c.catagory_id,
+			c.catagory_status,
+			c.catagory_keyword,
+			ci.catagory_info_name,
+			ci.language_id
+		from
+			catagories as c
+		join
+			catagories_info as ci on c.catagory_id = ci.catagory_id
+		where
+			ci.catagory_id = $1 and ci.language_id = $2
+		;
+	`
+
+	return await fetch(ALL_CATS, arr)
+
+}
+
 // delete
 const deleteCatagories = async (arr) => {
 
@@ -872,6 +895,7 @@ module.exports = {
 	getAllClients,
 	getOneOrder,
 	getCatagories,
+	getOneCatagory,
 	setCatagories,
 	createCatagories,
 	deleteCatagories,

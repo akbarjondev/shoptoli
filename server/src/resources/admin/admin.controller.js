@@ -259,6 +259,41 @@ const getCatagories = async (req, res) => {
 
 }
 
+// get catagory infos by cata
+const getOneCatagory = async (req, res) => {
+
+	try {
+
+		const { catagory_id, language } = req.params
+
+		console.log(catagory_id)
+
+		const catagories = await model.getOneCatagory([ catagory_id, language ])
+
+		if(catagories.length > 0) {
+			res.send({
+				status: 200,
+				message: 'fetch two',
+				data: catagories
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
 const setCatagories = async (req, res) => {
 
 	try {
@@ -1181,6 +1216,7 @@ module.exports = {
 	setCatagories, // catagory
 	deleteCatagories, // catagory
 	createCatagories, // catagory
+	getOneCatagory, // catagory
 	createCatagoriesInfo, // info
 	getCatagoriesInfo, // info
 	setCatagoriesInfo, // info

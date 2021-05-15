@@ -68,6 +68,11 @@ router
 	.get(controller.getAllClients)
 
 // catagories
+// get cat info
+router
+	.route('/catagories/:catagory_id/:language')
+	.get(controller.getOneCatagory)
+
 router
 	.route('/catagories')
 	.get(controller.getCatagories)
