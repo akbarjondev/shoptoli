@@ -557,6 +557,39 @@ const getProducts = async (req, res) => {
 
 }
 
+// get one
+const getOneProduct = async (req, res) => {
+
+	try {
+
+		const { product_id, language } = req.params
+
+		const data = await model.getOneProduct([ product_id, language ])
+
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'fetch',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 200,
+				message: 'no data',
+			})
+		}
+
+	} catch(e) {
+		console.log(e)
+
+		res.send({
+			status: 500,
+			message: e.message
+		})
+	}
+
+}
+
 // update
 const setProducts = async (req, res) => {
 
@@ -1223,6 +1256,7 @@ module.exports = {
 	deleteCatagoriesInfo, // info
 	createProducts, // prodcuts
 	getProducts, // prodcuts
+	getOneProduct, // prodcuts
 	setProducts, // prodcuts
 	deleteProducts, // prodcuts
 	createProdcutsInfo, // info

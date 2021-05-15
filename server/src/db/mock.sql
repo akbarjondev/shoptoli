@@ -206,6 +206,9 @@ delete from steps where tg_user_id = 288096386;
 
 delete from clients where tg_user_id = 1631848090;
 delete from steps where tg_user_id = 1631848090;
+	
+delete from clients where tg_user_id = 663739937;
+delete from steps where tg_user_id = 663739937;
 
 insert into 
 	clients(client_name, client_status_badge, tg_user_id, tg_first_name, tg_last_name, tg_username, tg_phone, region_id, language_id)

@@ -90,6 +90,10 @@ router
 
 // products
 router
+	.route('/products/:product_id/:language')
+	.get(controller.getOneProduct)
+
+router
 	.route('/products')
 	.get(controller.getProducts)
 	.put(controller.setProducts)
