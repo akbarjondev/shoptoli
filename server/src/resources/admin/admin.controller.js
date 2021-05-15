@@ -898,6 +898,13 @@ const search = async (req, res) => {
 
 		const { q } = req.query
 
+		if (q.length == 0) {
+			res.send({
+				status: 204,
+				message: 'no data',
+			})
+		}
+
 		const data = await model.search([ q ])
 
 		if(data.length > 0) {
