@@ -210,8 +210,8 @@ const getAllClients = async (arr) => {
 			c.tg_first_name as first_name,
 			c.tg_phone as phone,
 			c.language_id as language,
-			ri.region_info_name as region,
-			array_agg(o.order_status) as status
+			c.client_status_badge as badge,
+			ri.region_info_name as region
 		from
 			orders as o
 		join
@@ -232,7 +232,7 @@ const getAllClients = async (arr) => {
 			locations as loc on loc.order_id = o.order_id
 		where
 			l.language_code = $1 and o.order_status = 4 and ri.language_id = l.language_id
-		group by o.client_id, fullname, first_name, language, phone, region
+		group by o.client_id, fullname, first_name, language, phone, region, badge
 		order by all_orders desc
 		limit $2
 		offset (($3 - 1) * $2);
