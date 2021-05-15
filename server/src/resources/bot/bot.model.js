@@ -390,6 +390,7 @@ const getInfos = async (arr) => {
 
 		const getInfos = await fetch(`
 			select
+				info_id,
 				info_company_name as name,
 				info_catalog_link as link,
 				info_phone as phone,
@@ -401,6 +402,8 @@ const getInfos = async (arr) => {
 				info_free_delivery_limit as free_delivery_limit
 			from
 				infos
+			order by info_id asc
+			limit 1
 		`, arr)
 
 		return {
