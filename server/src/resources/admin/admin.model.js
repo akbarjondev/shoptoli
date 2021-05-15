@@ -861,7 +861,13 @@ const createInfos = async (arr) => {
 const getInfos = async (arr) => {
 
 	const ALL_CATS = `
-		select * from infos limit 1;
+		select 
+			* 
+		from 
+			infos  
+		order by info_id asc
+		limit 1
+		;
 	`
 
 	return await fetch(ALL_CATS, arr)

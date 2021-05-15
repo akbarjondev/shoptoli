@@ -1116,7 +1116,7 @@ const createInfos = async (req, res) => {
 		if(data.length > 0) {
 			res.send({
 				status: 200,
-				message: 'creat comment',
+				message: 'creat company info',
 				data: data
 			})
 		} else {
@@ -1147,7 +1147,7 @@ const getInfos = async (req, res) => {
 		if(data.length > 0) {
 			res.send({
 				status: 200,
-				message: 'get comment',
+				message: 'get info',
 				data: data
 			})
 		} else {
@@ -1180,7 +1180,7 @@ const setInfos = async (req, res) => {
 		if(data.length > 0) {
 			res.send({
 				status: 200,
-				message: 'set comment',
+				message: 'set info',
 				data: data
 			})
 		} else {
