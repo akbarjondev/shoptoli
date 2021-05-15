@@ -470,12 +470,9 @@ const setProducts = async (arr) => {
 	const ALL_CATS = `
 		update products
 		set 
-			product_price = $1, 
-			product_image = $2, 
-			product_status = $3, 
-			catagory_id = $4
+			product_status = $1
 		where
-			product_id = $5
+			product_id = $2
 		returning
 			*
 		;

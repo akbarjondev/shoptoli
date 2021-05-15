@@ -595,9 +595,9 @@ const setProducts = async (req, res) => {
 
 	try {
 
-		const { product_price, product_image, product_status, catagory_id, product_id } = req.body
+		const { product_status, product_id } = req.body
 
-		const data = await model.setProducts([ product_price, product_image, product_status, catagory_id, product_id ])
+		const data = await model.setProducts([ product_status, product_id ])
 
 		if(data.length > 0) {
 			res.send({
