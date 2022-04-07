@@ -15,7 +15,7 @@ create table clients(
 	client_name varchar(72),
 	client_status_badge int default 0,
 	client_joined_at timestamp with time zone default current_timestamp,
-	tg_user_id int,
+	tg_user_id bigint,
 	tg_first_name varchar(150),
 	tg_last_name varchar(150),
 	tg_username varchar(150),
@@ -196,6 +196,14 @@ create table orderitems(
 	product_id int
 );
 
+-- order steps
+create table ordersteps(
+	orderstep_id serial primary key,
+	orderstep_created_at timestamp with time zone default current_timestamp,
+	tg_user_id bigint,
+	product_id int
+);
+
 -- function for don't duplicate orderitems | returns 1 if created; returns 2 if updated
 create or replace function dont_duplicate_orderitems(_oiq int, _oi int, _pi int) returns int language plpgsql as $$
 
@@ -227,7 +235,7 @@ create table steps(
 	step_id serial primary key,
 	step_name varchar(50),
 	step_last_action timestamp with time zone default current_timestamp,
-	tg_user_id int
+	tg_user_id bigint
 );
 
 create table comments(

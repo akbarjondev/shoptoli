@@ -789,6 +789,60 @@ const getMyOrders = async (arr) => {
 
 }
 
+//=========================== ORDER STEPS ===========================//
+
+const addOrdersteps = async (arr) => {
+	try {
+		
+		const MY_ORDER = `
+			insert into 
+			ordersteps(tg_user_id, product_id)
+			values($1, $2)
+			returning *
+			;
+		`
+
+		const data = await fetch(MY_ORDER, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: data
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+}
+
+const getOrdersteps = async (arr) => {
+	try {
+		
+		const MY_ORDER = `
+			select * from ordersteps where tg_user_id=$1 order by orderstep_created_at DESC limit 1;
+		`
+
+		const data = await fetch(MY_ORDER, arr)
+
+		return {
+			status: 200,
+			message: 'ok',
+			data: data
+		}
+
+	} catch(e) {
+		console.log(e)
+		return {
+			status: 500,
+			message: e.message
+		}
+	}
+}
+
 //=========================== BOOKORDER ===========================//
 
 const bookOrder = async (arr) => {
@@ -839,6 +893,8 @@ module.exports = {
 	editOrder, // orders
 	createOrderItem, // orderitems
 	getClientOrderItems, // orderitems
+	addOrdersteps, // ordersteps
+	getOrdersteps, // ordersteps
 	bookOrder, // bookorder
 	getMyOrders, // orders
 }

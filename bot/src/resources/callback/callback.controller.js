@@ -361,6 +361,14 @@ const getAction = async (cb) => {
 		// change step
 		step.editStep(cb, 'product')
 
+		// create orderstep
+		const orderstepsRes = await fetch(`${CONFIG.SERVER_HOST}/bot/ordersteps/${helper.getChatId(cb)}/${dataArr[1]}`, {
+			method: 'post',
+			headers: {
+				'Content-type': 'application/json'
+			}
+		})
+
 		// get client ID
 		const clientId = await helper.getUserObj(helper.getChatId(cb), true)
 

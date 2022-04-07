@@ -2,8 +2,8 @@ const Pool = require('pg').Pool
 require('dotenv').config()
 
 const pool = new Pool({
-	user: 'akbarjondev',
-	password: '11235',
+	user: 'postgres',
+	password: '123',
 	database: 'shoptoli',
 	port: 5432,
 	host: 'localhost'

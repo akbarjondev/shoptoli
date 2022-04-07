@@ -87,12 +87,18 @@ router
 
 // ++++++++++++++++ ORDERITEMS +++++++++++++++++++++
 router
-	.route('/orderitems')
-	.post(controller.createOrderItem)
+.route('/orderitems')
+.post(controller.createOrderItem)
 
 router
-	.route('/orderitems/:order_id/:language_id')
-	.get(controller.getClientOrderItems)
+.route('/orderitems/:order_id/:language_id')
+.get(controller.getClientOrderItems)
+
+// ++++++++++++++++ ORDERSTEPS+++++++++++++++++++++
+router
+.route('/ordersteps/:tg_user_id/:product_id')
+.post(controller.addOrdersteps)
+.get(controller.getOrdersteps)
 
 // ++++++++++++++++ bookorder +++++++++++++++++++++
 router

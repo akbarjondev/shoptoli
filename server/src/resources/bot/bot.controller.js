@@ -207,6 +207,26 @@ const getMyOrders = async  (req, res) => {
 	res.send(dbGetMyOrders).end()
 }
 
+//=========================== ORDER STEPS ===========================//
+
+const addOrdersteps = async (req, res) => {
+	const { tg_user_id, product_id } = req.params
+
+	const dispatcher = await model.addOrdersteps([ tg_user_id, product_id ])
+
+	res.send(dispatcher).end()
+}
+
+const getOrdersteps = async (req, res) => {
+	const { tg_user_id } = req.params
+
+	console.log(req.params);
+
+	const dispatcher = await model.getOrdersteps([ tg_user_id ])
+
+	res.send(dispatcher).end()
+}
+
 //=========================== BOOK ORDER ===========================//
 
 const bookOrder = async  (req, res) => {
@@ -244,6 +264,8 @@ module.exports = {
 	editOrder, // orders
 	createOrderItem, // orderitems
 	getClientOrderItems, // orderitems
+	addOrdersteps, // ordersteps
+	getOrdersteps, // ordersteps
 	bookOrder, // bookOrder
 	getMyOrders, // orders
 }

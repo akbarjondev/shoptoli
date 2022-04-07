@@ -48,8 +48,8 @@ module.exports = {
 		ru: 'Выберите из каталога 😊👇'
 	},
 	selectQuantity: {
-		uz: 'Miqdorni tanlang 😊👇',
-		ru: 'Выберите количество 😊👇'
+		uz: 'Miqdorni tanlang yoki raqam ko\'rinishida yozib, yuboring 👇',
+		ru: 'Выберите количество или отправьте в виде числа 👇'
 	},
 	price: {
 		uz: 'Narxi',
@@ -226,6 +226,14 @@ module.exports = {
 		ru: {
 			uz_text: '🇺🇿 Узб',
 			ru_text: '🇷🇺 Рус'
+		}
+	},
+	ordersteps: {
+		uz: {
+			text: "⚠️To'g'ri son kiriting!"
+		},
+		ru: {
+			text: "⚠️Введите правильный номер!"
 		}
 	}
 }

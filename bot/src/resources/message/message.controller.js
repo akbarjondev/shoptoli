@@ -3,8 +3,12 @@ const CONFIG = require('./../../config/config')
 const helper = require('./../../helper')
 const text = require('./../../texts')
 const step = require('./../step/step.model')
+const INLINE_KDBS = require('./../../keyboards/inline_keyboards')
 
 const getAction = async (msg) => {
+
+	// get conpany general info
+	const info = await helper.getCompanyInfo()
 
 	// get to know user's language
 	const userLang = await helper.getUserObj(helper.getChatId(msg))
@@ -12,6 +16,93 @@ const getAction = async (msg) => {
 	// get user's step
 	const userStep = await step.getStep(msg)
 	const currentStep = userStep?.data[0]?.step_name
+
+	if(currentStep == 'product') {
+		let number_product;
+		if(isNaN(parseInt(msg.text))) {
+			bot.sendMessage(
+				helper.getChatId(msg),
+				text.ordersteps[userLang].text,
+				{
+					parse_mode: 'html',
+				}
+			)
+		} else {
+			number_product = parseInt(msg.text)
+			
+			const product_count = Math.abs(number_product)
+	
+			// get ordersteps
+			const rawData = await fetch(`${CONFIG.SERVER_HOST}/bot/ordersteps/${helper.getChatId(msg)}/0`)
+			const { data } = await rawData.json()
+			const product_id = data[0].product_id
+	
+			// change step
+			step.editStep(msg, 'cart')
+	
+			// get ClientOrder by ID
+			const getClientOrder = await fetch(`${CONFIG.SERVER_HOST}/bot/orders/${helper.getChatId(msg)}`)
+			const { data: [ orderObj ] } = await getClientOrder.json()
+	
+			// get order_id
+			const { order_id } = orderObj
+	
+			// add product to the orderitems || cart
+			const orderItemRes = await fetch(`${CONFIG.SERVER_HOST}/bot/orderitems`, {
+				method: 'post',
+				headers: {
+					'Content-type': 'application/json'
+				},
+				body: JSON.stringify({
+					order_id: order_id,
+					orderitem_quantity: product_count,
+					product_id: product_id
+				})
+			})
+	
+			const { status, data: orderData } = await orderItemRes.json()
+	
+			// if orderitem added
+			if(status === 200 && orderData.length > 0) {
+	
+				// get client's all orderitems
+				const getClientOrderItems = await fetch(`${CONFIG.SERVER_HOST}/bot/orderitems/${order_id}/${userLang}`)
+				const { data: allOrders } = await getClientOrderItems.json()
+	
+				// delivery will come from company general info table
+				let delivery = info.price
+				let delivery_limit = info.free_delivery_limit
+	
+				let countAllProduct = ''
+				let productsPrice = 0
+				let allProductCount = 0
+	
+				allOrders.forEach(product => {
+					if(product.keyword === 'sale') {
+						allProductCount += product.quantity
+					}
+	
+					productsPrice += product.price * product.quantity
+					countAllProduct += product.quantity + ` ${text.cart.piece[userLang]} ` + product.name + `\n`
+				})
+	
+				delivery = allProductCount >= delivery_limit ? 0 : delivery
+	
+				const cartText = `<b>${text.cart.inCart[userLang]}</b>\n\n${countAllProduct}\n<b>${text.cart.goods[userLang]}</b> ${productsPrice} ${text.currency[userLang]}\n<b>${text.cart.deliveryText[userLang]}</b> ${delivery} ${text.currency[userLang]}\n<b>${text.cart.sum[userLang]} ${productsPrice + delivery} ${text.currency[userLang]}</b>`
+	
+				bot.sendMessage(
+					helper.getChatId(msg),
+					cartText,
+					{
+						parse_mode: 'html',
+						reply_markup: {
+							inline_keyboard: INLINE_KDBS.cart_keyboards(userLang, order_id)
+						}
+					}
+				)
+			}
+		}
+	}
 
 	// user ask catalog
 	if(msg.text === text.mainMenu.keyboard.order[userLang]) {
